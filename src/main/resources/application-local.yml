@@ -1,0 +1,68 @@
+spring:
+  config:
+    activate:
+      on-profile: local
+  datasource:
+    p6spy:
+      enabled: true
+      appender: com.p6spy.engine.spy.appender.Slf4JLogger
+      logMessageFormat:
+        p6spy: "%(currentTime)|%(executionTime)|%(category)|%(sqlSingleLine)"
+  jpa:
+    database-platform: org.hibernate.dialect.MariaDBDialect
+    database: MYSQL
+    generate-ddl: false
+    properties:
+      hibernate:
+        id:
+          new_generator_mapping: false
+        default_batch_fetch_size: 100 # N+1 문제 발생시 in절로 100개 단위로 나눠서 호출
+        dialect:
+          storage_engine: innodb # MyISAM 엔진은 기본적으로 Transaction을 지원하지 않는다. InnoDB를 사용하자.
+    hibernate:
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+      ddl-auto: none
+    open-in-view: false
+
+#  servlet:
+#    multipart:
+#      enabled: true
+#      file-size-threshold: 2KB
+#      max-file-size: 100MB
+#      max-request-size: 100MB
+
+springdoc:
+  swagger-ui:
+    operations-sorter: method
+
+logging:
+  level:
+    root: INFO
+    com.ictk: DEBUG
+    org.spring.framework:
+      web.filter: DEBUG
+      transaction.interceptor: TRACE
+
+issuance:
+  db:
+    driver: org.mariadb.jdbc.Driver
+    ip: localhost
+    port: 3307 # port: 3307
+    database: manufacture_v3_0_test # database: manufacture_v3_0_test
+    user: ictk # user: ictk
+    pass: '#ictk1234' # pass: '#ictk1234'
+  machine:
+    table-name: machine
+  device:
+    table-name: machine_device
+  config:
+    profile:
+      table-name: profile_config
+    keyissue:
+      table-name: keyissue_config
+    script:
+      table-name: script_config
+  sn-rule:
+    table-name: sn_rule
+
