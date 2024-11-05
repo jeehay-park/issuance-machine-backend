@@ -150,6 +150,8 @@ public class MachineServiceImpl implements MachineService {
                         case "mcn_id" -> dataMap.put(v.getKeyName(), machine.getMcnId());
                         case "mcn_name" -> dataMap.put(v.getKeyName(), machine.getMcnName());
                         case "etc" -> dataMap.put(v.getKeyName(), machine.getEtc());
+                        case "updated_at" -> dataMap.put(v.getKeyName(), machine.getUpdatedAt()
+                                .format( DateTimeFormatter.ofPattern(AppConstants.DATE_BASIC_FMT) ));
                         case "created_at" -> dataMap.put(v.getKeyName(), machine.getCreatedAt()
                                 .format( DateTimeFormatter.ofPattern(AppConstants.DATE_BASIC_FMT) ));
                         default -> {}
@@ -173,7 +175,7 @@ public class MachineServiceImpl implements MachineService {
                         .mcnId(machine.getMcnId())
                         .mcnName(machine.getMcnName())
                         .etc(machine.getEtc())
-                        .deviceList( composeDeviceObjList(machine.getDevices()) )
+                        .deviceList( composeDeviceObjList(machine.getDevices()))
                         .createdAt( machine.getCreatedAt().format( DateTimeFormatter.ofPattern(AppConstants.DATE_BASIC_FMT) ) )
                         .build() )
                 .orElseThrow( () -> new IctkException(trId, AppCode.MACHINE_PROC_ERROR, "발급기계 "+mcnRQB.getMcnId()+ " 없음.") );

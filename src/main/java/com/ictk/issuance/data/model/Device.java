@@ -7,6 +7,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
 
 import java.time.LocalDateTime;
 
@@ -49,7 +50,8 @@ public class Device {
     @Setter
     private String romVer;
 
-    @Column(name = "updated_at")
+    @LastModifiedDate
+    @Column(name = "updated_at", nullable = false)
     @Setter
     private LocalDateTime updatedAt;
 
@@ -64,6 +66,8 @@ public class Device {
     public void onSave(){
         if(!CommonUtils.hasValue(dvcId) || AppConstants.TEMPORARY_ID.equals(dvcId))
             dvcId = "dvc" + String.format("%04d", machine.getSeq())+ String.format("%04d", seq);
+
+        updatedAt = LocalDateTime.now();
     }
 
     @Override

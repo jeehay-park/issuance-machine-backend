@@ -67,6 +67,9 @@ public class ConfigListDTO {
             return PageRequest.of(page, rowCnt);
         }
 
+        public List<FilterObj> getFilterArr() {
+            return List.of();
+        }
     }
 
 

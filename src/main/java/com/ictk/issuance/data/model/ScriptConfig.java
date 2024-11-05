@@ -7,6 +7,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
 
 import java.time.LocalDateTime;
 
@@ -53,7 +54,8 @@ public class ScriptConfig {
     @Setter
     private String dataHash;
 
-    @Column(name = "updated_at")
+    @LastModifiedDate
+    @Column(name = "updated_at", nullable = false)
     @Setter
     private LocalDateTime updatedAt;
 
@@ -68,6 +70,7 @@ public class ScriptConfig {
     public void onSave(){
         if(!CommonUtils.hasValue(scrtId) || AppConstants.TEMPORARY_ID.equals(scrtId))
             scrtId = "scrt" + String.format("%06d", seq);
+        updatedAt = LocalDateTime.now();
     }
 
 

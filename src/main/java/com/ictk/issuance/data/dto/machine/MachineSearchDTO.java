@@ -50,6 +50,7 @@ public class MachineSearchDTO {
         @Schema(description = "등록일자")
         private String createdAt;
 
+
     }
 
 }

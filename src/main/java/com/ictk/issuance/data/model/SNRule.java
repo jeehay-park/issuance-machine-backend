@@ -7,6 +7,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
 
 import java.time.LocalDateTime;
 
@@ -49,11 +50,12 @@ public class SNRule {
     @Setter
     private long todayCount;
 
-    @Column(name = "sum_count")
+    @Column(name = "count_sum")
     @Setter
     private long countSum;
 
-    @Column(name = "updated_at")
+    @LastModifiedDate
+    @Column(name = "updated_at", nullable = false)
     @Setter
     private LocalDateTime updatedAt;
 
@@ -69,6 +71,7 @@ public class SNRule {
     public void onSave(){
         if(!CommonUtils.hasValue(snrId) || AppConstants.TEMPORARY_ID.equals(snrId))
             snrId = "snr" + String.format("%06d", seq);
+        updatedAt = LocalDateTime.now();
     }
 
     @Override

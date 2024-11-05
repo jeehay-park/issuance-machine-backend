@@ -7,6 +7,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
 
 import java.time.LocalDateTime;
 
@@ -53,7 +54,8 @@ public class ProfileConfig {
     @Setter
     private String dataHash;
 
-    @Column(name = "updated_at")
+    @LastModifiedDate
+    @Column(name = "updated_at", nullable = false)
     @Setter
     private LocalDateTime updatedAt;
 
@@ -66,8 +68,12 @@ public class ProfileConfig {
 
     @PrePersist
     public void onSave(){
+
+        System.out.println("profId :" + profId);
         if(!CommonUtils.hasValue(profId) || AppConstants.TEMPORARY_ID.equals(profId))
             profId = "prof" + String.format("%06d", seq);
+
+        updatedAt = LocalDateTime.now();
     }
 
     @Override

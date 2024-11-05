@@ -32,7 +32,7 @@ public class AppHelper {
         Map<String, HeaderInfoObj> hdrInfoMap = new LinkedHashMap<>(); // 순서보장
 
         int idx = 1;
-        hdrInfoMap.put("idx", HeaderInfoObj.builder().idx(idx++).keyName("idx").name("순번").isSort(false).isFilter(false).isDisplay(true).build());
+        hdrInfoMap.put("idx", HeaderInfoObj.builder().idx(idx++).keyName("idx").name("순번").isSort(false).isFilter(false).isDisplay(false).build());
         hdrInfoMap.put("mcn_id", HeaderInfoObj.builder().idx(idx++).keyName("mcn_id").name("발급기 ID").isSort(true).isFilter(false).isDisplay(true).build());
         hdrInfoMap.put("mcn_name", HeaderInfoObj.builder().idx(idx++).keyName("mcn_name").name("발급기 이름").isSort(false).isFilter(true).isDisplay(true).build());
         hdrInfoMap.put("etc", HeaderInfoObj.builder().idx(idx++).keyName("etc").name("기타 정보").isSort(false).isFilter(true).isDisplay(true).build());
@@ -46,19 +46,19 @@ public class AppHelper {
         int idx = 1;
         switch(configType) {
             case IssuanceConstants.CONFIG_TYPE_PROFILE -> {
-                hdrInfoMap.put("idx", HeaderInfoObj.builder().idx(idx++).keyName("idx").name("순번").isSort(false).isFilter(false).isDisplay(true).build());
+                hdrInfoMap.put("idx", HeaderInfoObj.builder().idx(idx++).keyName("idx").name("순번").isSort(false).isFilter(false).isDisplay(false).build());
                 hdrInfoMap.put("prof_id", HeaderInfoObj.builder().idx(idx++).keyName("prof_id").name("프로파일 ID").isSort(true).isFilter(false).isDisplay(true).build());
                 hdrInfoMap.put("prof_name", HeaderInfoObj.builder().idx(idx++).keyName("prof_name").name("프로파일 이름").isSort(false).isFilter(true).isDisplay(true).build());
                 hdrInfoMap.put("description", HeaderInfoObj.builder().idx(idx++).keyName("description").name("상세설명").isSort(false).isFilter(false).isDisplay(true).build());
                 hdrInfoMap.put("prof_type", HeaderInfoObj.builder().idx(idx++).keyName("prof_type").name("프로파일 타입").isSort(false).isFilter(false).isDisplay(false).build());
                 hdrInfoMap.put("version", HeaderInfoObj.builder().idx(idx++).keyName("version").name("버전").isSort(false).isFilter(true).isDisplay(true).build());
-                // hdrInfoMap.put("ctnt_data", HeaderInfoObj.builder().idx(idx++).keyName("ctnt_data").name("컨텐츠 데이터").isSort(false).isFilter(false).isDisplay(false).build());
+                hdrInfoMap.put("ctnt_data", HeaderInfoObj.builder().idx(idx++).keyName("ctnt_data").name("컨텐츠 데이터").isSort(false).isFilter(false).isDisplay(false).build());
                 hdrInfoMap.put("data_hash", HeaderInfoObj.builder().idx(idx++).keyName("data_hash").name("데이터 해시").isSort(false).isFilter(false).isDisplay(true).build());
                 hdrInfoMap.put("updated_at", HeaderInfoObj.builder().idx(idx++).keyName("updated_at").name("업데이트 시간").isSort(true).isFilter(false).isDisplay(true).build());
                 hdrInfoMap.put("created_at", HeaderInfoObj.builder().idx(idx++).keyName("created_at").name("등록 시간").isSort(true).isFilter(false).isDisplay(true).build());
             }
             case IssuanceConstants.CONFIG_TYPE_KEYISSUE -> {
-                hdrInfoMap.put("idx", HeaderInfoObj.builder().idx(idx++).keyName("idx").name("순번").isSort(false).isFilter(false).isDisplay(true).build());
+                hdrInfoMap.put("idx", HeaderInfoObj.builder().idx(idx++).keyName("idx").name("순번").isSort(false).isFilter(false).isDisplay(false).build());
                 hdrInfoMap.put("keyis_id", HeaderInfoObj.builder().idx(idx++).keyName("keyis_id").name("키발급코드 ID").isSort(true).isFilter(false).isDisplay(true).build());
                 hdrInfoMap.put("keyis_name", HeaderInfoObj.builder().idx(idx++).keyName("keyis_name").name("키발급코드 이름").isSort(false).isFilter(true).isDisplay(true).build());
                 hdrInfoMap.put("description", HeaderInfoObj.builder().idx(idx++).keyName("description").name("상세설명").isSort(false).isFilter(false).isDisplay(true).build());
@@ -70,7 +70,7 @@ public class AppHelper {
                 hdrInfoMap.put("created_at", HeaderInfoObj.builder().idx(idx++).keyName("created_at").name("등록 시간").isSort(true).isFilter(false).isDisplay(true).build());
             }
             case IssuanceConstants.CONFIG_TYPE_SCRIPT -> {
-                hdrInfoMap.put("idx", HeaderInfoObj.builder().idx(idx++).keyName("idx").name("순번").isSort(false).isFilter(false).isDisplay(true).build());
+                hdrInfoMap.put("idx", HeaderInfoObj.builder().idx(idx++).keyName("idx").name("순번").isSort(false).isFilter(false).isDisplay(false).build());
                 hdrInfoMap.put("scrt_id", HeaderInfoObj.builder().idx(idx++).keyName("scrt_id").name("스크립트 ID").isSort(true).isFilter(false).isDisplay(true).build());
                 hdrInfoMap.put("scrt_name", HeaderInfoObj.builder().idx(idx++).keyName("scrt_name").name("스크립트 이름").isSort(false).isFilter(true).isDisplay(true).build());
                 hdrInfoMap.put("description", HeaderInfoObj.builder().idx(idx++).keyName("description").name("상세설명").isSort(false).isFilter(false).isDisplay(true).build());
@@ -91,7 +91,7 @@ public class AppHelper {
         Map<String, HeaderInfoObj> hdrInfoMap = new LinkedHashMap<>(); // 순서보장
 
         int idx = 1;
-        hdrInfoMap.put("idx", HeaderInfoObj.builder().idx(idx++).keyName("idx").name("순번").isSort(false).isFilter(false).isDisplay(true).build());
+        hdrInfoMap.put("idx", HeaderInfoObj.builder().idx(idx++).keyName("idx").name("순번").isSort(false).isFilter(false).isDisplay(false).build());
         hdrInfoMap.put("snr_id", HeaderInfoObj.builder().idx(idx++).keyName("snr_id").name("SN규칙 ID").isSort(true).isFilter(false).isDisplay(true).build());
         hdrInfoMap.put("snr_name", HeaderInfoObj.builder().idx(idx++).keyName("snr_name").name("SN규칙 이름").isSort(false).isFilter(true).isDisplay(true).build());
         hdrInfoMap.put("test_code", HeaderInfoObj.builder().idx(idx++).keyName("test_code").name("테스트 코드").isSort(false).isFilter(true).isDisplay(true).build());

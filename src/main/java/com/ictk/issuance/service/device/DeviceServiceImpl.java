@@ -71,19 +71,35 @@ public class DeviceServiceImpl implements DeviceService {
         Machine findMachine = machineRepository.findMachineByMcnId( dvcsSaveRQB.getMcnId() )
                 .orElseThrow( () -> new IctkException(trId, AppCode.DEVICE_PROC_ERROR, "발급기계 "+dvcsSaveRQB.getMcnId()+ " 없음.") );
 
-        if(!CommonUtils.hasElements(dvcsSaveRQB.getDeviceList()))
+        if (!CommonUtils.hasElements(dvcsSaveRQB.getDeviceList()))
             throw new IctkException(trId, AppCode.DEVICE_PROC_ERROR, "디바이스 정보가 없음.");
 
+
         // deviceList 검증
-        // dvcNum값 중복이 없고, dvcNum의 최대값이 devicList 사이즈와 동일한지 확인
+        // dvcNum값 중복이 없고, dvcNum의 최대값이 deviceList 사이즈와 동일한지 확인
         boolean listVadid = true;
         Set<Integer> numbers = new TreeSet<>();
+
         dvcsSaveRQB.getDeviceList().forEach( procDvc -> numbers.add(procDvc.getDvcNum()));
         // TreeSet이 정렬된 상태로 저장하기 때문에 첫 번째 값이 최소, 마지막 값이 최대입니다.
         Integer min = ((TreeSet<Integer>) numbers).first();
         Integer max = ((TreeSet<Integer>) numbers).last();
         if(min != 1 || max != dvcsSaveRQB.getDeviceList().size())
             throw new IctkException(trId, AppCode.DEVICE_PROC_ERROR, "디바이스 번호 오류.");
+
+        // Assuming dvcsSaveRQB has a method to get mcnId
+        String mcnId = dvcsSaveRQB.getMcnId();
+
+// Fetch the highest dvcNum for the given mcnId
+        Integer maxDvcNum = deviceRepository.findMaxDvcNumByMcnId(mcnId).orElse(0);
+
+        // Start assigning new dvcNum values from maxDvcNum + 1
+        AtomicInteger currentDvcNum = new AtomicInteger(maxDvcNum + 1);
+
+        dvcsSaveRQB.getDeviceList().forEach(procDvc -> {
+            // Assign a new dvcNum to each device starting from maxDvcNum + 1
+            procDvc.setDvcNum(currentDvcNum.getAndIncrement());
+        });
 
         AtomicInteger updateCnt = new AtomicInteger(0);
         List<Device> toDevices = new ArrayList<>();
@@ -115,6 +131,9 @@ public class DeviceServiceImpl implements DeviceService {
                                 .romVer(procDvc.getRomVer())
                                 .createdAt(LocalDateTime.now())
                                 .build());
+
+                log.info("Saved device with ID: {}", saveDevice.getDvcId());
+
                 if (saveDevice.getDvcId() != null)
                     updateCnt.getAndIncrement();
 

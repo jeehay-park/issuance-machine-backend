@@ -55,7 +55,7 @@ public class SecurityConfig {
                 // cors 필터 셋팅
                 .cors(httpSecurityCorsConfigurer -> httpSecurityCorsConfigurer.configurationSource(corsConfigurationSource))
                 .addFilterBefore(jwtAuthorizationFilter, UsernamePasswordAuthenticationFilter.class)
-                // .authorizeHttpRequests(authorize -> authorize.anyRequest().permitAll())
+//                 .authorizeHttpRequests(authorize -> authorize.anyRequest().permitAll())
                 .build();
 
     }
@@ -65,7 +65,9 @@ public class SecurityConfig {
 
         CorsConfiguration config = new CorsConfiguration();
         config.setAllowCredentials(true);
-        config.setAllowedOrigins( List.of("*"));
+        config.setAllowedOrigins(List.of("*"));
+        // Explicitly allow the specific origin
+        config.setAllowedOrigins(List.of("http://localhost:3000")); // Use specific origin in dev
         config.addAllowedOriginPattern("*");
         config.addAllowedMethod("*");
         config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"));

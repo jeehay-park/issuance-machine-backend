@@ -4,10 +4,7 @@ import com.ictk.issuance.data.dto.device.DeviceDTO.DeviceBaseObj;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotNull;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.List;
 
@@ -20,12 +17,13 @@ public class DeviceSaveDTO {
     @Builder
     @AllArgsConstructor
     @NoArgsConstructor
-    @Data
+    @Data // @Data annotation from Lombok generates getter and setter methods for all fields in the class, along with other common methods like equals(), hashCode(), and toString(). This means that even though you haven't explicitly defined getDeviceList(), Lombok is automatically generating that method for you.
     @JsonIgnoreProperties(ignoreUnknown =true)
     public static class DeviceSaveRQB {
 
         @Schema(description = "발급기 ID")
         @NotNull(message = "mcnId는 필수 값입니다.")
+        @Getter
         private String mcnId;
 
         @Schema(description = "발급기의 디바이스 목록")
