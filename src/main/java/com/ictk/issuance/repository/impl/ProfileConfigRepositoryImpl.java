@@ -43,9 +43,9 @@ public class ProfileConfigRepositoryImpl extends IssuanceDaoImpl implements Prof
         sbSQL.append(" `description` varchar(256) DEFAULT NULL COMMENT '프로파일 상세 설명', \n");
         sbSQL.append(" `prof_type` varchar(32) DEFAULT NULL COMMENT '프로파일 타입(필요시)', \n");
         sbSQL.append(" `version` varchar(32) DEFAULT NULL COMMENT '버전 ex: 2.05', \n");
-        sbSQL.append(" `ctnt_data` text NOT NULL COMMENT '프로파일 컨텐츠 데이터', \n");
+        sbSQL.append(" `ctnt_data` TEXT DEFAULT NULL COMMENT '프로파일 컨텐츠 데이터', \n");
         sbSQL.append(" `data_hash` varchar(64) DEFAULT NULL COMMENT '프로파일 데이터 해시', \n");
-        sbSQL.append(" `updated_at` datetime DEFAULT NULL COMMENT '업데이트 시간', \n");
+        sbSQL.append(" `updated_at` datetime NOT NULL COMMENT '업데이트 시간', \n");
         sbSQL.append(" `created_at` datetime NOT NULL COMMENT '등록 시간', \n");
         sbSQL.append(" `comment` text DEFAULT NULL COMMENT '주석 기타정보', \n");
         sbSQL.append("        PRIMARY KEY (`prof_id`), \n");
