@@ -16,40 +16,35 @@ import java.time.LocalDateTime;
 @Builder(toBuilder = true)
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Table(name = "machine_device")
+@Table(name = "code_info")
 @Entity
-public class Device {
+public class CodeInfo {
 
-    @InjectSequenceValue(sequencename = "seq", tablename = "machine_device")
+    @InjectSequenceValue(sequencename = "seq", tablename = "code_info")
     @Column(name = "seq", unique = true, nullable = false, updatable = false)
     @Setter
     public long seq;
 
-    @Id // primary key
-    @Column(name = "dvc_id", unique = true, nullable = false)
+    @Id
+    @Column(name = "code_id", unique = true, nullable = false)
     @Setter
-    public String dvcId = AppConstants.TEMPORARY_ID;
+    public String codeId = AppConstants.TEMPORARY_ID;
 
-    @Column(name = "dvc_name")
+    @Column(name = "code_name", nullable = false)
     @Setter
-    private String dvcName;
+    private String codeName;
 
-    @Column(name = "dvc_num", nullable = false)
+    @Column(name = "code_group")
     @Setter
-    private int dvcNum;
+    private String codeGroup;
 
-    // @ManyToOne and @JoinColumn : the most common way to define a foreign key in a JPA entity
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "mcn_id")
-    private Machine machine;
-
-    @Column(name = "ip")
+    @Column(name = "description")
     @Setter
-    private String ip;
+    private String description;
 
-    @Column(name = "rom_ver")
+    @Column(name = "status")
     @Setter
-    private String romVer;
+    private String status;
 
     @LastModifiedDate
     @Column(name = "updated_at", nullable = false)
@@ -64,26 +59,28 @@ public class Device {
     private String comment;
 
     @PrePersist
-    public void onSave(){
-        if(!CommonUtils.hasValue(dvcId) || AppConstants.TEMPORARY_ID.equals(dvcId))
-            dvcId = "dvc" + String.format("%04d", machine.getSeq())+ String.format("%04d", seq);
-
+    public void onSave() {
+        if(!CommonUtils.hasValue(codeId) || AppConstants.TEMPORARY_ID.equals(codeId))
+            codeId = "code" + String.format("%06d", seq);
         updatedAt = LocalDateTime.now();
+
     }
 
-    @Override
+@Override
     public String toString() {
-        return "Device{" +
+
+        return "CodeInfo{" +
                 "seq=" + seq +
-                ", dvcId='" + dvcId + '\'' +
-                ", dvcName='" + dvcName + '\'' +
-                ", dvcNum=" + dvcNum +
-                ", machine=" + (machine!=null?machine.getMcnId():"") +
-                ", ip='" + ip + '\'' +
-                ", romVer='" + romVer + '\'' +
+                ", codeId='" + codeId + '\'' +
+                ", codeName='" + codeName + '\'' +
+                ", codeGroup='" + codeGroup + '\'' +
+                ", description=" + description +
+                ", status=" + status +
                 ", updatedAt=" + updatedAt +
                 ", createdAt=" + createdAt +
                 ", comment='" + comment + '\'' +
                 '}';
+
     }
+
 }

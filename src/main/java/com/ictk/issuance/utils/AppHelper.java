@@ -104,6 +104,22 @@ public class AppHelper {
 
     }
 
+    public static Map<String, HeaderInfoObj> codeInfoHeaderInfoMap() {
+
+        Map<String, HeaderInfoObj> hdrInfoMap = new LinkedHashMap<>(); // 순서보장
+
+        int idx = 1;
+        hdrInfoMap.put("idx", HeaderInfoObj.builder().idx(idx++).keyName("idx").name("순번").isSort(false).isFilter(false).isDisplay(false).build());
+        hdrInfoMap.put("code_id", HeaderInfoObj.builder().idx(idx++).keyName("code_id").name("코드 ID").isSort(true).isFilter(false).isDisplay(true).build());
+        hdrInfoMap.put("code_name", HeaderInfoObj.builder().idx(idx++).keyName("code_name").name("코드 이름").isSort(false).isFilter(true).isDisplay(true).build());
+        hdrInfoMap.put("code_group", HeaderInfoObj.builder().idx(idx++).keyName("code_group").name("코드 그룹").isSort(false).isFilter(true).isDisplay(true).build());
+        hdrInfoMap.put("status", HeaderInfoObj.builder().idx(idx++).keyName("status").name("상태").isSort(false).isFilter(false).isDisplay(true).build());
+        hdrInfoMap.put("description", HeaderInfoObj.builder().idx(idx++).keyName("description").name("상세 설명").isSort(false).isFilter(false).isDisplay(true).build());
+        hdrInfoMap.put("created_at", HeaderInfoObj.builder().idx(idx++).keyName("created_at").name("등록 시간").isSort(true).isFilter(false).isDisplay(true).build());
+        return hdrInfoMap;
+
+    }
+
 
 
     public static Tuple2<String, List<FilterObj>>  applyFilterToRequestRQB(Map<String, HeaderInfoObj> hdrMap, String filter) {

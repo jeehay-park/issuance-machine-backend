@@ -15,7 +15,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
@@ -91,6 +90,9 @@ public class DeviceRepositoryImpl extends IssuanceDaoImpl implements DeviceDao {
     }
 
     // 디바이스 조회 (페이징)
+    // a typical implementation for fetching a paged list of Device entities
+    // using QueryDSL with pagination and sorting.
+    // It also calculates the total count of matching records for pagination
     public Tuple2<Long, Page<Device>> getDevicePageByCondition(
             Predicate queryConds,
             Pageable pageable,

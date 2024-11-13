@@ -1,6 +1,8 @@
 package com.ictk.issuance;
 
 import com.ictk.issuance.constants.AppConstants;
+import com.ictk.issuance.service.codeenum.CodeEnumService;
+import com.ictk.issuance.service.codeinfo.CodeInfoService;
 import com.ictk.issuance.service.config.ConfigService;
 import com.ictk.issuance.service.device.DeviceService;
 import com.ictk.issuance.service.machine.MachineService;
@@ -27,6 +29,12 @@ public class IssuanceAppInitializer implements CommandLineRunner {
 
     @Autowired
     SNRuleService snRuleService;
+
+    @Autowired
+    CodeInfoService codeInfoService;
+
+    @Autowired
+    CodeEnumService codeEnumService;
 
 
     @Override
@@ -67,6 +75,19 @@ public class IssuanceAppInitializer implements CommandLineRunner {
         // 시리얼넘버 규칙 테이블 생성
         String snRuleRtn = snRuleService.createSNRuleTable();
         if(AppConstants.FAIL.equals(snRuleRtn) ) {
+            log.error("***** 프로그램을 종료합니다. !! ");
+            return;
+        }
+
+        // 코드 정보 테이블 생성
+        String codeInfoRtn = codeInfoService.createCodeInfoTable();
+        if(AppConstants.FAIL.equals(codeInfoRtn)) {
+            log.error("***** 프로그램을 종료합니다. !! ");
+            return;
+        }
+        // 코드 ENUM 테이블 생성
+        String codeEnumRtn = codeEnumService.createCodeEnumTable();
+        if(AppConstants.FAIL.equals(codeEnumRtn)) {
             log.error("***** 프로그램을 종료합니다. !! ");
             return;
         }

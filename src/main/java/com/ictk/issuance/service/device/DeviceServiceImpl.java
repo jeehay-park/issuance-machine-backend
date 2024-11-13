@@ -4,10 +4,10 @@ import com.ictk.issuance.common.constants.AppCode;
 import com.ictk.issuance.common.exception.IctkException;
 import com.ictk.issuance.common.utils.CommonUtils;
 import com.ictk.issuance.constants.AppConstants;
-import com.ictk.issuance.data.dto.device.DeviceSaveDTO.DeviceSaveRQB;
-import com.ictk.issuance.data.dto.device.DeviceSaveDTO.DeviceSaveRSB;
 import com.ictk.issuance.data.dto.device.DeviceDeleteDTO.DeviceDeleteRQB;
 import com.ictk.issuance.data.dto.device.DeviceDeleteDTO.DeviceDeleteRSB;
+import com.ictk.issuance.data.dto.device.DeviceSaveDTO.DeviceSaveRQB;
+import com.ictk.issuance.data.dto.device.DeviceSaveDTO.DeviceSaveRSB;
 import com.ictk.issuance.data.model.Device;
 import com.ictk.issuance.data.model.Machine;
 import com.ictk.issuance.manager.IssuanceManager;
@@ -18,7 +18,6 @@ import com.ictk.issuance.repository.MachineRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
@@ -90,7 +89,7 @@ public class DeviceServiceImpl implements DeviceService {
         // Assuming dvcsSaveRQB has a method to get mcnId
         String mcnId = dvcsSaveRQB.getMcnId();
 
-// Fetch the highest dvcNum for the given mcnId
+        // Fetch the highest dvcNum for the given mcnId
         Integer maxDvcNum = deviceRepository.findMaxDvcNumByMcnId(mcnId).orElse(0);
 
         // Start assigning new dvcNum values from maxDvcNum + 1
