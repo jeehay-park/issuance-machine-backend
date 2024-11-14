@@ -2,7 +2,6 @@ package com.ictk.issuance.service.codeenum;
 
 import com.ictk.issuance.common.constants.AppCode;
 import com.ictk.issuance.common.exception.IctkException;
-import com.ictk.issuance.common.utils.CommonUtils;
 import com.ictk.issuance.constants.AppConstants;
 import com.ictk.issuance.data.dto.codeenum.CodeEnumDeleteDTO;
 import com.ictk.issuance.data.dto.codeenum.CodeEnumSaveDTO;
@@ -18,6 +17,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
 import java.util.concurrent.atomic.AtomicInteger;
 
 @Slf4j
@@ -60,8 +60,12 @@ public class CodeEnumServiceImpl implements CodeEnumService {
     }
 
     @Override
-    @Transactional(rollbackFor = { IctkException.class, Exception.class })
+    @Transactional
     public CodeEnumSaveDTO.CodeEnumSaveRSB saveCodeEnum(String trId, CodeEnumSaveDTO.CodeEnumSaveRQB codeEnumSaveRQB) throws IctkException {
+
+        boolean toUpdate = false;
+
+        CodeEnum findCodeEnum = null;
 
         // CODE_INFO에서 해당 code_id 존재하는지 확인
         CodeInfo findCodeId = codeInfoRepository.findCodeInfoByCodeId(codeEnumSaveRQB.getCodeId())
@@ -74,7 +78,7 @@ public class CodeEnumServiceImpl implements CodeEnumService {
 
                 CodeEnum saveCodeEnum = codeEnumRepository.save(
                         CodeEnum.builder()
-                                .codeInfo(findCodeId)
+                                .codeId(codeEnumSaveRQB.getCodeId())
                                 .enumValue(codeEnum.getEnumValue())
                                 .isMandatory(codeEnum.getIsMandatory())
                                 .ip(codeEnum.getIp())
@@ -83,9 +87,8 @@ public class CodeEnumServiceImpl implements CodeEnumService {
                                 .build()
                 );
 
-                log.info("Saved code enum with ID: {}", saveCodeEnum.getCodeInfo());
-                if (saveCodeEnum.getCodeInfo() != null)
-                    updateCnt.getAndIncrement();
+                log.info("Saved code enum with ID: {}", saveCodeEnum.getCodeId());
+                updateCnt.getAndIncrement();
 
             } catch (Exception e) {
                 log.error("error ***** {}", e.getMessage());
@@ -104,25 +107,25 @@ public class CodeEnumServiceImpl implements CodeEnumService {
     @Override
     @Transactional
     public CodeEnumDeleteDTO.CodeEnumDeleteRSB deleteCodeEnum(String trId, CodeEnumDeleteDTO.CodeEnumDeleteRQB codeEnumDeleteRQB) throws IctkException {
+        String codeId = codeEnumDeleteRQB.getCodeId();
+        // Attempt to find the CodeEnum by codeId
+        Optional<CodeEnum> codeEnumOpt = codeEnumRepository.findCodeEnumByCodeId(codeId);
 
-        if(!CommonUtils.hasElements(codeEnumDeleteRQB.getCodeEnumIds()))
-            throw new IctkException(trId, AppCode.REQ_BODY_ERROR, "Code Id is empty.");
-
-        var delCodeEnumIds = codeEnumRepository.findAllById(codeEnumDeleteRQB.getCodeEnumIds());
-        if( !CommonUtils.hasElements(delCodeEnumIds) || delCodeEnumIds.size()!= codeEnumDeleteRQB.getCodeEnumIds().size())
-            throw new IctkException(trId, AppCode.DEVICE_PROC_ERROR, "CODE ENUM ID 확인필요");
-
-        try {
-            codeEnumRepository.deleteAllInBatch( delCodeEnumIds);
-        } catch (Exception e) {
-            log.error("error ***** {}", e.getMessage());
-            throw new IctkException(trId, AppCode.CODEENUM_PROC_ERROR, "코드 ENUM 삭제 오류.");
+        // Log the result of the find operation
+        if (codeEnumOpt.isPresent()) {
+            log.info("Found CodeEnum: {}", codeEnumOpt.get());
+        } else {
+            log.warn("No CodeEnum found with codeId: {}", codeId);
         }
 
+        codeEnumRepository.findCodeEnumByCodeId(codeEnumDeleteRQB.getCodeId())
+                .orElseThrow(() -> new IctkException(trId, AppCode.CODEENUM_PROC_ERROR, "코드 ENUM" + codeEnumDeleteRQB.getCodeId() + "없음"));
+
+        long dcnt = codeEnumRepository.deleteCodeEnumByCodeId(codeEnumDeleteRQB.getCodeId());
 
         return CodeEnumDeleteDTO.CodeEnumDeleteRSB.builder()
-                .result(AppConstants.SUCC)
-                .deleteCnt((delCodeEnumIds.size()))
+                .result((dcnt > 0) ? AppConstants.SUCC : AppConstants.FAIL)
+                .deleteCnt((int) dcnt)
                 .build();
     }
 }

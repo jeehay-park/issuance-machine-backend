@@ -10,6 +10,7 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Slf4j
 @Getter
@@ -25,7 +26,7 @@ public class CodeInfo {
     @Setter
     public long seq;
 
-    @Id
+    @Id // primary key
     @Column(name = "code_id", unique = true, nullable = false)
     @Setter
     public String codeId = AppConstants.TEMPORARY_ID;
@@ -57,6 +58,10 @@ public class CodeInfo {
 
     @Column(name = "comment")
     private String comment;
+
+    // One-to-many relationship with CodeEnum
+    @OneToMany(mappedBy = "codeInfo", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<CodeEnum> codeEnums;
 
     @PrePersist
     public void onSave() {

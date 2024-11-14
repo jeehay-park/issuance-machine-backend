@@ -22,6 +22,8 @@ public class QCodeEnum extends EntityPathBase<CodeEnum> {
 
     public static final QCodeEnum codeEnum = new QCodeEnum("codeEnum");
 
+    public final StringPath codeId = createString("codeId");
+
     public final QCodeInfo codeInfo;
 
     public final StringPath description = createString("description");

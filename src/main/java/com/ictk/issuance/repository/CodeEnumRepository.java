@@ -8,7 +8,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.Optional;
 
 public interface CodeEnumRepository extends JpaRepository<CodeEnum, String>, CodeEnumDao, IssuanceDao {
-    //enumId로 Enum 조회
-    Optional<CodeEnum> findEnumByEnumId(String enumId);
+    //codeId로 CodeEnum 조회
+    Optional<CodeEnum> findCodeEnumByCodeId(String codeId);
 
 }

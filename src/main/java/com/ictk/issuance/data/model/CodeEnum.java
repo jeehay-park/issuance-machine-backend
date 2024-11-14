@@ -24,13 +24,18 @@ public class CodeEnum {
     @Setter
     private long enumSeq;
 
-    @Id
+    @Id // primary key
     @Column(name = "enum_id", unique = true, nullable = false)
     @Setter
     private String enumId;
 
+    // Define code_id as a column in CodeEnum and allow inserts/updates
+    @Column(name = "code_id", nullable = false, insertable = true, updatable = true )
+    @Setter
+    private String codeId;
+
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "code_id")
+    @JoinColumn(name = "code_id", referencedColumnName = "code_id", insertable = false, updatable = false)
     private CodeInfo codeInfo;
 
     @Column(name = "enum_value", nullable = false)
@@ -45,7 +50,7 @@ public class CodeEnum {
     @Setter
     private String ip;
 
-    @Column(name = "order", nullable = false)
+    @Column(name = "`order`", nullable = false)
     @Setter
     private long order;
 
@@ -56,7 +61,7 @@ public class CodeEnum {
     @PrePersist
     public void onSave(){
         if(!CommonUtils.hasValue(enumId) || AppConstants.TEMPORARY_ID.equals(enumId))
-            enumId = "code_id_" + String.format("%04d", enumSeq);
+            enumId = "code_id_" + String.format("%04d", seq);
     }
 
     @Override
@@ -65,7 +70,7 @@ public class CodeEnum {
                 "seq=" + seq +
                 "enumSeq=" + enumSeq + '\'' +
                 ", enumId='" + enumId +
-                ", codeInfo='" + (codeInfo!=null?codeInfo.getCodeId():"") +
+                ", codeInfo='" + (codeInfo!=null?codeInfo.getCodeId():"") + '\'' +
                 ", enumValue=" + enumValue + '\'' +
                 ", isMandatory=" + isMandatory +
                 ", ip='" + ip + '\'' +

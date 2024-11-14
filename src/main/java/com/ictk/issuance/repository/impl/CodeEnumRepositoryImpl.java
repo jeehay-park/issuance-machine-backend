@@ -56,6 +56,7 @@ public class CodeEnumRepositoryImpl extends IssuanceDaoImpl implements CodeEnumD
         return isTableExist(database, tableName);
     }
 
+
     // 코드 ENUM 조회 (페이징)
     // a typical implementation for fetching a paged list of Enum entities
     // using QueryDSL with pagination and sorting.
@@ -88,12 +89,12 @@ public class CodeEnumRepositoryImpl extends IssuanceDaoImpl implements CodeEnumD
     }
 
     // codeID로 삭제
-    @Override
     @Transactional
-    public long deleteEnumByCodeId(String codeId) {
+    @Override
+    public long deleteCodeEnumByCodeId(String codeId) {
         return jpaQueryFactory
                 .delete(codeEnum)
-                .where(codeEnum.codeInfo.codeId.eq(codeId))
+                .where(codeEnum.codeInfo.codeId.eq(codeId)) // Corrected path to codeId
                 .execute();
     }
 

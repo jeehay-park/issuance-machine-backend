@@ -2,10 +2,8 @@ package com.ictk.issuance.data.dto.codeenum;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import jakarta.validation.constraints.NotNull;
+import lombok.*;
 
 import java.util.List;
 
@@ -17,8 +15,12 @@ public class CodeEnumSaveDTO {
     @JsonIgnoreProperties(ignoreUnknown =true)
 public static class CodeEnumSaveRQB {
 
+        @Schema(description = "Code Id")
+        @NotNull(message = "codeId는 필수 값입니다.")
+        @Getter
     private String codeId;
 
+    @Schema(description = "발급기의 디바이스 목록")
     private List<CodeEnumDTO.CodeEnumObj> enumList;
 }
 
