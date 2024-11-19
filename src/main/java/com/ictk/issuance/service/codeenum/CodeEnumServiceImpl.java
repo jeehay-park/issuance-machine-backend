@@ -3,7 +3,9 @@ package com.ictk.issuance.service.codeenum;
 import com.ictk.issuance.common.constants.AppCode;
 import com.ictk.issuance.common.exception.IctkException;
 import com.ictk.issuance.constants.AppConstants;
+import com.ictk.issuance.data.dto.codeenum.CodeEnumDTO;
 import com.ictk.issuance.data.dto.codeenum.CodeEnumDeleteDTO;
+import com.ictk.issuance.data.dto.codeenum.CodeEnumListDTO;
 import com.ictk.issuance.data.dto.codeenum.CodeEnumSaveDTO;
 import com.ictk.issuance.data.model.CodeEnum;
 import com.ictk.issuance.data.model.CodeInfo;
@@ -17,7 +19,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Optional;
+import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
 @Slf4j
@@ -71,6 +73,12 @@ public class CodeEnumServiceImpl implements CodeEnumService {
         CodeInfo findCodeId = codeInfoRepository.findCodeInfoByCodeId(codeEnumSaveRQB.getCodeId())
                 .orElseThrow( () -> new IctkException(trId, AppCode.CODEENUM_PROC_ERROR, "코드 ENUM 정보 없음."));
 
+        List<CodeEnumDTO.CodeEnumObj> codeEnums = codeEnumRepository.findAllByCodeId(codeEnumSaveRQB.getCodeId());
+
+        if(!codeEnums.isEmpty()) {
+            codeEnumRepository.deleteCodeEnumByCodeId(codeEnumSaveRQB.getCodeId());
+        }
+
         AtomicInteger updateCnt = new AtomicInteger(0);
 
         codeEnumSaveRQB.getEnumList().forEach(codeEnum -> {
@@ -109,23 +117,40 @@ public class CodeEnumServiceImpl implements CodeEnumService {
     public CodeEnumDeleteDTO.CodeEnumDeleteRSB deleteCodeEnum(String trId, CodeEnumDeleteDTO.CodeEnumDeleteRQB codeEnumDeleteRQB) throws IctkException {
         String codeId = codeEnumDeleteRQB.getCodeId();
         // Attempt to find the CodeEnum by codeId
-        Optional<CodeEnum> codeEnumOpt = codeEnumRepository.findCodeEnumByCodeId(codeId);
+        // Optional<CodeEnum> codeEnumOpt = codeEnumRepository.findAllByCodeId(codeId);
 
-        // Log the result of the find operation
-        if (codeEnumOpt.isPresent()) {
-            log.info("Found CodeEnum: {}", codeEnumOpt.get());
-        } else {
-            log.warn("No CodeEnum found with codeId: {}", codeId);
+        // Fetch all records matching the codeId
+        List<CodeEnumDTO.CodeEnumObj> codeEnums = codeEnumRepository.findAllByCodeId(codeId);
+
+        // Check if no records exist
+        if (codeEnums.isEmpty()) {
+            throw new IctkException(trId, AppCode.CODEENUM_PROC_ERROR, "코드 ENUM " + codeId + " 없음");
         }
 
-        codeEnumRepository.findCodeEnumByCodeId(codeEnumDeleteRQB.getCodeId())
-                .orElseThrow(() -> new IctkException(trId, AppCode.CODEENUM_PROC_ERROR, "코드 ENUM" + codeEnumDeleteRQB.getCodeId() + "없음"));
+        // Log the records found
+        log.info("Found {} CodeEnum records with codeId {}", codeEnums.size(), codeId);
 
-        long dcnt = codeEnumRepository.deleteCodeEnumByCodeId(codeEnumDeleteRQB.getCodeId());
+        // Perform the delete operation
+        long deleteCount = codeEnumRepository.deleteCodeEnumByCodeId(codeId);
 
+        if (deleteCount == 0) {
+            throw new IctkException(trId, AppCode.CODEENUM_PROC_ERROR, "코드 ENUM " + codeId + " 삭제 실패");
+        }
+
+        // Log the number of deleted records
+        log.info("Deleted {} CodeEnum records with codeId {}", deleteCount, codeId);
+
+        // Build and return the response
         return CodeEnumDeleteDTO.CodeEnumDeleteRSB.builder()
-                .result((dcnt > 0) ? AppConstants.SUCC : AppConstants.FAIL)
-                .deleteCnt((int) dcnt)
+                .result(AppConstants.SUCC)
+                .deleteCnt((int) deleteCount)
                 .build();
     }
+
+    @Override
+    public CodeEnumListDTO.CodeEnumListRSB findAllByCodeId(String codeId) throws IctkException {
+        List<CodeEnumDTO.CodeEnumObj> codeEnumObjList = codeEnumRepository.findAllByCodeId(codeId);
+        return new CodeEnumListDTO.CodeEnumListRSB(codeEnumObjList);
+    }
+
 }

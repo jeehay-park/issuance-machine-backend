@@ -1,9 +1,11 @@
 package com.ictk.issuance.repository.impl;
 
+import com.ictk.issuance.data.dto.codeenum.CodeEnumDTO;
 import com.ictk.issuance.data.model.CodeEnum;
 import com.ictk.issuance.repository.dao.CodeEnumDao;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.Predicate;
+import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import io.vavr.Tuple;
@@ -19,7 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-import static  com.ictk.issuance.data.model.QCodeEnum.codeEnum;
+import static com.ictk.issuance.data.model.QCodeEnum.codeEnum;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -35,7 +37,7 @@ public class CodeEnumRepositoryImpl extends IssuanceDaoImpl implements CodeEnumD
     public boolean makeTable(String database, String tableName) {
         StringBuffer sbSQL = new StringBuffer();
 
-        sbSQL.append("CREATE TABLE IF NOT EXISTS `"+tableName+"` ( \n");
+        sbSQL.append("CREATE TABLE IF NOT EXISTS `" + tableName + "` ( \n");
 
         sbSQL.append(" `seq` int(11) NOT NULL COMMENT '순번 1부터 시작',  \n");
         sbSQL.append(" `enum_seq` int(8) NOT NULL COMMENT '코드에 따른 ENUM의 순번', \n");
@@ -84,11 +86,11 @@ public class CodeEnumRepositoryImpl extends IssuanceDaoImpl implements CodeEnumD
                                 .limit(pageable.getPageSize())
                                 .fetch(),
                         pageable,
-                        total ));
+                        total));
 
     }
 
-    // codeID로 삭제
+    // codeId로 삭제
     @Transactional
     @Override
     public long deleteCodeEnumByCodeId(String codeId) {
@@ -98,4 +100,21 @@ public class CodeEnumRepositoryImpl extends IssuanceDaoImpl implements CodeEnumD
                 .execute();
     }
 
+    // codeId로 조회
+    @Transactional(readOnly = true)
+    @Override
+    public List<CodeEnumDTO.CodeEnumObj> findAllByCodeId(String codeId) {
+        return jpaQueryFactory
+                .select(Projections.constructor(CodeEnumDTO.CodeEnumObj.class,
+                        codeEnum.enumValue,       // Maps to enumValue in CodeEnumObj
+                        codeEnum.isMandatory,     // Maps to isMandatory in CodeEnumObj
+                        codeEnum.ip,              // Maps to ip in CodeEnumObj
+                        codeEnum.order,           // Maps to order in CodeEnumObj
+                        codeEnum.description      // Maps to description in CodeEnumObj
+                ))
+                .from(codeEnum)
+                .where(codeEnum.codeInfo.codeId.eq(codeId))
+                .fetch();
+
+    }
 }

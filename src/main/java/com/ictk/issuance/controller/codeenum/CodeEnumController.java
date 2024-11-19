@@ -8,6 +8,7 @@ import com.ictk.issuance.common.exception.IctkException;
 import com.ictk.issuance.common.security.SessionInfo;
 import com.ictk.issuance.common.utils.CommonUtils;
 import com.ictk.issuance.data.dto.codeenum.CodeEnumDeleteDTO;
+import com.ictk.issuance.data.dto.codeenum.CodeEnumListDTO;
 import com.ictk.issuance.data.dto.codeenum.CodeEnumSaveDTO;
 import com.ictk.issuance.service.codeenum.CodeEnumService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -67,7 +68,7 @@ public class CodeEnumController {
 
     ) {
 
-        final var delTrId = "500603";
+        final var delTrId = "500605";
         log.debug("{} {}", sessionInfo, CommonUtils.toJson(objectMapper, codeEnumDeleteRequest));
 
         if(!delTrId.equals( codeEnumDeleteRequest.getHeader().getTrId()) )
@@ -84,7 +85,31 @@ public class CodeEnumController {
         return codeEnumDeleteResponse;
     }
 
+    @Operation(summary = "코드 ENUM 목록", description = "코드 ENUM - 코드 ENUM 목록 서비스 API")
+    @PostMapping("/list" )
+    public  CommonResponse<CodeEnumListDTO.CodeEnumListRSB> codeEnumList (
+            @AuthenticationPrincipal SessionInfo sessionInfo,
+            @Valid @RequestBody CommonRequest<CodeEnumListDTO.CodeEnumListRQB> codeEnumListRequest
+    ) {
 
+        final var listTrId = "500606";
+        log.debug("{} {}", sessionInfo, CommonUtils.toJson(objectMapper, codeEnumListRequest));
 
+        if(!listTrId.equals((codeEnumListRequest.getHeader().getTrId()))) {
+            throw new IctkException(listTrId, AppCode.TRID_INVALID,codeEnumListRequest.getHeader().getTrId() );
+        }
+
+        CommonResponse<CodeEnumListDTO.CodeEnumListRSB> codeEnumListRSBCommonResponse = CommonResponse.ok(
+                listTrId,
+                codeEnumService.findAllByCodeId(
+                        codeEnumListRequest.getBody().getCodeId()
+                )
+        );
+
+        log.debug("{}", CommonUtils.toJson(objectMapper, codeEnumListRSBCommonResponse));
+
+        return codeEnumListRSBCommonResponse;
+
+    }
 
 };

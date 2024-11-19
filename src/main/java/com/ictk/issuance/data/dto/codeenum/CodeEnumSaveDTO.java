@@ -20,7 +20,7 @@ public static class CodeEnumSaveRQB {
         @Getter
     private String codeId;
 
-    @Schema(description = "발급기의 디바이스 목록")
+    @Schema(description = "Code Enum 목록")
     private List<CodeEnumDTO.CodeEnumObj> enumList;
 }
 

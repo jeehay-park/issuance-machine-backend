@@ -1,9 +1,7 @@
 package com.ictk.issuance.data.dto.codeenum;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import lombok.experimental.SuperBuilder;
 
 public class CodeEnumDTO {
@@ -12,6 +10,8 @@ public class CodeEnumDTO {
     @SuperBuilder
     @AllArgsConstructor
     @NoArgsConstructor
+    @Getter
+    @Setter
 public static class  CodeEnumObj {
 
         @Schema(description = "코드 ENUM 값")
@@ -28,6 +28,14 @@ public static class  CodeEnumObj {
 
         @Schema(description = "코드 ENUM에 대한 상세설명")
         private String description;
+
+        // Constructor with the required fields
+        public CodeEnumObj(String enumValue, Boolean isMandatory, String ip, String description) {
+            this.enumValue = enumValue;
+            this.isMandatory = isMandatory;
+            this.ip = ip;
+            this.description = description;
+        }
 
 }
 
