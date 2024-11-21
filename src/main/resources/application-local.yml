@@ -73,3 +73,5 @@ issuance:
     table-name: code_info
   code-enum:
     table-name: code_enum
+  program-info:
+    table-name : program_info

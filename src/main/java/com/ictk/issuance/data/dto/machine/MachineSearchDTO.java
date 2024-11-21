@@ -19,7 +19,7 @@ public class MachineSearchDTO {
     @Builder
     @AllArgsConstructor
     @NoArgsConstructor
-    @Data
+    @Data // Getters, Setters, toString(), equals(), hashCode()
     @JsonIgnoreProperties(ignoreUnknown =true)
     public static class MachineSearchRQB {
 
