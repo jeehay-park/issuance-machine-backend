@@ -7,6 +7,7 @@ import com.querydsl.core.types.dsl.*;
 import com.querydsl.core.types.PathMetadata;
 import javax.annotation.processing.Generated;
 import com.querydsl.core.types.Path;
+import com.querydsl.core.types.dsl.PathInits;
 
 
 /**
@@ -16,6 +17,8 @@ import com.querydsl.core.types.Path;
 public class QScriptConfig extends EntityPathBase<ScriptConfig> {
 
     private static final long serialVersionUID = -896264845L;
+
+    private static final PathInits INITS = PathInits.DIRECT2;
 
     public static final QScriptConfig scriptConfig = new QScriptConfig("scriptConfig");
 
@@ -28,6 +31,8 @@ public class QScriptConfig extends EntityPathBase<ScriptConfig> {
     public final StringPath dataHash = createString("dataHash");
 
     public final StringPath description = createString("description");
+
+    public final QProgramInfo programInfoScriptId;
 
     public final StringPath scrtId = createString("scrtId");
 
@@ -42,15 +47,24 @@ public class QScriptConfig extends EntityPathBase<ScriptConfig> {
     public final StringPath version = createString("version");
 
     public QScriptConfig(String variable) {
-        super(ScriptConfig.class, forVariable(variable));
+        this(ScriptConfig.class, forVariable(variable), INITS);
     }
 
     public QScriptConfig(Path<? extends ScriptConfig> path) {
-        super(path.getType(), path.getMetadata());
+        this(path.getType(), path.getMetadata(), PathInits.getFor(path.getMetadata(), INITS));
     }
 
     public QScriptConfig(PathMetadata metadata) {
-        super(ScriptConfig.class, metadata);
+        this(metadata, PathInits.getFor(metadata, INITS));
+    }
+
+    public QScriptConfig(PathMetadata metadata, PathInits inits) {
+        this(ScriptConfig.class, metadata, inits);
+    }
+
+    public QScriptConfig(Class<? extends ScriptConfig> type, PathMetadata metadata, PathInits inits) {
+        super(type, metadata, inits);
+        this.programInfoScriptId = inits.isInitialized("programInfoScriptId") ? new QProgramInfo(forProperty("programInfoScriptId")) : null;
     }
 
 }

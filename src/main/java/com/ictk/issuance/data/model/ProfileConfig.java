@@ -66,6 +66,11 @@ public class ProfileConfig {
     @Column(name = "comment")
     private String comment;
 
+    // Define the relationship to ProgramInfoSearchRSB
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "prof_id", insertable=false, updatable=false) // This links to ProgramInfo.progId
+    private ProgramInfo programInfoProfileId;
+
     @PrePersist
     public void onSave(){
 

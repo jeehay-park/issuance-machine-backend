@@ -1,11 +1,18 @@
 package com.ictk.issuance.service.programinfo;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.ictk.issuance.common.constants.AppCode;
 import com.ictk.issuance.common.exception.IctkException;
+import com.ictk.issuance.common.utils.CommonUtils;
+import com.ictk.issuance.constants.AppConstants;
+import com.ictk.issuance.data.dto.config.ConfigDTO;
 import com.ictk.issuance.data.dto.programinfo.ProgramInfoDeleteDTO;
 import com.ictk.issuance.data.dto.programinfo.ProgramInfoListDTO;
 import com.ictk.issuance.data.dto.programinfo.ProgramInfoSaveDTO;
 import com.ictk.issuance.data.dto.programinfo.ProgramInfoSearchDTO;
+import com.ictk.issuance.data.model.KeyissueConfig;
+import com.ictk.issuance.data.model.ProfileConfig;
+import com.ictk.issuance.data.model.ScriptConfig;
 import com.ictk.issuance.manager.IssuanceManager;
 import com.ictk.issuance.properties.DBProperties;
 import com.ictk.issuance.properties.ProgramInfoProperties;
@@ -14,6 +21,10 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -52,25 +63,108 @@ public class ProgramInfoServiceImpl implements ProgramInfoService {
     }
 
     @Override
-    // 프로그램 정보 조회(단일)
-    public ProgramInfoSearchDTO.ProgramInfoSearchRSB searchProgramInfo(String trId, ProgramInfoSearchDTO.ProgramInfoSearchRQB programInfoSearchRQB) throws IctkException {
+    // 프로그램 단일 정보 조회 서비스
+    public ProgramInfoSearchDTO.ProgramInfoSearchRSB searchProgram(String trId, ProgramInfoSearchDTO.ProgramInfoSearchRQB programInfoSearchRQB) throws IctkException {
+        ProgramInfoSearchDTO.ProgramInfoSearchRSB programInfoSearchRSB = programInfoRepository
+                .findById(programInfoSearchRQB.getProgId())
+                .map(programInfo -> ProgramInfoSearchDTO.ProgramInfoSearchRSB.builder()
+                        .progId(programInfo.getProgId())
+                        .progName(programInfo.getProgName())
+                        .description(programInfo.getDescription())
+                        .product(programInfo.getProduct())
+                        .sessionHandler(programInfo.getSessionHandler())
+                        .testCode(programInfo.getTestCode())
+                        .etcOption(programInfo.getEtcOption())
+                        .profileInfo(getProfileConfigObjList(programInfo.getProfileConfig()))
+                        .keyIssueInfo(getKeyissueConfigObjList(programInfo.getKeyIssueInfo()))
+                        .scriptInfo(getScriptConfigObjList(programInfo.getScriptInfo()))
+                        .isEncryptSn(programInfo.isEncryptedSn())
+                        .companyCode(programInfo.getCompanyCode())
+                        .countryCode(programInfo.getCountryCode())
+                        .interfaceType(programInfo.getInterfaceType())
+                        .packageType(programInfo.getPackageType())
+                        .createdAt(programInfo.getCreatedAt().format( DateTimeFormatter.ofPattern(AppConstants.DATE_BASIC_FMT) ) )
+                        .build()
+                )
+                .orElseThrow(()
+                        -> new IctkException(trId, AppCode.PROGRAM_PROC_ERROR, "발급기계 "+programInfoSearchRQB.getProgId()+ " 없음."));
+
+        return programInfoSearchRSB;
+    }
+
+    // ProfileConfig -> ProfileConfigObj
+    private List<ConfigDTO.ProfileConfigObj> getProfileConfigObjList(List<ProfileConfig> profileConfig ) {
+        List<ConfigDTO.ProfileConfigObj> profileConfigObjList = new ArrayList<>();
+        if(CommonUtils.hasElements(profileConfig)) {
+            profileConfig.forEach(item -> {
+                profileConfigObjList.add( ConfigDTO.ProfileConfigObj.builder()
+                        .profId(item.getProfId())
+                        .profName(item.getProfName())
+                        .description(item.getDescription())
+                        .build() );
+            });
+        }
+        return profileConfigObjList;
+    }
+
+
+    // KeyissueConfig -> KeyissueConfigObj
+    private List<ConfigDTO.KeyissueConfigObj> getKeyissueConfigObjList(List<KeyissueConfig> keyissueConfig ) {
+        List<ConfigDTO.KeyissueConfigObj> keyissueConfigObjList = new ArrayList<>();
+        if(CommonUtils.hasElements(keyissueConfig)) {
+            keyissueConfig.forEach(item -> {
+                keyissueConfigObjList.add( ConfigDTO.KeyissueConfigObj.builder()
+                        .keyisId(item.getKeyisId())
+                        .keyisName(item.getKeyisName())
+                        .description(item.getDescription())
+                        .build() );
+            });
+        }
+        return keyissueConfigObjList;
+    }
+
+    // ScriptConfig -> ScriptConfigObj
+    private List<ConfigDTO.ScriptConfigObj> getScriptConfigObjList(List<ScriptConfig> scriptConfig ) {
+        List<ConfigDTO.ScriptConfigObj> scriptConfigObjList = new ArrayList<>();
+        if(CommonUtils.hasElements(scriptConfig)) {
+            scriptConfig.forEach(item -> {
+                scriptConfigObjList.add( ConfigDTO.ScriptConfigObj.builder()
+                        .scrtId(item.getScrtId())
+                        .scrtName(item.getScrtName())
+                        .description(item.getDescription())
+                        .build() );
+            });
+        }
+        return scriptConfigObjList;
+    }
+
+    @Override
+    // 프로그램 목록 조회 서비스
+    public ProgramInfoListDTO.ProgramInfoListRSB fetchProgramList(String trId, ProgramInfoListDTO.ProgramInfoListRQB programInfoListRQB) throws IctkException {
         return null;
     }
 
     @Override
-    // 프로그램 정보 리스트 가져오기
-    public ProgramInfoListDTO.ProgramInfoListRSB fetchProgramInfoList(String trId, ProgramInfoListDTO.ProgramInfoListRQB programInfoListRQB) throws IctkException {
+    // 프로그램 생성 서비스
+    public ProgramInfoSaveDTO.ProgramInfoSaveRQB saveProgram(String trId, ProgramInfoSaveDTO.ProgramInfoSaveRQB programInfoSaveRQB) throws IctkException {
         return null;
     }
 
     @Override
-    // 프로그램 정보 생성/변경
-    public ProgramInfoSaveDTO.ProgramInfoSaveRQB saveProgramInfo(String trId, ProgramInfoSaveDTO.ProgramInfoSaveRQB programInfoSaveRQB) throws IctkException {
-        return null;
+    // 프로그램 삭제 서비스
+    public ProgramInfoDeleteDTO.ProgramInfoDeleteRSB deleteProgram(String trId, ProgramInfoDeleteDTO.ProgramInfoDeleteRQB programInfoDeleteRQB) throws IctkException {
+        programInfoRepository.findById(programInfoDeleteRQB.getWorkId())
+                .orElseThrow(() -> new IctkException(trId, AppCode.PROGRAM_PROC_ERROR, "프로그램 "+programInfoDeleteRQB.getWorkId()+ " 없음."));
+
+        long dcnt = programInfoRepository.deleteProgramProgId(programInfoDeleteRQB.getWorkId());
+
+        return ProgramInfoDeleteDTO.ProgramInfoDeleteRSB
+                .builder()
+                .result( (dcnt>0) ? AppConstants.SUCC : AppConstants.FAIL )
+                .deleteCnt( (int)dcnt)
+                .build();
     }
 
-    @Override
-    public ProgramInfoDeleteDTO.ProgramInfoDeleteRQB deleteProgramInfo(String trId, ProgramInfoDeleteDTO.ProgramInfoDeleteRQB programInfoDeleteRQB) throws IctkException {
-        return null;
-    }
+
+
 }

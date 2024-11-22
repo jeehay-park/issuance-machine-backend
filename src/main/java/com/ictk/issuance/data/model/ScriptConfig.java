@@ -66,6 +66,11 @@ public class ScriptConfig {
     @Column(name = "comment")
     private String comment;
 
+    // Define the relationship to ProgramInfoSearchRSB
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "scrt_id", insertable=false, updatable=false) // This links to ProgramInfo.progId
+    private ProgramInfo programInfoScriptId;
+
     @PrePersist
     public void onSave(){
         if(!CommonUtils.hasValue(scrtId) || AppConstants.TEMPORARY_ID.equals(scrtId))

@@ -7,6 +7,7 @@ import com.querydsl.core.types.dsl.*;
 import com.querydsl.core.types.PathMetadata;
 import javax.annotation.processing.Generated;
 import com.querydsl.core.types.Path;
+import com.querydsl.core.types.dsl.PathInits;
 
 
 /**
@@ -33,9 +34,11 @@ public class QProgramInfo extends EntityPathBase<ProgramInfo> {
 
     public final StringPath interfaceType = createString("interfaceType");
 
-    public final StringPath isEncryptedSn = createString("isEncryptedSn");
+    public final BooleanPath isEncryptedSn = createBoolean("isEncryptedSn");
 
     public final StringPath keyisId = createString("keyisId");
+
+    public final ListPath<KeyissueConfig, QKeyissueConfig> keyIssueInfo = this.<KeyissueConfig, QKeyissueConfig>createList("keyIssueInfo", KeyissueConfig.class, QKeyissueConfig.class, PathInits.DIRECT2);
 
     public final StringPath packageType = createString("packageType");
 
@@ -47,9 +50,13 @@ public class QProgramInfo extends EntityPathBase<ProgramInfo> {
 
     public final StringPath profId = createString("profId");
 
+    public final ListPath<ProfileConfig, QProfileConfig> profileConfig = this.<ProfileConfig, QProfileConfig>createList("profileConfig", ProfileConfig.class, QProfileConfig.class, PathInits.DIRECT2);
+
     public final StringPath progId = createString("progId");
 
     public final StringPath progName = createString("progName");
+
+    public final ListPath<ScriptConfig, QScriptConfig> scriptInfo = this.<ScriptConfig, QScriptConfig>createList("scriptInfo", ScriptConfig.class, QScriptConfig.class, PathInits.DIRECT2);
 
     public final StringPath scrtId = createString("scrtId");
 

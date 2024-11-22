@@ -7,6 +7,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import static com.ictk.issuance.data.model.QProgramInfo.programInfo;
+
+
 @Slf4j
 @RequiredArgsConstructor
 public class ProgramInfoRepositoryImpl extends IssuanceDaoImpl implements ProgramInfoDao {
@@ -54,4 +57,12 @@ public class ProgramInfoRepositoryImpl extends IssuanceDaoImpl implements Progra
 
         return isTableExist(database, tableName);
     }
+
+    @Override
+    public long deleteProgramProgId(String progId) {
+        return jpaQueryFactory
+                .delete(programInfo)
+                .where(programInfo.progId.eq(progId)).execute();
+    }
+
 }

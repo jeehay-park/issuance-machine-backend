@@ -66,6 +66,11 @@ public class KeyissueConfig {
     @Column(name = "comment")
     private String comment;
 
+    // Define the relationship to ProgramInfoSearchRSB
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "keyis_id", insertable=false, updatable=false) // This links to ProgramInfo.progId
+    private ProgramInfo programInfoKeyissueId;
+
     @PrePersist
     public void onSave(){
         if(!CommonUtils.hasValue(keyisId) || AppConstants.TEMPORARY_ID.equals(keyisId))

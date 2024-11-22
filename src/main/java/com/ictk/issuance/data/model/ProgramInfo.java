@@ -3,15 +3,14 @@ package com.ictk.issuance.data.model;
 import com.ictk.issuance.common.annotations.InjectSequenceValue;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Pattern;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Slf4j
 @Data
@@ -46,16 +45,6 @@ public class ProgramInfo {
     @Pattern(regexp = "ACTIVE|NOTUSE|DELETED", message = "Status must be one of the following: ACTIVE, NOTUSE, DELETED")
     private String status;
 
-    // Optionally add a setter with validation
-    //    public void setStatus(String status) {
-    //        if (status == null || (!status.equals("ACTIVE") && !status.equals("NOTUSE") && !status.equals("DELETED"))) {
-    //            throw new IllegalArgumentException("Invalid status value. Allowed values are: ACTIVE, NOTUSE, DELETED.");
-    //        }
-    //
-    //        this.status = status;
-    //
-    //    }
-
     @Column(name = "param")
     private String param;
 
@@ -63,7 +52,7 @@ public class ProgramInfo {
     private String paramExt;
 
     @Column(name = "is_encrypted_sn")
-    private String isEncryptedSn;
+    private boolean isEncryptedSn;
 
     @Column(name = "prof_id", nullable = false)
     private String profId;
@@ -102,6 +91,19 @@ public class ProgramInfo {
 
     @Column(name = "comment")
     private String comment;
+
+    @Getter
+    @OneToMany(mappedBy = "programInfoProfileId")
+    private List<ProfileConfig> profileConfig = new ArrayList<>();
+
+    @Getter
+    @OneToMany(mappedBy = "programInfoKeyissueId") // Match the field name in KeyissueConfig
+    private List<KeyissueConfig> keyIssueInfo = new ArrayList<>();
+
+    @Getter
+    @OneToMany(mappedBy = "programInfoScriptId")
+    private List<ScriptConfig> scriptInfo = new ArrayList<>();
+
 
 //    public String toString() {
 //        return "ProgramInfo{" +

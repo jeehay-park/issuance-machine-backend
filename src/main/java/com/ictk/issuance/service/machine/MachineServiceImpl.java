@@ -123,7 +123,7 @@ public class MachineServiceImpl implements MachineService {
         StopWatch timer = new StopWatch();
         timer.start();
 
-        // DB kms_audit_log 테이블 쿼리
+        // 테이블 쿼리
         Tuple2<Long, Page<Machine>> machinesPaged = machineRepository.getMachinePageByCondition(queryConds, mcnListRQB.getPageble(), orderSpecifiers);
 
         timer.stop();
