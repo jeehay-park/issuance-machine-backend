@@ -6,26 +6,28 @@ import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 public class ProgramInfoDeleteDTO {
 
     @Builder
     @AllArgsConstructor
+    @NoArgsConstructor
     @Data
     @JsonIgnoreProperties(ignoreUnknown = true)
     public static class ProgramInfoDeleteRQB {
 
         @NotNull(message = "workId는 필수 값입니다.")
         @Schema(description = "발급작업 ID")
-        private String workId;
+        private String progId;
 
 
     }
 
     @Builder
     @AllArgsConstructor
+    @NoArgsConstructor
     @Data
-    @JsonIgnoreProperties(ignoreUnknown = true)
     public static class ProgramInfoDeleteRSB {
 
         @Schema(description = "프로그램 삭제 결과")

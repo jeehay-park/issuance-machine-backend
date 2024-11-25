@@ -1,6 +1,9 @@
 package com.ictk.issuance.data.model;
 
 import com.ictk.issuance.common.annotations.InjectSequenceValue;
+import com.ictk.issuance.common.utils.CommonUtils;
+import com.ictk.issuance.constants.AppConstants;
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Pattern;
 import lombok.*;
@@ -14,19 +17,18 @@ import java.util.List;
 
 @Slf4j
 @Data
-@Builder
+@Builder(toBuilder = true)
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "program_info")
 @Entity
 public class ProgramInfo {
     @InjectSequenceValue(sequencename = "seq", tablename = "program_info")
-    @Column(name = "seq", unique = true, nullable = false)
-//    @GeneratedValue(strategy = GenerationType.IDENTITY) // Auto-increment for seq
+    @Column(name = "seq", unique = true, nullable = false, updatable = false)
     public long seq;
 
-    @Column(name = "prog_id", unique = true, nullable = false, updatable = false)
     @Id // primary key
+    @Column(name = "prog_id", unique = true, nullable = false)
     private String progId;
 
     @Column(name = "prog_name")
@@ -51,6 +53,7 @@ public class ProgramInfo {
     @Column(name = "param_ext")
     private String paramExt;
 
+    @NonNull
     @Column(name = "is_encrypted_sn")
     private boolean isEncryptedSn;
 
@@ -74,6 +77,9 @@ public class ProgramInfo {
 
     @Column(name = "country_code")
     private String countryCode;
+
+    @Schema(description = "is_encrypted_sn")
+    private boolean isEncryptSn;
 
     @Column(name = "interface_type")
     private String interfaceType;
@@ -104,31 +110,13 @@ public class ProgramInfo {
     @OneToMany(mappedBy = "programInfoScriptId")
     private List<ScriptConfig> scriptInfo = new ArrayList<>();
 
+    @PrePersist
+    public void onSave(){
+        if(!CommonUtils.hasValue(progId) || AppConstants.TEMPORARY_ID.equals(progId))
+            progId = "prgo_" + String.format("%04d", seq);
 
-//    public String toString() {
-//        return "ProgramInfo{" +
-//                "seq=" + seq +
-//                ", progId=" + progId +
-//                ", progName=" + progName +
-//                ", product=" + product +
-//                ", testCode=" + testCode +
-//                ", description=" + description +
-//                ", status=" + status +
-//                ", param=" + param +
-//                ", paramExt=" + paramExt +
-//                ", isEncryptedSn=" + isEncryptedSn +
-//                ", profId=" + profId +
-//                ", keyisId=" + keyisId +
-//                ", scrtId=" + scrtId +
-//                ", sessionHandler=" + sessionHandler +
-//                ", etcOption=" + etcOption +
-//                ", companyCode=" + companyCode +
-//                ", countryCode=" + countryCode +
-//                ", interfaceType=" + interfaceType +
-//                ", packageType=" + packageType +
-//                ", updatedAt=" + updatedAt +
-//                ", createdAt=" + createdAt +
-//                ", comment=" + comment +
-//                "}";
-//    }
+        updatedAt = LocalDateTime.now();
+    }
+
+
 }

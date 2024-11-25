@@ -10,8 +10,10 @@ import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.lang.Nullable;
 
 import java.util.List;
 import java.util.Map;
@@ -22,6 +24,7 @@ public class ProgramInfoListDTO {
     @Builder
     @Data
     @AllArgsConstructor
+    @NoArgsConstructor
     @JsonIgnoreProperties(ignoreUnknown = true)
     public static class ProgramInfoListRQB {
 
@@ -67,7 +70,7 @@ public class ProgramInfoListDTO {
     @Builder
     @Data
     @AllArgsConstructor
-    @JsonIgnoreProperties(ignoreUnknown = true)
+    @NoArgsConstructor
     public static class ProgramInfoListRSB {
 
         @NotEmpty(message = "totalCnt는 필수 값입니다.")
@@ -75,6 +78,7 @@ public class ProgramInfoListDTO {
 
         private int curPage;
 
+        @Nullable
         private List<AppDTO.HeaderInfoObj> headerInfos;
 
         private List<Map<String, Object>> programList;

@@ -36,6 +36,8 @@ public class QProgramInfo extends EntityPathBase<ProgramInfo> {
 
     public final BooleanPath isEncryptedSn = createBoolean("isEncryptedSn");
 
+    public final BooleanPath isEncryptSn = createBoolean("isEncryptSn");
+
     public final StringPath keyisId = createString("keyisId");
 
     public final ListPath<KeyissueConfig, QKeyissueConfig> keyIssueInfo = this.<KeyissueConfig, QKeyissueConfig>createList("keyIssueInfo", KeyissueConfig.class, QKeyissueConfig.class, PathInits.DIRECT2);

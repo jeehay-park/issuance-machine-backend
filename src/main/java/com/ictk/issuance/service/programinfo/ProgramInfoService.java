@@ -5,6 +5,7 @@ import com.ictk.issuance.data.dto.programinfo.ProgramInfoDeleteDTO;
 import com.ictk.issuance.data.dto.programinfo.ProgramInfoDeleteDTO.ProgramInfoDeleteRQB;
 import com.ictk.issuance.data.dto.programinfo.ProgramInfoListDTO.ProgramInfoListRQB;
 import com.ictk.issuance.data.dto.programinfo.ProgramInfoListDTO.ProgramInfoListRSB;
+import com.ictk.issuance.data.dto.programinfo.ProgramInfoSaveDTO;
 import com.ictk.issuance.data.dto.programinfo.ProgramInfoSaveDTO.ProgramInfoSaveRQB;
 import com.ictk.issuance.data.dto.programinfo.ProgramInfoSearchDTO.ProgramInfoSearchRQB;
 import com.ictk.issuance.data.dto.programinfo.ProgramInfoSearchDTO.ProgramInfoSearchRSB;
@@ -21,7 +22,7 @@ public interface ProgramInfoService {
     ProgramInfoListRSB fetchProgramList(String trId, ProgramInfoListRQB programInfoListRQB) throws IctkException;
 
     // Program Info 추가/변경 서비스
-    ProgramInfoSaveRQB saveProgram(String trId, ProgramInfoSaveRQB programInfoSaveRQB) throws IctkException;
+    ProgramInfoSaveDTO.ProgramInfoSaveRSB saveProgram(String trId, ProgramInfoSaveRQB programInfoSaveRQB) throws IctkException;
 
     // Program Info 삭제 서비스
     ProgramInfoDeleteDTO.ProgramInfoDeleteRSB deleteProgram(String trId, ProgramInfoDeleteRQB programInfoDeleteRQB) throws IctkException;

@@ -18,6 +18,7 @@ public class ProgramInfoSearchDTO {
     @Builder
     @Data
     @AllArgsConstructor
+    @NoArgsConstructor
     @JsonIgnoreProperties(ignoreUnknown = true)
     public static class ProgramInfoSearchRQB {
 
@@ -30,7 +31,6 @@ public class ProgramInfoSearchDTO {
     @Data
     @AllArgsConstructor
     @NoArgsConstructor
-    @JsonIgnoreProperties(ignoreUnknown = true)
     public static class ProgramInfoSearchRSB {
 
         @Schema(description = "발급기 ID")
@@ -51,8 +51,8 @@ public class ProgramInfoSearchDTO {
         @Schema(description = "제품 테스트 코드")
         private String testCode;
 
-        @Schema(description = "etcOption")
-        private String etcOption;
+        @Schema(description = "기타코드 옵션. 여러값 가능(리스트)")
+        private List<String> etcOption;
 
         @Schema(description = "프로파일 설정정보")
         private List<ConfigDTO.ProfileConfigObj> profileInfo;
@@ -82,56 +82,5 @@ public class ProgramInfoSearchDTO {
         private String createdAt;
 
     }
-//
-//    // profileInfo
-//    @Data
-//    @SuperBuilder
-//    @AllArgsConstructor
-//    @NoArgsConstructor
-//    public static class ProfileInfo {
-//
-//        @Schema(description = "프로파일 ID")
-//        private String profId;
-//
-//        @Schema(description = "발급기 이름")
-//        private String profName;
-//
-//        @Schema(description = "설명")
-//        private String description;
-//    }
-//
-//    // keyIssueInfo
-//    @Data
-//    @SuperBuilder
-//    @AllArgsConstructor
-//    @NoArgsConstructor
-//    public static class KeyIssueInfo {
-//
-//        @Schema(description = "키발급코드 ID")
-//        private String keyisId;
-//
-//        @Schema(description = "키발급코드 이름")
-//        private String keyisName;
-//
-//        @Schema(description = "설명")
-//        private String description;
-//    }
-//
-//    // scriptInfo
-//    @Data
-//    @SuperBuilder
-//    @AllArgsConstructor
-//    @NoArgsConstructor
-//    public static class ScriptInfo {
-//
-//        @Schema(description = "스크립트 ID")
-//        private String scrtId;
-//
-//        @Schema(description = "스크립트 이름")
-//        private String scrtName;
-//
-//        @Schema(description = "설명")
-//        private String description;
-//    }
 
 }

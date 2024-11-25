@@ -121,6 +121,37 @@ public class AppHelper {
     }
 
 
+    public static Map<String, HeaderInfoObj> programInfoHeaderInfoMap() {
+
+        Map<String, HeaderInfoObj> hdrInfoMap = new LinkedHashMap<>(); // 순서보장
+
+        int idx = 1;
+        hdrInfoMap.put("idx", HeaderInfoObj.builder().idx(idx++).keyName("idx").name("순번").isSort(false).isFilter(false).isDisplay(false).build());
+        hdrInfoMap.put("prog_id", HeaderInfoObj.builder().idx(idx++).keyName("prog_id").name("발급 프로그램 고유 ID").isSort(true).isFilter(false).isDisplay(true).build());
+        hdrInfoMap.put("prog_name", HeaderInfoObj.builder().idx(idx++).keyName("prog_name").name("프로그램 이름").isSort(false).isFilter(true).isDisplay(true).build());
+        hdrInfoMap.put("product", HeaderInfoObj.builder().idx(idx++).keyName("product").name("제품 (칩 Chip)").isSort(false).isFilter(true).isDisplay(true).build());
+        hdrInfoMap.put("test_code", HeaderInfoObj.builder().idx(idx++).keyName("test_code").name("제품 테스트 코드").isSort(false).isFilter(false).isDisplay(true).build());
+        hdrInfoMap.put("description", HeaderInfoObj.builder().idx(idx++).keyName("description").name("프로그램 상세설명").isSort(false).isFilter(false).isDisplay(true).build());
+        hdrInfoMap.put("status", HeaderInfoObj.builder().idx(idx++).keyName("status").name("프로그램 상태").isSort(false).isFilter(false).isDisplay(false).build());
+        hdrInfoMap.put("param", HeaderInfoObj.builder().idx(idx++).keyName("param").name("파라미터").isSort(true).isFilter(false).isDisplay(false).build());
+        hdrInfoMap.put("param_ext", HeaderInfoObj.builder().idx(idx++).keyName("param_ext").name("파라미터 확장").isSort(true).isFilter(false).isDisplay(false).build());
+        hdrInfoMap.put("is_encrypted_sn", HeaderInfoObj.builder().idx(idx++).keyName("is_encrypted_sn").name("SN 인크립션 여부").isSort(true).isFilter(false).isDisplay(true).build());
+        hdrInfoMap.put("prof_id", HeaderInfoObj.builder().idx(idx++).keyName("prof_id").name("프로파일 ID").isSort(true).isFilter(false).isDisplay(false).build());
+        hdrInfoMap.put("keyis_id", HeaderInfoObj.builder().idx(idx++).keyName("keyis_id").name("키발급코드 ID").isSort(true).isFilter(false).isDisplay(false).build());
+        hdrInfoMap.put("scrt_id", HeaderInfoObj.builder().idx(idx++).keyName("scrt_id").name("스크립트 ID").isSort(true).isFilter(false).isDisplay(false).build());
+        hdrInfoMap.put("session_handler", HeaderInfoObj.builder().idx(idx++).keyName("session_handler").name("발급 핸들러 이름").isSort(true).isFilter(false).isDisplay(false).build());
+        hdrInfoMap.put("etc_option", HeaderInfoObj.builder().idx(idx++).keyName("etc_option").name("기타 코드 옵션 명").isSort(true).isFilter(false).isDisplay(false).build());
+        hdrInfoMap.put("company_code", HeaderInfoObj.builder().idx(idx++).keyName("company_code").name("회사코드").isSort(true).isFilter(false).isDisplay(false).build());
+        hdrInfoMap.put("country_code", HeaderInfoObj.builder().idx(idx++).keyName("country_code").name("국가코드").isSort(true).isFilter(false).isDisplay(false).build());
+        hdrInfoMap.put("interface_type", HeaderInfoObj.builder().idx(idx++).keyName("interface_type").name("인터페이스 타입").isSort(true).isFilter(false).isDisplay(false).build());
+        hdrInfoMap.put("package_type", HeaderInfoObj.builder().idx(idx++).keyName("package_type").name("패키지 타입").isSort(true).isFilter(false).isDisplay(false).build());
+        hdrInfoMap.put("updated_at", HeaderInfoObj.builder().idx(idx++).keyName("updated_at").name("업데이트 시간").isSort(true).isFilter(false).isDisplay(true).build());
+        hdrInfoMap.put("created_at", HeaderInfoObj.builder().idx(idx++).keyName("created_at").name("등록 시간").isSort(true).isFilter(false).isDisplay(true).build());
+        hdrInfoMap.put("comment", HeaderInfoObj.builder().idx(idx++).keyName("comment").name("주석 기타정보 ").isSort(true).isFilter(false).isDisplay(false).build());
+        return hdrInfoMap;
+
+    }
+
 
     public static Tuple2<String, List<FilterObj>>  applyFilterToRequestRQB(Map<String, HeaderInfoObj> hdrMap, String filter) {
         List<FilterObj> filterArr = new ArrayList<>();

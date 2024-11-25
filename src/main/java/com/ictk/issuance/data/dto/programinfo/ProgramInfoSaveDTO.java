@@ -2,10 +2,14 @@ package com.ictk.issuance.data.dto.programinfo;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.persistence.Column;
+import jakarta.persistence.Id;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.List;
 
@@ -13,6 +17,7 @@ public class ProgramInfoSaveDTO {
 
     @Builder
     @AllArgsConstructor
+    @NoArgsConstructor
     @Data
     @JsonIgnoreProperties(ignoreUnknown = true)
     public static class ProgramInfoSaveRQB {
@@ -53,7 +58,7 @@ public class ProgramInfoSaveDTO {
 
         @NotNull(message = "isEncryptSn은 필수 값입니다.")
         @Schema(description = "SN 인크립션 여부")
-        private boolean isEncryptSn;
+        private boolean isEncryptedSn;
 
         @Schema(description = "회사코드")
         private String companyCode;
@@ -67,12 +72,17 @@ public class ProgramInfoSaveDTO {
         @Schema(description = "패키지 타입")
         private String packageType;
 
+        @Schema(description = "프로그램 상태")
+        @NotNull
+        @Pattern(regexp = "ACTIVE|NOTUSE|DELETED", message = "Status must be one of the following: ACTIVE, NOTUSE, DELETED")
+        private String status;
+
     }
 
     @Builder
     @AllArgsConstructor
     @Data
-    @JsonIgnoreProperties(ignoreUnknown = true)
+    @NoArgsConstructor
     public static class ProgramInfoSaveRSB {
 
         @NotNull(message = "progId은 필수 값입니다.")
@@ -81,7 +91,7 @@ public class ProgramInfoSaveDTO {
 
         @NotNull(message = "progName은 필수 값입니다.")
         @Schema(description = "발급작업 표시 넘버")
-        private int progName;
+        private String progName;
 
     }
 

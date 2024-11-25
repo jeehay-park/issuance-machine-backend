@@ -127,7 +127,7 @@ public class MachineServiceImpl implements MachineService {
         Tuple2<Long, Page<Machine>> machinesPaged = machineRepository.getMachinePageByCondition(queryConds, mcnListRQB.getPageble(), orderSpecifiers);
 
         timer.stop();
-        log.info("Query tooks {} nanos ", (int)Math.round(timer.getTotalTimeNanos()) );
+        log.info("Query took {} nanos ", (int)Math.round(timer.getTotalTimeNanos()) );
 
         return MachineListRSB.builder()
                 .totalCnt( machinesPaged._1() )
