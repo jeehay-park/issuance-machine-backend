@@ -23,4 +23,6 @@ public interface ScriptConfigDao {
     // 스크립트 설정 삭제
     long deleteScriptConfigByScrtId(String scrtId);
 
+    List<String> findAllScrtIds();
+
 }

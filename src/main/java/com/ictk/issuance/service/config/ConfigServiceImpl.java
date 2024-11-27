@@ -9,6 +9,7 @@ import com.ictk.issuance.constants.IssuanceConstants;
 import com.ictk.issuance.data.dto.config.ConfigDTO.ProfileConfigObj;
 import com.ictk.issuance.data.dto.config.ConfigDTO.KeyissueConfigObj;
 import com.ictk.issuance.data.dto.config.ConfigDTO.ScriptConfigObj;
+import com.ictk.issuance.data.dto.config.ConfigIdListDTO;
 import com.ictk.issuance.data.dto.config.ConfigListDTO.ConfigListRQB;
 import com.ictk.issuance.data.dto.config.ConfigListDTO.ConfigListRSB;
 import com.ictk.issuance.data.dto.config.ConfigSaveDTO.ConfigSaveRQB;
@@ -542,6 +543,20 @@ public class ConfigServiceImpl implements ConfigService {
             }
         }
         return null;
+    }
+
+    @Override
+    public ConfigIdListDTO.ConfigIdListRSB configIdsList(String trId) throws IctkException {
+
+        List<String> profieIds = profileConfigRepository.findAllProfIds();;
+        List<String> keyissueIds = keyissueConfigRepository.findAllKeyisIds();;
+        List<String> scriptIds = scriptConfigRepository.findAllScrtIds();
+
+        return ConfigIdListDTO.ConfigIdListRSB.builder()
+                .keyisIdList(keyissueIds)
+                .profIdList(profieIds)
+                .scrtIdList(scriptIds)
+                .build();
     }
 
 }

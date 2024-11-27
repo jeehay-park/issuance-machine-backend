@@ -23,4 +23,6 @@ public interface KeyissueConfigDao {
     // 키발급코드 설정 삭제
     long deleteKeyissueConfigByKeyisId(String keyisId);
 
+    List<String> findAllKeyisIds();
+
 }

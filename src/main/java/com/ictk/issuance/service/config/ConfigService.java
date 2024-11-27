@@ -1,6 +1,7 @@
 package com.ictk.issuance.service.config;
 
 import com.ictk.issuance.common.exception.IctkException;
+import com.ictk.issuance.data.dto.config.ConfigIdListDTO;
 import com.ictk.issuance.data.dto.config.ConfigListDTO.ConfigListRQB;
 import com.ictk.issuance.data.dto.config.ConfigListDTO.ConfigListRSB;
 import com.ictk.issuance.data.dto.config.ConfigSearchDTO.ConfigSearchRQB;
@@ -33,6 +34,10 @@ public interface ConfigService {
 
     // 발급설정(프로파일/키발급코드/스크립트) 삭제 서비스
     ConfigDeleteRSB deleteConfig(String trId, ConfigDeleteRQB deleteRQB) throws IctkException;
+
+    // Id 목록 조회
+    ConfigIdListDTO.ConfigIdListRSB configIdsList(String trId) throws IctkException;
+
 
 
 }

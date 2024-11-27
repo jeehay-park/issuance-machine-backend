@@ -97,4 +97,12 @@ public class KeyissueConfigRepositoryImpl extends IssuanceDaoImpl implements Key
                 .execute();
     }
 
+    @Override
+    public List<String> findAllKeyisIds() {
+        return jpaQueryFactory
+                .select(keyissueConfig.keyisId)
+                .from(keyissueConfig)
+                .fetch();
+    }
+
 }

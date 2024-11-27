@@ -9,6 +9,7 @@ import com.ictk.issuance.common.security.SessionInfo;
 import com.ictk.issuance.common.utils.CommonUtils;
 import com.ictk.issuance.data.dto.config.ConfigDeleteDTO.ConfigDeleteRQB;
 import com.ictk.issuance.data.dto.config.ConfigDeleteDTO.ConfigDeleteRSB;
+import com.ictk.issuance.data.dto.config.ConfigIdListDTO;
 import com.ictk.issuance.data.dto.config.ConfigListDTO.ConfigListRQB;
 import com.ictk.issuance.data.dto.config.ConfigListDTO.ConfigListRSB;
 import com.ictk.issuance.data.dto.config.ConfigSaveDTO.ConfigSaveRQB;
@@ -136,4 +137,29 @@ public class ConfigController {
 
     }
 
+    @Operation(summary = "발급설정 (프로파일/키발급코드/스크립트) ID 목록", description = "발급설정 - 프로파일/키발급코드/스크립트 ID 목록 조회 API")
+    @PostMapping("/id-list")
+    public CommonResponse<ConfigIdListDTO.ConfigIdListRSB> fetchConfigIds(
+            @AuthenticationPrincipal  SessionInfo sessionInfo,
+            @Valid @RequestBody CommonRequest<ConfigIdListDTO> configIdRequest
+
+    ) {
+        final var idListTrId = "500404";
+
+        log.debug("{} {}", sessionInfo, CommonUtils.toJson(objectMapper, configIdRequest));
+
+        if(!idListTrId.equals(configIdRequest.getHeader().getTrId()))
+            throw new IctkException(idListTrId, AppCode.TRID_INVALID, configIdRequest.getHeader().getTrId());
+
+        CommonResponse<ConfigIdListDTO.ConfigIdListRSB> configIdResponse = CommonResponse.ok(
+                idListTrId,
+                configService.configIdsList(
+                        idListTrId
+                )
+        );
+
+        log.debug("{}", CommonUtils.toJson(objectMapper, configIdResponse));
+
+        return configIdResponse;
+    }
 }

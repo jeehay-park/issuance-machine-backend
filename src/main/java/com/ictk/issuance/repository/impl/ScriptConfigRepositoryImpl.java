@@ -97,4 +97,12 @@ public class ScriptConfigRepositoryImpl extends IssuanceDaoImpl implements Scrip
                 .execute();
     }
 
+    @Override
+    public List<String> findAllScrtIds() {
+        return jpaQueryFactory
+                .select(scriptConfig.scrtId)
+                .from(scriptConfig)
+                .fetch();
+    }
+
 }

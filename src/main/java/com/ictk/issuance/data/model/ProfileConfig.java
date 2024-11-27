@@ -68,7 +68,8 @@ public class ProfileConfig {
 
     // Define the relationship to ProgramInfoSearchRSB
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "prof_id", insertable=false, updatable=false) // This links to ProgramInfo.progId
+//    @JoinColumn(name = "prof_id", insertable=false, updatable=false)
+    @JoinColumn(name = "prof_id", referencedColumnName = "prof_id", insertable = false, updatable = false)
     private ProgramInfo programInfoProfileId;
 
     @PrePersist
@@ -76,7 +77,7 @@ public class ProfileConfig {
 
         System.out.println("profId :" + profId);
         if(!CommonUtils.hasValue(profId) || AppConstants.TEMPORARY_ID.equals(profId))
-            profId = "prof" + String.format("%06d", seq);
+            profId = "prof_" + String.format("%06d", seq);
 
         updatedAt = LocalDateTime.now();
     }

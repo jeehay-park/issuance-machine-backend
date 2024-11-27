@@ -22,4 +22,5 @@ public interface ProgramInfoDao {
             Predicate queryConds,
             Pageable pageable,
             List<OrderSpecifier> orderSpecifiers);
+
 }

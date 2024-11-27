@@ -68,13 +68,13 @@ public class KeyissueConfig {
 
     // Define the relationship to ProgramInfoSearchRSB
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "keyis_id", insertable=false, updatable=false) // This links to ProgramInfo.progId
+    @JoinColumn(name = "keyis_id", referencedColumnName = "keyis_id", insertable = false, updatable = false)
     private ProgramInfo programInfoKeyissueId;
 
     @PrePersist
     public void onSave(){
         if(!CommonUtils.hasValue(keyisId) || AppConstants.TEMPORARY_ID.equals(keyisId))
-            keyisId = "kis" + String.format("%06d", seq);
+            keyisId = "kis_" + String.format("%06d", seq);
         updatedAt = LocalDateTime.now();
     }
 

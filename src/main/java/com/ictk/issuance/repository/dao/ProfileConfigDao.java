@@ -23,4 +23,6 @@ public interface ProfileConfigDao {
     // 발급 프로파일 설정 삭제
     long deleteProfileConfigByProfId(String profId);
 
+    // ProfId 목록 조회
+    List<String> findAllProfIds();
 }

@@ -99,21 +99,21 @@ public class ProgramInfo {
     private String comment;
 
     @Getter
-    @OneToMany(mappedBy = "programInfoProfileId")
+    @OneToMany(mappedBy = "programInfoProfileId", fetch = FetchType.LAZY)
     private List<ProfileConfig> profileConfig = new ArrayList<>();
 
     @Getter
-    @OneToMany(mappedBy = "programInfoKeyissueId") // Match the field name in KeyissueConfig
+    @OneToMany(mappedBy = "programInfoKeyissueId", fetch = FetchType.LAZY) // Match the field name in KeyissueConfig
     private List<KeyissueConfig> keyIssueInfo = new ArrayList<>();
 
     @Getter
-    @OneToMany(mappedBy = "programInfoScriptId")
+    @OneToMany(mappedBy = "programInfoScriptId", fetch = FetchType.LAZY)
     private List<ScriptConfig> scriptInfo = new ArrayList<>();
 
     @PrePersist
     public void onSave(){
         if(!CommonUtils.hasValue(progId) || AppConstants.TEMPORARY_ID.equals(progId))
-            progId = "prgo_" + String.format("%04d", seq);
+            progId = "prog_" + String.format("%04d", seq);
 
         updatedAt = LocalDateTime.now();
     }

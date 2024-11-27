@@ -60,9 +60,9 @@ public class ProgramInfoServiceImpl implements ProgramInfoService {
     public String createProgramInfoTable() {
         return issuanceManager.createTable(dbProperties.database(), programInfoProperties.tableName(),
                 (database, table) -> {
-                    if(!programInfoRepository.isTableExist(database, table) ) {
+                    if (!programInfoRepository.isTableExist(database, table)) {
                         log.info("----- " + table + " 테이블이 없습니다. 테이블을 생성합니다. ");
-                        if(!programInfoRepository.makeTable(database, table)) {
+                        if (!programInfoRepository.makeTable(database, table)) {
                             log.info("----- " + table + " 테이블 생성에 실패했습니다. ");
                             return "FAIL";
                         } else {
@@ -90,7 +90,7 @@ public class ProgramInfoServiceImpl implements ProgramInfoService {
                         .testCode(programInfo.getTestCode())
                         .etcOption(
                                 Arrays.asList(programInfo.getEtcOption().split("\\|"))
-                                )
+                        )
                         .profileInfo(getProfileConfigObjList(programInfo.getProfileConfig()))
                         .keyIssueInfo(getKeyissueConfigObjList(programInfo.getKeyIssueInfo()))
                         .scriptInfo(getScriptConfigObjList(programInfo.getScriptInfo()))
@@ -99,25 +99,25 @@ public class ProgramInfoServiceImpl implements ProgramInfoService {
                         .countryCode(programInfo.getCountryCode())
                         .interfaceType(programInfo.getInterfaceType())
                         .packageType(programInfo.getPackageType())
-                        .createdAt(programInfo.getCreatedAt().format( DateTimeFormatter.ofPattern(AppConstants.DATE_BASIC_FMT) ) )
+                        .createdAt(programInfo.getCreatedAt().format(DateTimeFormatter.ofPattern(AppConstants.DATE_BASIC_FMT)))
                         .build()
                 )
                 .orElseThrow(()
-                        -> new IctkException(trId, AppCode.PROGRAM_PROC_ERROR, "발급기계 "+programInfoSearchRQB.getProgId()+ " 없음."));
+                        -> new IctkException(trId, AppCode.PROGRAM_PROC_ERROR, "발급기계 " + programInfoSearchRQB.getProgId() + " 없음."));
 
         return programInfoSearchRSB;
     }
 
     // ProfileConfig -> ProfileConfigObj
-    private List<ConfigDTO.ProfileConfigObj> getProfileConfigObjList(List<ProfileConfig> profileConfig ) {
+    private List<ConfigDTO.ProfileConfigObj> getProfileConfigObjList(List<ProfileConfig> profileConfig) {
         List<ConfigDTO.ProfileConfigObj> profileConfigObjList = new ArrayList<>();
-        if(CommonUtils.hasElements(profileConfig)) {
+        if (CommonUtils.hasElements(profileConfig)) {
             profileConfig.forEach(item -> {
-                profileConfigObjList.add( ConfigDTO.ProfileConfigObj.builder()
+                profileConfigObjList.add(ConfigDTO.ProfileConfigObj.builder()
                         .profId(item.getProfId())
                         .profName(item.getProfName())
                         .description(item.getDescription())
-                        .build() );
+                        .build());
             });
         }
         return profileConfigObjList;
@@ -125,30 +125,30 @@ public class ProgramInfoServiceImpl implements ProgramInfoService {
 
 
     // KeyissueConfig -> KeyissueConfigObj
-    private List<ConfigDTO.KeyissueConfigObj> getKeyissueConfigObjList(List<KeyissueConfig> keyissueConfig ) {
+    private List<ConfigDTO.KeyissueConfigObj> getKeyissueConfigObjList(List<KeyissueConfig> keyissueConfig) {
         List<ConfigDTO.KeyissueConfigObj> keyissueConfigObjList = new ArrayList<>();
-        if(CommonUtils.hasElements(keyissueConfig)) {
+        if (CommonUtils.hasElements(keyissueConfig)) {
             keyissueConfig.forEach(item -> {
-                keyissueConfigObjList.add( ConfigDTO.KeyissueConfigObj.builder()
+                keyissueConfigObjList.add(ConfigDTO.KeyissueConfigObj.builder()
                         .keyisId(item.getKeyisId())
                         .keyisName(item.getKeyisName())
                         .description(item.getDescription())
-                        .build() );
+                        .build());
             });
         }
         return keyissueConfigObjList;
     }
 
     // ScriptConfig -> ScriptConfigObj
-    private List<ConfigDTO.ScriptConfigObj> getScriptConfigObjList(List<ScriptConfig> scriptConfig ) {
+    private List<ConfigDTO.ScriptConfigObj> getScriptConfigObjList(List<ScriptConfig> scriptConfig) {
         List<ConfigDTO.ScriptConfigObj> scriptConfigObjList = new ArrayList<>();
-        if(CommonUtils.hasElements(scriptConfig)) {
+        if (CommonUtils.hasElements(scriptConfig)) {
             scriptConfig.forEach(item -> {
-                scriptConfigObjList.add( ConfigDTO.ScriptConfigObj.builder()
+                scriptConfigObjList.add(ConfigDTO.ScriptConfigObj.builder()
                         .scrtId(item.getScrtId())
                         .scrtName(item.getScrtName())
                         .description(item.getDescription())
-                        .build() );
+                        .build());
             });
         }
         return scriptConfigObjList;
@@ -167,7 +167,7 @@ public class ProgramInfoServiceImpl implements ProgramInfoService {
         });
 
         // filter가 있는 경우에 기존 filterArrAndOr, filterArr는 무시되고 filter값이 우선시 된다.
-        if(CommonUtils.hasValue(programInfoListRQB.getFilter())) {
+        if (CommonUtils.hasValue(programInfoListRQB.getFilter())) {
             var applied = AppHelper.applyFilterToRequestRQB(hdrInfoMap, programInfoListRQB.getFilter());
             programInfoListRQB.setFilterArrAndOr((applied._1()));
             programInfoListRQB.setFilterArr(applied._2());
@@ -181,7 +181,7 @@ public class ProgramInfoServiceImpl implements ProgramInfoService {
 
         // 동적 쿼리 생성
         BooleanBuilder queryConds = new BooleanBuilder();
-        if(CommonUtils.hasValue(programInfoListRQB.getProgName()))
+        if (CommonUtils.hasValue(programInfoListRQB.getProgName()))
             queryConds.and(programInfo.progName.contains(programInfoListRQB.getProgName()));
 
         BooleanBuilder filterConds = AppHelper.composeFilterDynamicConditions(
@@ -199,7 +199,7 @@ public class ProgramInfoServiceImpl implements ProgramInfoService {
                     return null;
                 });
 
-        if(filterConds != null) {
+        if (filterConds != null) {
             queryConds.and(filterConds);
         }
 
@@ -214,7 +214,7 @@ public class ProgramInfoServiceImpl implements ProgramInfoService {
         );
 
         timer.stop();
-        log.info("Query took {} nanos ", (int)Math.round(timer.getTotalTimeNanos()));
+        log.info("Query took {} nanos ", (int) Math.round(timer.getTotalTimeNanos()));
 
         return ProgramInfoListDTO.ProgramInfoListRSB.builder()
                 .totalCnt(programInfoPaged._1())
@@ -224,9 +224,9 @@ public class ProgramInfoServiceImpl implements ProgramInfoService {
                 .build();
     }
 
-    private List<Map<String,Object>> composeProgramList(Map<String, AppDTO.HeaderInfoObj> hdrInfoMap, List<ProgramInfo> programInfos) {
+    private List<Map<String, Object>> composeProgramList(Map<String, AppDTO.HeaderInfoObj> hdrInfoMap, List<ProgramInfo> programInfos) {
         final List<Map<String, Object>> bodyList = new ArrayList<>();
-        if(hdrInfoMap != null && programInfos != null) {
+        if (hdrInfoMap != null && programInfos != null) {
             AtomicInteger idx = new AtomicInteger(1);
             programInfos.forEach(programInfo -> {
                 Map<String, Object> dataMap = new LinkedHashMap<>();
@@ -251,10 +251,13 @@ public class ProgramInfoServiceImpl implements ProgramInfoService {
                         case "country_code" -> dataMap.put(value.getKeyName(), programInfo.getCountryCode());
                         case "interface_type" -> dataMap.put(value.getKeyName(), programInfo.getInterfaceType());
                         case "package_type" -> dataMap.put(value.getKeyName(), programInfo.getPackageType());
-                        case "updated_at" -> dataMap.put(value.getKeyName(), programInfo.getUpdatedAt());
-                        case "created_at" -> dataMap.put(value.getKeyName(), programInfo.getCreatedAt());
+                        case "updated_at" ->
+                                dataMap.put(value.getKeyName(), programInfo.getUpdatedAt().format(DateTimeFormatter.ofPattern(AppConstants.DATE_BASIC_FMT)));
+                        case "created_at" ->
+                                dataMap.put(value.getKeyName(), programInfo.getCreatedAt().format(DateTimeFormatter.ofPattern(AppConstants.DATE_BASIC_FMT)));
                         case "comment" -> dataMap.put(value.getKeyName(), programInfo.getComment());
-                        default -> {}
+                        default -> {
+                        }
                     }
                 });
                 bodyList.add(dataMap);
@@ -273,11 +276,11 @@ public class ProgramInfoServiceImpl implements ProgramInfoService {
 
         ProgramInfo findProgramInfo = null;
 
-        if(CommonUtils.hasValue(programInfoSaveRQB.getProgId())) {
+        if (CommonUtils.hasValue(programInfoSaveRQB.getProgId())) {
 
             toUpdate = true;
             findProgramInfo = programInfoRepository.findById(programInfoSaveRQB.getProgId())
-                    .orElseThrow((() -> new IctkException(trId, AppCode.PROGRAM_PROC_ERROR, "프로그램 " +programInfoSaveRQB.getProgId() + " 없음")));
+                    .orElseThrow((() -> new IctkException(trId, AppCode.PROGRAM_PROC_ERROR, "프로그램 " + programInfoSaveRQB.getProgId() + " 없음")));
 
             findProgramInfo.setProgName(programInfoSaveRQB.getProgName());
             findProgramInfo.setDescription(programInfoSaveRQB.getDescription());
@@ -331,17 +334,14 @@ public class ProgramInfoServiceImpl implements ProgramInfoService {
     // 프로그램 삭제 서비스
     public ProgramInfoDeleteDTO.ProgramInfoDeleteRSB deleteProgram(String trId, ProgramInfoDeleteDTO.ProgramInfoDeleteRQB programInfoDeleteRQB) throws IctkException {
         programInfoRepository.findById(programInfoDeleteRQB.getProgId())
-                .orElseThrow(() -> new IctkException(trId, AppCode.PROGRAM_PROC_ERROR, "프로그램 "+programInfoDeleteRQB.getProgId()+ " 없음."));
+                .orElseThrow(() -> new IctkException(trId, AppCode.PROGRAM_PROC_ERROR, "프로그램 " + programInfoDeleteRQB.getProgId() + " 없음."));
 
         long dcnt = programInfoRepository.deleteProgramProgId(programInfoDeleteRQB.getProgId());
 
         return ProgramInfoDeleteDTO.ProgramInfoDeleteRSB
                 .builder()
-                .result( (dcnt>0) ? AppConstants.SUCC : AppConstants.FAIL )
-                .deleteCnt( (int)dcnt)
+                .result((dcnt > 0) ? AppConstants.SUCC : AppConstants.FAIL)
+                .deleteCnt((int) dcnt)
                 .build();
     }
-
-
-
 }
