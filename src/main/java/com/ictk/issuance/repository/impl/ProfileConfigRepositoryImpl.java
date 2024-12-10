@@ -102,6 +102,7 @@ public class ProfileConfigRepositoryImpl extends IssuanceDaoImpl implements Prof
 
     }
 
+    // 프로파일 Id 목록
     @Override
     public List<String> findAllProfIds() {
         return jpaQueryFactory
@@ -109,5 +110,4 @@ public class ProfileConfigRepositoryImpl extends IssuanceDaoImpl implements Prof
                 .from(profileConfig)
                 .fetch();
     }
-
 }

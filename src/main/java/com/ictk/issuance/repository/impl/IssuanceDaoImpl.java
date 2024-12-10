@@ -8,9 +8,11 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.List;
+
 @Slf4j
 @RequiredArgsConstructor
-public class IssuanceDaoImpl implements IssuanceDao {
+public abstract class IssuanceDaoImpl implements IssuanceDao {
 
     @Autowired
     private EntityManager entityManager;

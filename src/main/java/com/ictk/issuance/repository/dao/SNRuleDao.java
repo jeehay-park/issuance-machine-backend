@@ -22,4 +22,8 @@ public interface SNRuleDao {
 
     // 시리얼넘버 규칙 삭제
     long deleteSNRuleBySnrId(String snrId);
+
+    // SN 규칙 Id 목록
+    List<String> findAllSnrIds();
+
 }

@@ -39,6 +39,7 @@ public enum AppCode implements Code {
     TRID_INVALID("E120010", "유효하지 않은 trId {0} 입니다", "This is a invalid trId {0}"),
     CODEENUM_PROC_ERROR("E130004", "코드 ENUM 처리중 {0} 에러가 발생하였습니다", "An error {0} occurred while Issuance-machine Code-ENUM processing"),
     PROGRAM_PROC_ERROR("E130005", "프로그램 처리중 {0} 에러가 발생하였습니다", "An error {0} occurred while Issuance-machine Program processing"),
+    WORK_PROC_ERROR("E130006", "작업 처리중 {0} 에러가 발생하였습니다", "An error {0} occurred while Issuance-machine Work processing"),
     ;
 
     private final String code;

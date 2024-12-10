@@ -44,7 +44,7 @@ public class AppHelper {
     public static Map<String, HeaderInfoObj> configHeaderInfoMap(String configType) {
         Map<String, HeaderInfoObj> hdrInfoMap = new LinkedHashMap<>();
         int idx = 1;
-        switch(configType) {
+        switch (configType) {
             case IssuanceConstants.CONFIG_TYPE_PROFILE -> {
                 hdrInfoMap.put("idx", HeaderInfoObj.builder().idx(idx++).keyName("idx").name("순번").isSort(false).isFilter(false).isDisplay(false).build());
                 hdrInfoMap.put("prof_id", HeaderInfoObj.builder().idx(idx++).keyName("prof_id").name("프로파일 ID").isSort(true).isFilter(false).isDisplay(true).build());
@@ -152,11 +152,47 @@ public class AppHelper {
 
     }
 
+    public static Map<String, HeaderInfoObj> workInfoHeaderInfoMap() {
 
-    public static Tuple2<String, List<FilterObj>>  applyFilterToRequestRQB(Map<String, HeaderInfoObj> hdrMap, String filter) {
+        Map<String, HeaderInfoObj> headerInfoMap = new LinkedHashMap<>();
+
+        int idx = 1;
+        headerInfoMap.put("seq", HeaderInfoObj.builder().idx(idx++).keyName("seq").name("순번").isSort(false).isFilter(false).isDisplay(false).build());
+        headerInfoMap.put("work_id", HeaderInfoObj.builder().idx(idx++).keyName("work_id").name("발급작업 ID").isSort(false).isFilter(false).isDisplay(false).build());
+        headerInfoMap.put("work_no", HeaderInfoObj.builder().idx(idx++).keyName("work_no").name("발급작업 표시 넘버").isSort(true).isFilter(false).isDisplay(true).build());
+        headerInfoMap.put("tag_name", HeaderInfoObj.builder().idx(idx++).keyName("tag_name").name("태그 명").isSort(true).isFilter(false).isDisplay(true).build());
+        headerInfoMap.put("customer", HeaderInfoObj.builder().idx(idx++).keyName("customer").name("고객").isSort(false).isFilter(false).isDisplay(false).build());
+        headerInfoMap.put("device_name", HeaderInfoObj.builder().idx(idx++).keyName("device_name").name("디바이스 이름").isSort(false).isFilter(false).isDisplay(true).build());
+        headerInfoMap.put("order_no", HeaderInfoObj.builder().idx(idx++).keyName("order_no").name("오더 넘버").isSort(false).isFilter(false).isDisplay(true).build());
+        headerInfoMap.put("prog_id", HeaderInfoObj.builder().idx(idx++).keyName("prog_id").name("프로그램 ID").isSort(false).isFilter(false).isDisplay(true).build());
+        headerInfoMap.put("mcn_id", HeaderInfoObj.builder().idx(idx++).keyName("mcn_id").name("발급머신 ID").isSort(false).isFilter(false).isDisplay(false).build());
+        headerInfoMap.put("snr_id", HeaderInfoObj.builder().idx(idx++).keyName("snr_id").name("SN규칙 ID").isSort(false).isFilter(false).isDisplay(false).build());
+        headerInfoMap.put("target_size", HeaderInfoObj.builder().idx(idx++).keyName("target_size").name("발급 목표수량").isSort(false).isFilter(false).isDisplay(false).build());
+        headerInfoMap.put("completed_size", HeaderInfoObj.builder().idx(idx++).keyName("completed_size").name("발급 진행수량").isSort(false).isFilter(false).isDisplay(false).build());
+        headerInfoMap.put("failed_size", HeaderInfoObj.builder().idx(idx++).keyName("failed_size").name("발급 실패(오류)수량").isSort(false).isFilter(false).isDisplay(false).build());
+        headerInfoMap.put("check_size", HeaderInfoObj.builder().idx(idx++).keyName("check_size").name("발급 검증수량").isSort(false).isFilter(false).isDisplay(false).build());
+        headerInfoMap.put("due_date", HeaderInfoObj.builder().idx(idx++).keyName("due_date").name("작업완료 예정 시간").isSort(false).isFilter(false).isDisplay(true).build());
+        headerInfoMap.put("description", HeaderInfoObj.builder().idx(idx++).keyName("description").name("작업 상세설명").isSort(false).isFilter(false).isDisplay(false).build());
+        headerInfoMap.put("is_lock", HeaderInfoObj.builder().idx(idx++).keyName("is_lock").name("발급칩의 LOCK 여부").isSort(false).isFilter(false).isDisplay(true).build());
+        headerInfoMap.put("status", HeaderInfoObj.builder().idx(idx++).keyName("status").name("작업 상태").isSort(false).isFilter(false).isDisplay(true).build());
+        headerInfoMap.put("param", HeaderInfoObj.builder().idx(idx++).keyName("param").name("파라미터").isSort(false).isFilter(false).isDisplay(false).build());
+        headerInfoMap.put("param_ext", HeaderInfoObj.builder().idx(idx++).keyName("param_ext").name("파라미터 확장").isSort(false).isFilter(false).isDisplay(false).build());
+        headerInfoMap.put("detail_msg", HeaderInfoObj.builder().idx(idx++).keyName("detail_msg").name("작업 상세 메시지").isSort(false).isFilter(false).isDisplay(false).build());
+        headerInfoMap.put("started_at", HeaderInfoObj.builder().idx(idx++).keyName("started_at").name("작업 시작 시간").isSort(false).isFilter(false).isDisplay(false).build());
+        headerInfoMap.put("updated_at", HeaderInfoObj.builder().idx(idx++).keyName("updated_at").name("작업 업데이트 시간").isSort(false).isFilter(false).isDisplay(false).build());
+        headerInfoMap.put("created_at", HeaderInfoObj.builder().idx(idx++).keyName("created_at").name("작업 등록 시간").isSort(false).isFilter(false).isDisplay(true).build());
+        headerInfoMap.put("comment", HeaderInfoObj.builder().idx(idx++).keyName("comment").name("주석 기타정보").isSort(false).isFilter(false).isDisplay(false).build());
+
+        return headerInfoMap;
+    }
+
+
+
+
+    public static Tuple2<String, List<FilterObj>> applyFilterToRequestRQB(Map<String, HeaderInfoObj> hdrMap, String filter) {
         List<FilterObj> filterArr = new ArrayList<>();
 
-        if(CommonUtils.hasStringValue(filter)) {
+        if (CommonUtils.hasStringValue(filter)) {
             hdrMap.forEach((k, v) -> {
                 if (v.isFilter())
                     filterArr.add(new FilterObj(v.getKeyName(), AppConstants.FILTER_OP_CONTAINS, filter));
@@ -167,15 +203,15 @@ public class AppHelper {
 
     public static List<OrderSpecifier> getRequestRQBOrderSpecifiers(
             Class<?> clsType, String clsName,
-            Map<String, HeaderInfoObj> hdrInfoMap, String sortKeyName, String order ) {
+            Map<String, HeaderInfoObj> hdrInfoMap, String sortKeyName, String order) {
         PathBuilder<?> entity = new PathBuilder<>(clsType, clsName);
         List<OrderSpecifier> orderSpecifiers = new ArrayList<>();
         HeaderInfoObj headerObj = hdrInfoMap.get(sortKeyName);
-        if(headerObj != null && headerObj.isSort()) {
+        if (headerObj != null && headerObj.isSort()) {
             String entityField = CaseFormat.LOWER_UNDERSCORE.to(CaseFormat.LOWER_CAMEL, headerObj.getKeyName());
-            orderSpecifiers.add(new OrderSpecifier(AppConstants.ORDER_DESC.equals(order)? Order.DESC:Order.ASC, entity.get( entityField )) );
+            orderSpecifiers.add(new OrderSpecifier(AppConstants.ORDER_DESC.equals(order) ? Order.DESC : Order.ASC, entity.get(entityField)));
         } else
-            orderSpecifiers.add( new OrderSpecifier( Order.DESC, entity.get("createdAt")) );
+            orderSpecifiers.add(new OrderSpecifier(Order.DESC, entity.get("createdAt")));
 
         return orderSpecifiers;
     }
@@ -196,15 +232,15 @@ public class AppHelper {
             Function<String, Path> getEntityPath,
             Function<String, Class> getEnumClass) {
 
-        if(filterObjs == null)
+        if (filterObjs == null)
             return null;
 
         BooleanBuilder queryConds = new BooleanBuilder();
 
-        filterObjs.forEach( filterObj -> {
+        filterObjs.forEach(filterObj -> {
             Path qPath = getEntityPath.apply(filterObj.getKeyName());
-            if( qPath instanceof StringPath) {
-                StringPath stringPath = (StringPath)qPath;
+            if (qPath instanceof StringPath) {
+                StringPath stringPath = (StringPath) qPath;
                 switch (filterObj.getFilterOp()) {
                     case "equals" -> {
                         if (AppConstants.FILTER_AND.equals(andOr))
@@ -231,27 +267,26 @@ public class AppHelper {
                             queryConds.or(stringPath.notLike("%" + filterObj.getKeyValue() + "%"));
                     }
                 }
-            }
-            else if( qPath instanceof EnumPath && getEnumClass!=null ) {
-                EnumPath enumPath = (EnumPath)qPath;
+            } else if (qPath instanceof EnumPath && getEnumClass != null) {
+                EnumPath enumPath = (EnumPath) qPath;
                 switch (filterObj.getFilterOp()) {
                     case "equals" -> {
 
                         if (AppConstants.FILTER_AND.equals(andOr))
-                            queryConds.and(enumPath.eq( CommonUtils.getEnum(getEnumClass.apply(filterObj.getKeyName()), filterObj.getKeyValue()) ));
+                            queryConds.and(enumPath.eq(CommonUtils.getEnum(getEnumClass.apply(filterObj.getKeyName()), filterObj.getKeyValue())));
                         else {
-                            queryConds.or(enumPath.eq( CommonUtils.getEnum(getEnumClass.apply(filterObj.getKeyName()), filterObj.getKeyValue()) ));
+                            queryConds.or(enumPath.eq(CommonUtils.getEnum(getEnumClass.apply(filterObj.getKeyName()), filterObj.getKeyValue())));
                         }
                     }
                     case "not_equals" -> {
                         if (AppConstants.FILTER_AND.equals(andOr))
-                            queryConds.and(enumPath.ne( CommonUtils.getEnum(getEnumClass.apply(filterObj.getKeyName()), filterObj.getKeyValue()) ));
+                            queryConds.and(enumPath.ne(CommonUtils.getEnum(getEnumClass.apply(filterObj.getKeyName()), filterObj.getKeyValue())));
                         else
-                            queryConds.or(enumPath.ne( CommonUtils.getEnum(getEnumClass.apply(filterObj.getKeyName()), filterObj.getKeyValue()) ));
+                            queryConds.or(enumPath.ne(CommonUtils.getEnum(getEnumClass.apply(filterObj.getKeyName()), filterObj.getKeyValue())));
                     }
                 }
             }
-        } );
+        });
 
         return queryConds;
 

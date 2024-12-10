@@ -7,6 +7,7 @@ import com.querydsl.core.types.dsl.*;
 import com.querydsl.core.types.PathMetadata;
 import javax.annotation.processing.Generated;
 import com.querydsl.core.types.Path;
+import com.querydsl.core.types.dsl.PathInits;
 
 
 /**
@@ -17,66 +18,87 @@ public class QWorkInfo extends EntityPathBase<WorkInfo> {
 
     private static final long serialVersionUID = 132725733L;
 
+    private static final PathInits INITS = PathInits.DIRECT2;
+
     public static final QWorkInfo workInfo = new QWorkInfo("workInfo");
 
-    public final NumberPath<Long> check_size = createNumber("check_size", Long.class);
+    public final NumberPath<Long> checkSize = createNumber("checkSize", Long.class);
 
     public final StringPath comment = createString("comment");
 
-    public final NumberPath<Long> completed_size = createNumber("completed_size", Long.class);
+    public final NumberPath<Long> completedSize = createNumber("completedSize", Long.class);
 
     public final DateTimePath<java.time.LocalDateTime> createdAt = createDateTime("createdAt", java.time.LocalDateTime.class);
 
     public final StringPath customer = createString("customer");
 
+    public final StringPath description = createString("description");
+
     public final StringPath detailMsg = createString("detailMsg");
 
-    public final StringPath device_name = createString("device_name");
+    public final StringPath deviceName = createString("deviceName");
 
-    public final DateTimePath<java.time.LocalDateTime> due_date = createDateTime("due_date", java.time.LocalDateTime.class);
+    public final StringPath dueDate = createString("dueDate");
 
-    public final NumberPath<Long> failed_size = createNumber("failed_size", Long.class);
+    public final NumberPath<Long> failedSize = createNumber("failedSize", Long.class);
 
-    public final StringPath is_lock = createString("is_lock");
+    public final BooleanPath isLock = createBoolean("isLock");
 
-    public final StringPath mcn_id = createString("mcn_id");
+    public final QMachine machineInfo;
 
-    public final StringPath order_no = createString("order_no");
+    public final StringPath mcnId = createString("mcnId");
+
+    public final StringPath orderNo = createString("orderNo");
 
     public final StringPath param = createString("param");
 
     public final StringPath paramExt = createString("paramExt");
 
-    public final StringPath prog_id = createString("prog_id");
+    public final StringPath progId = createString("progId");
+
+    public final QProgramInfo programInfo;
 
     public final NumberPath<Long> seq = createNumber("seq", Long.class);
 
-    public final StringPath snr_id = createString("snr_id");
+    public final StringPath snrId = createString("snrId");
+
+    public final QSNRule snRuleInfo;
 
     public final DateTimePath<java.time.LocalDateTime> startedAt = createDateTime("startedAt", java.time.LocalDateTime.class);
 
     public final StringPath status = createString("status");
 
-    public final StringPath tag_name = createString("tag_name");
+    public final StringPath tagName = createString("tagName");
 
-    public final NumberPath<Long> target_size = createNumber("target_size", Long.class);
+    public final NumberPath<Long> targetSize = createNumber("targetSize", Long.class);
 
     public final DateTimePath<java.time.LocalDateTime> updatedAt = createDateTime("updatedAt", java.time.LocalDateTime.class);
 
-    public final StringPath work_id = createString("work_id");
+    public final StringPath workId = createString("workId");
 
-    public final StringPath work_no = createString("work_no");
+    public final StringPath workNo = createString("workNo");
 
     public QWorkInfo(String variable) {
-        super(WorkInfo.class, forVariable(variable));
+        this(WorkInfo.class, forVariable(variable), INITS);
     }
 
     public QWorkInfo(Path<? extends WorkInfo> path) {
-        super(path.getType(), path.getMetadata());
+        this(path.getType(), path.getMetadata(), PathInits.getFor(path.getMetadata(), INITS));
     }
 
     public QWorkInfo(PathMetadata metadata) {
-        super(WorkInfo.class, metadata);
+        this(metadata, PathInits.getFor(metadata, INITS));
+    }
+
+    public QWorkInfo(PathMetadata metadata, PathInits inits) {
+        this(WorkInfo.class, metadata, inits);
+    }
+
+    public QWorkInfo(Class<? extends WorkInfo> type, PathMetadata metadata, PathInits inits) {
+        super(type, metadata, inits);
+        this.machineInfo = inits.isInitialized("machineInfo") ? new QMachine(forProperty("machineInfo")) : null;
+        this.programInfo = inits.isInitialized("programInfo") ? new QProgramInfo(forProperty("programInfo")) : null;
+        this.snRuleInfo = inits.isInitialized("snRuleInfo") ? new QSNRule(forProperty("snRuleInfo")) : null;
     }
 
 }

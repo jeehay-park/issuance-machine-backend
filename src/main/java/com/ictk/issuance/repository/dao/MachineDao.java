@@ -27,4 +27,7 @@ public interface MachineDao {
     // 머신 삭제
     long deleteMachineByMcnId(String mcnId);
 
+    // 머신 Id 목록
+    List<String> findAllMcnIds();
+
 }

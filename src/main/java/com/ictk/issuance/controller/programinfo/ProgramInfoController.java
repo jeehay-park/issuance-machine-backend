@@ -7,10 +7,8 @@ import com.ictk.issuance.common.dto.CommonResponse;
 import com.ictk.issuance.common.exception.IctkException;
 import com.ictk.issuance.common.security.SessionInfo;
 import com.ictk.issuance.common.utils.CommonUtils;
-import com.ictk.issuance.data.dto.programinfo.ProgramInfoDeleteDTO;
-import com.ictk.issuance.data.dto.programinfo.ProgramInfoListDTO;
-import com.ictk.issuance.data.dto.programinfo.ProgramInfoSaveDTO;
-import com.ictk.issuance.data.dto.programinfo.ProgramInfoSearchDTO;
+import com.ictk.issuance.data.dto.config.ConfigIdListDTO;
+import com.ictk.issuance.data.dto.programinfo.*;
 import com.ictk.issuance.service.programinfo.ProgramInfoService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -149,5 +147,30 @@ public class ProgramInfoController {
         log.debug("{}", CommonUtils.toJson(objectMapper, programInfoSaveResponse ));
 
         return programInfoSaveResponse;
+    }
+
+    @Operation(summary = "프로그램 ID 목록", description = "프로그램 정보 - 프로그램 Id 목록 조회를 위한 API")
+    @PostMapping("/id-list")
+    public CommonResponse<ProgramInfoIdListDTO.ProgramInfoIdListRSB> fetchProgramIds(
+            @AuthenticationPrincipal  SessionInfo sessionInfo,
+            @Valid @RequestBody CommonRequest<ProgramInfoListDTO> programIdRequest
+    ) {
+        final var idListTrId = "500204";
+
+        log.debug("{} {}", sessionInfo, CommonUtils.toJson(objectMapper, programIdRequest));
+
+        if(!idListTrId.equals(programIdRequest.getHeader().getTrId()))
+            throw new IctkException(idListTrId, AppCode.TRID_INVALID, programIdRequest.getHeader().getTrId());
+
+        CommonResponse<ProgramInfoIdListDTO.ProgramInfoIdListRSB> progIdResponse = CommonResponse.ok(
+                idListTrId,
+                programInfoService.programInfoIdsList(
+                        idListTrId
+                )
+        );
+
+        log.debug("{}", CommonUtils.toJson(objectMapper, progIdResponse));
+
+        return progIdResponse;
     }
 }

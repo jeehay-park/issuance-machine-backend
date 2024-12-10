@@ -7,8 +7,10 @@ import com.ictk.issuance.common.dto.CommonResponse;
 import com.ictk.issuance.common.exception.IctkException;
 import com.ictk.issuance.common.security.SessionInfo;
 import com.ictk.issuance.common.utils.CommonUtils;
+import com.ictk.issuance.data.dto.config.ConfigIdListDTO;
 import com.ictk.issuance.data.dto.snrule.SNRuleDeleteDTO.SNRuleDeleteRQB;
 import com.ictk.issuance.data.dto.snrule.SNRuleDeleteDTO.SNRuleDeleteRSB;
+import com.ictk.issuance.data.dto.snrule.SNRuleIdListDTO;
 import com.ictk.issuance.data.dto.snrule.SNRuleListDTO.SNRuleListRQB;
 import com.ictk.issuance.data.dto.snrule.SNRuleListDTO.SNRuleListRSB;
 import com.ictk.issuance.data.dto.snrule.SNRuleSaveDTO.SNRuleSaveRQB;
@@ -135,5 +137,29 @@ public class SNRuleController {
 
     }
 
+    @Operation(summary = "시리얼넘버 규칙 ID 목록", description = "시리얼넘버 규칙 - 시리얼넘버 규칙 Id 목록 조회를 위한 API")
+    @PostMapping("/id-list")
+    public CommonResponse<SNRuleIdListDTO.SNRuleIdListRSB> fetchSnrIds(
+            @AuthenticationPrincipal  SessionInfo sessionInfo,
+            @Valid @RequestBody CommonRequest<SNRuleIdListDTO> snrIdRequest
 
+    ) {
+        final var idListTrId = "500304";
+
+        log.debug("{} {}", sessionInfo, CommonUtils.toJson(objectMapper, snrIdRequest));
+
+        if(!idListTrId.equals(snrIdRequest.getHeader().getTrId()))
+            throw new IctkException(idListTrId, AppCode.TRID_INVALID, snrIdRequest.getHeader().getTrId());
+
+        CommonResponse<SNRuleIdListDTO.SNRuleIdListRSB> snrIdResponse = CommonResponse.ok(
+                idListTrId,
+                snRuleService.snrIdsList(
+                        idListTrId
+                )
+        );
+
+        log.debug("{}", CommonUtils.toJson(objectMapper, snrIdResponse));
+
+        return snrIdResponse;
+    }
 }

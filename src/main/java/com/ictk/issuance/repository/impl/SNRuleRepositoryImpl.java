@@ -98,5 +98,14 @@ public class SNRuleRepositoryImpl extends IssuanceDaoImpl implements SNRuleDao {
                 .execute();
     }
 
+    // 시리얼넘버 규칙 Id 목록
+    @Override
+    public List<String> findAllSnrIds() {
+        return jpaQueryFactory
+                .select(sNRule.snrId)
+                .from(sNRule)
+                .fetch();
+
+    }
 
 }

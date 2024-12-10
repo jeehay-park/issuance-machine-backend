@@ -1,11 +1,26 @@
 package com.ictk.issuance.repository.impl;
 
+import com.ictk.issuance.data.model.WorkInfo;
 import com.ictk.issuance.repository.dao.WorkInfoDao;
+import com.querydsl.core.types.OrderSpecifier;
+import com.querydsl.core.types.Predicate;
+import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import io.vavr.Tuple;
+import io.vavr.Tuple2;
 import jakarta.persistence.EntityManager;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
+
+import java.util.List;
+
+import static com.ictk.issuance.data.model.QProgramInfo.programInfo;
+import static com.ictk.issuance.data.model.QWorkInfo.workInfo;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -53,5 +68,42 @@ public class WorkInfoRepositoryImpl extends IssuanceDaoImpl implements WorkInfoD
         entityManager.createNativeQuery(sbSQL.toString()).executeUpdate();
 
         return isTableExist(database, tableName);
+    }
+
+    @Override
+    @Transactional
+    public long deleteWorkId(String workId) {
+        return jpaQueryFactory
+                .delete(workInfo)
+                .where(workInfo.workId.eq(workId)).execute();
+    }
+
+    @Override
+    public Tuple2<Long, Page<WorkInfo>> getWorkInfoPageByCondition(
+            Predicate queryConds,
+            Pageable pageable,
+            List<OrderSpecifier> orderSpecifiers) {
+
+        // total count 구하기
+
+        JPAQuery<Long> countQuery
+                = jpaQueryFactory
+                .select(workInfo.count())
+                .from(workInfo)
+                .where(queryConds);
+
+        Long total = countQuery.fetchCount();
+
+        return Tuple.of(
+                total,
+                new PageImpl<>(
+                        jpaQueryFactory.selectFrom(workInfo)
+                                .where(queryConds)
+                                .orderBy(orderSpecifiers.toArray(new OrderSpecifier[orderSpecifiers.size()]))
+                                .offset(pageable.getOffset())
+                                .limit(pageable.getPageSize())
+                                .fetch(),
+                        pageable,
+                        total ));
     }
 }

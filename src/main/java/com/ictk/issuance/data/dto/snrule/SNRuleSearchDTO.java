@@ -17,7 +17,7 @@ public class SNRuleSearchDTO {
     @AllArgsConstructor
     @NoArgsConstructor
     @Data
-    @JsonIgnoreProperties(ignoreUnknown =true)
+    @JsonIgnoreProperties(ignoreUnknown = true)
     public static class SNRuleSearchRQB {
 
         @Schema(description = "SN규칙 ID")

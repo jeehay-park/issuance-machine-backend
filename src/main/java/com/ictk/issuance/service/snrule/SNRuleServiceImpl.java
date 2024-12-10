@@ -9,6 +9,7 @@ import com.ictk.issuance.constants.AppConstants;
 import com.ictk.issuance.data.dto.shared.AppDTO;
 import com.ictk.issuance.data.dto.snrule.SNRuleDeleteDTO.SNRuleDeleteRQB;
 import com.ictk.issuance.data.dto.snrule.SNRuleDeleteDTO.SNRuleDeleteRSB;
+import com.ictk.issuance.data.dto.snrule.SNRuleIdListDTO;
 import com.ictk.issuance.data.dto.snrule.SNRuleListDTO.SNRuleListRQB;
 import com.ictk.issuance.data.dto.snrule.SNRuleListDTO.SNRuleListRSB;
 import com.ictk.issuance.data.dto.snrule.SNRuleSaveDTO.SNRuleSaveRQB;
@@ -235,5 +236,15 @@ public class SNRuleServiceImpl implements SNRuleService {
                 .build();
     }
 
+    // SN_RULE Id 목록
+    @Override
+    public SNRuleIdListDTO.SNRuleIdListRSB snrIdsList(String trId) throws IctkException {
+
+        List<String> snrIds = snRuleRepository.findAllSnrIds();
+
+        return SNRuleIdListDTO.SNRuleIdListRSB.builder()
+                .sNRuleIdList(snrIds)
+                .build();
+    }
 
 }

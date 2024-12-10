@@ -108,6 +108,13 @@ public class MachineRepositoryImpl extends IssuanceDaoImpl implements MachineDao
 
     }
 
-
+    // 발급 기계 Id 목록
+    @Override
+    public List<String> findAllMcnIds() {
+        return jpaQueryFactory
+                .select(machine.mcnId)
+                .from(machine)
+                .fetch();
+    }
 
 }

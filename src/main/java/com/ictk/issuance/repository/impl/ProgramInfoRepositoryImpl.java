@@ -9,6 +9,7 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import io.vavr.Tuple;
 import io.vavr.Tuple2;
 import jakarta.persistence.EntityManager;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +19,6 @@ import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
-import static com.ictk.issuance.data.model.QMachine.machine;
 import static com.ictk.issuance.data.model.QProgramInfo.programInfo;
 
 
@@ -71,6 +71,7 @@ public class ProgramInfoRepositoryImpl extends IssuanceDaoImpl implements Progra
     }
 
     @Override
+    @Transactional
     public long deleteProgramProgId(String progId) {
         return jpaQueryFactory
                 .delete(programInfo)
@@ -107,4 +108,12 @@ public class ProgramInfoRepositoryImpl extends IssuanceDaoImpl implements Progra
 
     }
 
+    // Program Id 목록
+    @Override
+    public List<String> findAllProgIds() {
+        return jpaQueryFactory
+                .select(programInfo.progId)
+                .from(programInfo)
+                .fetch();
+    }
 }

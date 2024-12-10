@@ -1,6 +1,7 @@
 package com.ictk.issuance.service.snrule;
 
 import com.ictk.issuance.common.exception.IctkException;
+import com.ictk.issuance.data.dto.snrule.SNRuleIdListDTO;
 import com.ictk.issuance.data.dto.snrule.SNRuleListDTO.SNRuleListRQB;
 import com.ictk.issuance.data.dto.snrule.SNRuleListDTO.SNRuleListRSB;
 import com.ictk.issuance.data.dto.snrule.SNRuleSearchDTO.SNRuleSearchRQB;
@@ -27,6 +28,10 @@ public interface SNRuleService {
 
     // SN_RULE 삭제 서비스
     SNRuleDeleteRSB deleteSNRule(String trId, SNRuleDeleteRQB deleteRQB) throws IctkException;
+
+    // SN_RULE Id 목록 조회
+    SNRuleIdListDTO.SNRuleIdListRSB snrIdsList(String trId) throws IctkException;
+
 
 
 }

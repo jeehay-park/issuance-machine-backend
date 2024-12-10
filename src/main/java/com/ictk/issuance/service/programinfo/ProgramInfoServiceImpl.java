@@ -7,10 +7,7 @@ import com.ictk.issuance.common.exception.IctkException;
 import com.ictk.issuance.common.utils.CommonUtils;
 import com.ictk.issuance.constants.AppConstants;
 import com.ictk.issuance.data.dto.config.ConfigDTO;
-import com.ictk.issuance.data.dto.programinfo.ProgramInfoDeleteDTO;
-import com.ictk.issuance.data.dto.programinfo.ProgramInfoListDTO;
-import com.ictk.issuance.data.dto.programinfo.ProgramInfoSaveDTO;
-import com.ictk.issuance.data.dto.programinfo.ProgramInfoSearchDTO;
+import com.ictk.issuance.data.dto.programinfo.*;
 import com.ictk.issuance.data.dto.shared.AppDTO;
 import com.ictk.issuance.data.model.KeyissueConfig;
 import com.ictk.issuance.data.model.ProfileConfig;
@@ -102,7 +99,8 @@ public class ProgramInfoServiceImpl implements ProgramInfoService {
                         .createdAt(programInfo.getCreatedAt().format(DateTimeFormatter.ofPattern(AppConstants.DATE_BASIC_FMT)))
                         .build()
                 )
-                .orElseThrow(()
+                .orElseThrow(
+                        ()
                         -> new IctkException(trId, AppCode.PROGRAM_PROC_ERROR, "발급기계 " + programInfoSearchRQB.getProgId() + " 없음."));
 
         return programInfoSearchRSB;
@@ -342,6 +340,17 @@ public class ProgramInfoServiceImpl implements ProgramInfoService {
                 .builder()
                 .result((dcnt > 0) ? AppConstants.SUCC : AppConstants.FAIL)
                 .deleteCnt((int) dcnt)
+                .build();
+    }
+
+    // 프로그램 Id 목록
+    @Override
+    public ProgramInfoIdListDTO.ProgramInfoIdListRSB programInfoIdsList(String trId) throws IctkException {
+
+        List<String> progIds = programInfoRepository.findAllProgIds();
+
+        return ProgramInfoIdListDTO.ProgramInfoIdListRSB.builder()
+                .programInfoIdList(progIds)
                 .build();
     }
 }

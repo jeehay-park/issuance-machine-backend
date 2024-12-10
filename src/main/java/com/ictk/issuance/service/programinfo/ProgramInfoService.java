@@ -3,6 +3,7 @@ package com.ictk.issuance.service.programinfo;
 import com.ictk.issuance.common.exception.IctkException;
 import com.ictk.issuance.data.dto.programinfo.ProgramInfoDeleteDTO;
 import com.ictk.issuance.data.dto.programinfo.ProgramInfoDeleteDTO.ProgramInfoDeleteRQB;
+import com.ictk.issuance.data.dto.programinfo.ProgramInfoIdListDTO;
 import com.ictk.issuance.data.dto.programinfo.ProgramInfoListDTO.ProgramInfoListRQB;
 import com.ictk.issuance.data.dto.programinfo.ProgramInfoListDTO.ProgramInfoListRSB;
 import com.ictk.issuance.data.dto.programinfo.ProgramInfoSaveDTO;
@@ -27,5 +28,7 @@ public interface ProgramInfoService {
     // Program Info 삭제 서비스
     ProgramInfoDeleteDTO.ProgramInfoDeleteRSB deleteProgram(String trId, ProgramInfoDeleteRQB programInfoDeleteRQB) throws IctkException;
 
+    // Program Id 목록 조회
+    ProgramInfoIdListDTO.ProgramInfoIdListRSB programInfoIdsList(String trId) throws IctkException;
 
 }

@@ -23,4 +23,6 @@ public interface ProgramInfoDao {
             Pageable pageable,
             List<OrderSpecifier> orderSpecifiers);
 
+    // Program Id 목록
+    List<String> findAllProgIds();
 }

@@ -2,23 +2,20 @@ package com.ictk.issuance.data.model;
 
 import com.ictk.issuance.common.annotations.InjectSequenceValue;
 import com.ictk.issuance.common.annotations.ValidateString;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import com.ictk.issuance.common.utils.CommonUtils;
+import com.ictk.issuance.constants.AppConstants;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
 import java.time.LocalDateTime;
 
 @Slf4j
 @Data
-@Builder
+@Builder(toBuilder = true)
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "work_info")
@@ -31,51 +28,55 @@ public class WorkInfo {
 
     @Id
     @Column(name = "work_id", unique = true, nullable = false)
-    private String work_id;
+    private String workId;
 
     @Column(name = "work_no")
-    private String work_no;
+    private String workNo;
 
     @Column(name = "tag_name")
-    private String tag_name;
+    private String tagName;
 
     @Column(name = "customer")
     private String customer;
 
     @Column(name = "device_name")
-    private String device_name;
+    private String deviceName;
 
     @Column(name = "order_no")
-    private String order_no;
+    private String orderNo;
 
     @NotNull
     @Column(name = "prog_id")
-    private String prog_id;
+    private String progId;
 
     @NotNull
     @Column(name = "mcn_id")
-    private String mcn_id;
+    private String mcnId;
 
     @Column(name = "snr_id")
-    private String snr_id;
+    private String snrId;
 
     @Column(name = "target_size")
-    private long target_size;
+    private long targetSize;
 
     @Column(name = "completed_size")
-    private long completed_size;
+    private long completedSize;
 
     @Column(name = "failed_size")
-    private long failed_size;
+    private long failedSize;
 
     @Column(name = "check_size")
-    private long check_size;
+    private long checkSize;
 
     @Column(name = "due_date")
-    private LocalDateTime due_date;
+    private String dueDate;
 
+    @Column(name = "description")
+    private String description;
+
+    @NonNull
     @Column(name = "is_lock")
-    private String is_lock;
+    private boolean isLock;
 
     @Column(name = "status")
     @ValidateString(acceptedValues = {"INIT", "READY", "RUNNING", "ON_STOP", "FINISHED"}, message = "status가 유효하지 않습니다.")
@@ -97,10 +98,31 @@ public class WorkInfo {
     @Column(name = "updated_at", nullable = false)
     private LocalDateTime updatedAt;
 
+    @CreatedDate
     @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;
 
     @Column(name = "comment")
     private String comment;
+
+    @ManyToOne
+    @JoinColumn(name ="prog_id", insertable = false, updatable = false)
+    private ProgramInfo programInfo;
+
+    @ManyToOne
+    @JoinColumn(name ="mcn_id", insertable = false, updatable = false)
+    private Machine machineInfo;
+
+    @ManyToOne
+    @JoinColumn(name ="snr_id", insertable = false, updatable = false)
+    private SNRule snRuleInfo;
+
+    @PrePersist
+    public void onSave(){
+        if(!CommonUtils.hasValue(workId) || AppConstants.TEMPORARY_ID.equals(workId))
+            workId = "wrk_" + String.format("%04d", seq);
+
+        updatedAt = LocalDateTime.now();
+    }
 
 }
