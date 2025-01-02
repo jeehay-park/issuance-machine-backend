@@ -22,6 +22,10 @@ public class WorkInfoSaveDTO {
         private String workId;
 
         @NotNull
+        @Schema(description = "발급작업 표시 넘버")
+        private String workNo;
+
+        @NotNull
         @Schema(description = "발급작업 태그 명")
         private String tagName;
 

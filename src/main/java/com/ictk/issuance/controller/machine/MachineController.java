@@ -9,12 +9,15 @@ import com.ictk.issuance.common.security.SessionInfo;
 import com.ictk.issuance.common.utils.CommonUtils;
 import com.ictk.issuance.data.dto.machine.MachineDeleteDTO.MachineDeleteRQB;
 import com.ictk.issuance.data.dto.machine.MachineDeleteDTO.MachineDeleteRSB;
+import com.ictk.issuance.data.dto.machine.MachineIdListDTO;
+import com.ictk.issuance.data.dto.machine.MachineListDTO;
 import com.ictk.issuance.data.dto.machine.MachineSaveDTO.MachineSaveRQB;
 import com.ictk.issuance.data.dto.machine.MachineSaveDTO.MachineSaveRSB;
 import com.ictk.issuance.data.dto.machine.MachineListDTO.MachineListRQB;
 import com.ictk.issuance.data.dto.machine.MachineListDTO.MachineListRSB;
 import com.ictk.issuance.data.dto.machine.MachineSearchDTO.MachineSearchRQB;
 import com.ictk.issuance.data.dto.machine.MachineSearchDTO.MachineSearchRSB;
+import com.ictk.issuance.data.dto.snrule.SNRuleIdListDTO;
 import com.ictk.issuance.service.machine.MachineService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -133,6 +136,32 @@ public class MachineController {
 
         return mcnDelResponse;
 
+    }
+
+    @Operation(summary = "발급 기계 ID 목록", description = "발급 기계 Id 목록 조회를 위한 API")
+    @PostMapping("/id-list")
+    public CommonResponse<MachineIdListDTO.MachineIdListRSB> fetchMachineIds(
+            @AuthenticationPrincipal SessionInfo sessionInfo,
+            @Valid @RequestBody CommonRequest<MachineIdListDTO> machineIdRequest
+
+    ) {
+        final var idListTrId = "500506";
+
+        log.debug("{} {}", sessionInfo, CommonUtils.toJson(objectMapper, machineIdRequest));
+
+        if(!idListTrId.equals(machineIdRequest.getHeader().getTrId()))
+            throw new IctkException(idListTrId, AppCode.TRID_INVALID, machineIdRequest.getHeader().getTrId());
+
+        CommonResponse<MachineIdListDTO.MachineIdListRSB> machineIdResponse = CommonResponse.ok(
+                idListTrId,
+                machineService.machineIdsList(
+                        idListTrId
+                )
+        );
+
+        log.debug("{}", CommonUtils.toJson(objectMapper, machineIdResponse));
+
+        return machineIdResponse;
     }
 
 }

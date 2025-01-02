@@ -1,6 +1,7 @@
 package com.ictk.issuance.service.machine;
 
 import com.ictk.issuance.common.exception.IctkException;
+import com.ictk.issuance.data.dto.machine.MachineIdListDTO;
 import com.ictk.issuance.data.dto.machine.MachineListDTO.MachineListRQB;
 import com.ictk.issuance.data.dto.machine.MachineListDTO.MachineListRSB;
 import com.ictk.issuance.data.dto.machine.MachineSaveDTO.MachineSaveRQB;
@@ -27,4 +28,6 @@ public interface MachineService {
     // MACHINE 삭제 서비스
     MachineDeleteRSB deleteMachine(String trId, MachineDeleteRQB mcnDelRQB) throws IctkException;
 
+    // MACHINE Id 목록 조회
+    MachineIdListDTO.MachineIdListRSB machineIdsList(String trId) throws IctkException;
 }

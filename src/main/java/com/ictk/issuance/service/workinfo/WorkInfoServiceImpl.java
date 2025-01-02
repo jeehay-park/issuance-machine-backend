@@ -209,8 +209,8 @@ public class WorkInfoServiceImpl implements WorkInfoService {
                         case "param_ext" -> dataMap.put(value.getKeyName(), workInfo.getParamExt());
                         case "detail_msg" -> dataMap.put(value.getKeyName(), workInfo.getDetailMsg());
                         case "started_at" -> dataMap.put(value.getKeyName(), workInfo.getStartedAt());
-                        case "updated_at" -> dataMap.put(value.getKeyName(), workInfo.getUpdatedAt());
-                        case "created_at" -> dataMap.put(value.getKeyName(), workInfo.getCreatedAt());
+                        case "updated_at" -> dataMap.put(value.getKeyName(), workInfo.getUpdatedAt().format(DateTimeFormatter.ofPattern(AppConstants.DATE_BASIC_FMT)));
+                        case "created_at" -> dataMap.put(value.getKeyName(), workInfo.getCreatedAt().format(DateTimeFormatter.ofPattern(AppConstants.DATE_BASIC_FMT)));
                         case "comment" -> dataMap.put(value.getKeyName(), workInfo.getComment());
                         default -> {
 
@@ -241,6 +241,7 @@ public class WorkInfoServiceImpl implements WorkInfoService {
             findWorkInfo = workInfoRepository.findById(workInfoSaveRQB.getWorkId())
                     .orElseThrow(() -> new IctkException(trId, AppCode.WORK_PROC_ERROR, "발급 작업 " + workInfoSaveRQB.getWorkId() + " 없음"));
 
+            findWorkInfo.setWorkNo(workInfoSaveRQB.getWorkNo());
             findWorkInfo.setTagName(workInfoSaveRQB.getTagName());
             findWorkInfo.setCustomer(workInfoSaveRQB.getCustomer());
             findWorkInfo.setOrderNo(workInfoSaveRQB.getOrderNo());
@@ -258,6 +259,7 @@ public class WorkInfoServiceImpl implements WorkInfoService {
         WorkInfo saveWorkInfo = workInfoRepository.save(
                 toUpdate ? findWorkInfo
                         : WorkInfo.builder()
+                        .workNo((workInfoSaveRQB.getWorkNo()))
                         .tagName(workInfoSaveRQB.getTagName())
                         .customer(workInfoSaveRQB.getCustomer())
                         .orderNo(workInfoSaveRQB.getOrderNo())

@@ -6,6 +6,7 @@ import com.ictk.issuance.common.exception.IctkException;
 import com.ictk.issuance.common.utils.CommonUtils;
 import com.ictk.issuance.constants.AppConstants;
 import com.ictk.issuance.data.dto.device.DeviceDTO.DeviceObj;
+import com.ictk.issuance.data.dto.machine.MachineIdListDTO;
 import com.ictk.issuance.data.dto.machine.MachineListDTO.MachineListRQB;
 import com.ictk.issuance.data.dto.machine.MachineListDTO.MachineListRSB;
 import com.ictk.issuance.data.dto.machine.MachineSaveDTO.MachineSaveRQB;
@@ -248,6 +249,15 @@ public class MachineServiceImpl implements MachineService {
 
     }
 
+    @Override
+    public MachineIdListDTO.MachineIdListRSB machineIdsList(String trId) throws IctkException {
+
+        List<String> machineIds = machineRepository.findAllMcnIds();
+
+        return MachineIdListDTO.MachineIdListRSB.builder()
+                .machineIdList(machineIds)
+                .build();
+    }
 
 }
 

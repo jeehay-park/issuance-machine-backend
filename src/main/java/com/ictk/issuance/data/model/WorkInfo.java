@@ -30,7 +30,7 @@ public class WorkInfo {
     @Column(name = "work_id", unique = true, nullable = false)
     private String workId;
 
-    @Column(name = "work_no")
+    @Column(name = "work_no", unique = true, nullable = false)
     private String workNo;
 
     @Column(name = "tag_name")
