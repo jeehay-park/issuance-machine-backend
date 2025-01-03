@@ -3,10 +3,7 @@ package com.ictk.issuance.data.dto.workinfo;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotNull;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import lombok.extern.slf4j.Slf4j;
 
 public class WorkInfoSaveDTO {
@@ -15,6 +12,8 @@ public class WorkInfoSaveDTO {
     @NoArgsConstructor
     @AllArgsConstructor
     @Data
+    @Getter
+    @Setter
     @JsonIgnoreProperties(ignoreUnknown = true)
     public static class WorkInfoSaveRQB {
 
@@ -53,9 +52,8 @@ public class WorkInfoSaveDTO {
         @Schema(description = "SN규칙 ID. 'snr_' + seq의 형식")
         private String snrId;
 
-        @NotNull
-        @Schema(description = "발급칩의 LOCK 여부. true/false")
-        private boolean isLock;
+        @Schema(description = "발급칩의 LOCK 여부. true/false", nullable = false)
+        private Boolean isLock;
 
         @Schema(description = "목표수량")
         private long targetQnty;

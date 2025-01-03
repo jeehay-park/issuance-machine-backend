@@ -77,9 +77,8 @@ public class WorkInfoSearchDTO {
         @Schema(description = "SN 규칙 대상 제품 이름 ")
         private String snrName;
 
-        @NotNull
-        @Schema(description = "발급칩의 LOCK 여부. true/false")
-        private boolean isLock;
+        @Schema(description = "발급칩의 LOCK 여부. true/false", nullable = false)
+        private Boolean isLock;
 
         @Schema(description = "목표수량")
         private int targetSize;

@@ -52,9 +52,9 @@ public class WorkInfoRepositoryImpl extends IssuanceDaoImpl implements WorkInfoD
         sbSQL.append("  `completed_size` int(11) DEFAULT NULL COMMENT '발급 진행수량', \n");
         sbSQL.append("  `failed_size` int(11) DEFAULT NULL COMMENT '발급 실패(오류)수량', \n");
         sbSQL.append("  `check_size` int(11) DEFAULT NULL COMMENT '발급 검증수량', \n");
-        sbSQL.append((" `due_date` datetime DEFAULT NULL COMMENT '작업완료 예정 시간', \n"));
+        sbSQL.append("  `due_date` datetime DEFAULT NULL COMMENT '작업완료 예정 시간', \n");
         sbSQL.append("  `description` text DEFAULT NULL COMMENT '주석 기타정보', \n");
-        sbSQL.append("  `is_lock` varchar(16) NOT NULL COMMENT '발급칩의 LOCK 여부', \n");
+        sbSQL.append("  `is_lock` char(1) NOT NULL COMMENT '발급칩의 LOCK 여부', \n");
         sbSQL.append("  `status` varchar(32) NOT NULL COMMENT '작업 상태 ', \n");
         sbSQL.append("  `param` varchar(128) DEFAULT NULL COMMENT '작업 상태 ', \n");
         sbSQL.append("  `param_ext` mediumtext DEFAULT NULL COMMENT '파라미터 확장 ', \n");

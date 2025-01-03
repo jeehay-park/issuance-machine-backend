@@ -95,7 +95,7 @@ public class WorkInfoServiceImpl implements WorkInfoService {
                         .mcnName(workInfo.getMachineInfo().getMcnName())
                         .snrId(workInfo.getSnrId())
                         .snrName(workInfo.getSnRuleInfo().getSnrName())
-                        .isLock(workInfo.isLock())
+                        .isLock(workInfo.getIsLock())
                         .status(workInfo.getStatus())
                         .createdAt(workInfo.getCreatedAt().format(DateTimeFormatter.ofPattern(AppConstants.DATE_BASIC_FMT)))
                         .build()
@@ -203,7 +203,7 @@ public class WorkInfoServiceImpl implements WorkInfoService {
                         case "check_size" -> dataMap.put(value.getKeyName(), workInfo.getCheckSize());
                         case "due_date" -> dataMap.put(value.getKeyName(), workInfo.getDueDate());
                         case "description" -> dataMap.put(value.getKeyName(), workInfo.getDescription());
-                        case "is_lock" -> dataMap.put(value.getKeyName(), workInfo.isLock());
+                        case "is_lock" -> dataMap.put(value.getKeyName(), workInfo.getIsLock());
                         case "status" -> dataMap.put(value.getKeyName(), workInfo.getStatus());
                         case "param" -> dataMap.put(value.getKeyName(), workInfo.getParam());
                         case "param_ext" -> dataMap.put(value.getKeyName(), workInfo.getParamExt());
@@ -249,7 +249,7 @@ public class WorkInfoServiceImpl implements WorkInfoService {
             findWorkInfo.setProgId(workInfoSaveRQB.getProgId());
             findWorkInfo.setMcnId(workInfoSaveRQB.getMcnId());
             findWorkInfo.setSnrId(workInfoSaveRQB.getSnrId());
-            findWorkInfo.setLock(workInfoSaveRQB.isLock());
+            findWorkInfo.setIsLock(workInfoSaveRQB.getIsLock());
             findWorkInfo.setTargetSize(workInfoSaveRQB.getTargetQnty());
             findWorkInfo.setDueDate(workInfoSaveRQB.getDueDate());
             findWorkInfo.setCreatedAt(LocalDateTime.now());
@@ -267,7 +267,7 @@ public class WorkInfoServiceImpl implements WorkInfoService {
                         .progId(workInfoSaveRQB.getProgId())
                         .mcnId(workInfoSaveRQB.getMcnId())
                         .snrId(workInfoSaveRQB.getSnrId())
-                        .isLock(workInfoSaveRQB.isLock())
+                        .isLock(workInfoSaveRQB.getIsLock())
                         .targetSize(workInfoSaveRQB.getTargetQnty())
                         .dueDate(workInfoSaveRQB.getDueDate())
                         .createdAt(LocalDateTime.now())

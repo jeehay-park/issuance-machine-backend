@@ -74,9 +74,8 @@ public class WorkInfo {
     @Column(name = "description")
     private String description;
 
-    @NonNull
-    @Column(name = "is_lock")
-    private boolean isLock;
+    @Column(name = "is_lock", nullable = false)
+    private Boolean isLock;
 
     @Column(name = "status")
     @ValidateString(acceptedValues = {"INIT", "READY", "RUNNING", "ON_STOP", "FINISHED"}, message = "status가 유효하지 않습니다.")
