@@ -34,6 +34,15 @@ public class CommonUtils {
         return false;
     }
 
+    public static boolean hasValues(String strObj1, String strObj2) {
+        if(strObj1 == null || strObj1.length() == 0 || strObj2 == null || strObj2.length() == 0) {
+            return  true;
+        } else {
+            return false;
+        }
+    }
+
+
     public static <T> boolean hasElements(List<T> list) {
         return list != null && !list.isEmpty();
     }

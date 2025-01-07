@@ -15,7 +15,7 @@ public interface WorkInfoService {
     WorkInfoSearchDTO.WorkInfoSearchRSB searchWorkInfo(String trId, WorkInfoSearchDTO.WorkInfoSearchRQB workInfoSearchRQB) throws IctkException;
 
     // Work Info 목록 조회 서비스
-    WorkInfoListDTO.WorkInfoListRSB fetchWorkInfoList(String trId, WorkInfoListDTO.WorkInfoListRQB workInfoClassRQB) throws IctkException;
+    WorkInfoListDTO.WorkInfoListRSB fetchWorkInfoList(String trId, WorkInfoListDTO.WorkInfoListRQB workInfoListRQB) throws IctkException;
 
     // Work Info 추가/변경 서비스
     WorkInfoSaveDTO.WorkInfoSaveRSB saveWorkInfo(String trId, WorkInfoSaveDTO.WorkInfoSaveRQB workInfoSaveRQB) throws IctkException;

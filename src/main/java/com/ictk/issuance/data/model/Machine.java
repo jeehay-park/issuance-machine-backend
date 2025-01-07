@@ -30,7 +30,6 @@ public class Machine {
 
     @Id
     @Column(name = "mcn_id", unique = true, nullable = false)
-    // @Setter
     public String mcnId = AppConstants.TEMPORARY_ID;
 
     @Column(name = "mcn_name")

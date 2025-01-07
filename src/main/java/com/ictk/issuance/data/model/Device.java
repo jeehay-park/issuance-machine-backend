@@ -39,8 +39,8 @@ public class Device {
     private int dvcNum;
 
     // @ManyToOne and @JoinColumn : the most common way to define a foreign key in a JPA entity
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "mcn_id")
+    @ManyToOne
+    @JoinColumn(name = "mcn_id", referencedColumnName = "mcn_id")
     private Machine machine;
 
     @Column(name = "ip")
@@ -66,7 +66,7 @@ public class Device {
     @PrePersist
     public void onSave(){
         if(!CommonUtils.hasValue(dvcId) || AppConstants.TEMPORARY_ID.equals(dvcId))
-            dvcId = "dvc" + String.format("%04d", machine.getSeq())+ String.format("%04d", seq);
+            dvcId = "dvc_" + String.format("%04d", seq);
 
         updatedAt = LocalDateTime.now();
     }
