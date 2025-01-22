@@ -17,62 +17,74 @@ import java.time.LocalDateTime;
 @Builder(toBuilder = true)
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Table(name = "work_handler")
+@Table(name = "session_info")
 @Entity
-public class WorkHandler {
-
-    @InjectSequenceValue(sequencename = "seq", tablename = "work_handler")
+public class DeviceSessionInfo {
+    @InjectSequenceValue(sequencename = "seq", tablename = "session_info")
     @Column(name = "seq", unique = true, nullable = false, updatable = false)
     public long seq;
 
     @Id
-    @Column(name = "hdl_id", unique = true, nullable = false)
-    private String hdlId;
+    @Column(name = "sess_id", unique = true, nullable = false)
+    private String sessId;
 
     @Column(name = "work_id", nullable = false)
     private String workId;
 
+    @Column(name = "workdet_id")
+    private String workdetId;
+
     @Column(name = "dvc_id", nullable = false)
     private String dvcId;
 
-    @Column(name = "mcn_id", nullable = false)
-    private String mcnId;
+    @CreatedDate
+    @Column(name = "session_date", nullable = false, updatable = false)
+    private LocalDateTime sessionDate;
 
-    @Column(name = "hdl_name", nullable = false)
-    private String hdlName;
+    @Column(name = "session_no")
+    private String sessionNo;
+
+    @Column(name = "chip_sn")
+    private String chipSn;
 
     @Column(name = "status")
-    @Pattern(regexp = "INIT|CONNECTING_DEVICE|SETTING_INFO_TO_DEVICE|READY_CHIP|BURNING|COMPLETED|FINISHED|STAY_STATUS|NA", message = "Status must be one of the following: INIT, CONNECTING_DEVICE, SETTING_INFO_TO_DEVICE, READY_CHIP, BURNING, COMPLETED, FINISHED, STAY_STATUS, NA")
+    @Pattern(regexp = "READY|BURNING|COMPLETED", message = "Status must be one of the following: READY, BURNING, COMPLETED")
     private String status;
 
-    @Column(name = "detail_msg")
-    private String detailMsg;
+    @Column(name = "result")
+    @Pattern(regexp = "NONE|OK|FAIL|CHECK|OVER", message = "Result must be one of the following: NONE, OK, FAIL, CHECK, OVER")
+    private String result;
+
+    @Column(name = "error")
+    private String error;
+
+    @Column(name = "tk_msec_time")
+    private int tkMsecTime;
+
+    @Column(name = "param")
+    private String param;
+
+    @Column(name = "param_ext")
+    private String paramExt;
 
     @LastModifiedDate
     @Column(name = "updated_at", nullable = false)
     private LocalDateTime updatedAt;
 
-    @CreatedDate
-    @Column(name = "created_at", nullable = false, updatable = false)
-    private LocalDateTime createdAt;
-
     @Column(name = "comment")
     private String comment;
 
-    // Relationship with Device
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "dvc_id", referencedColumnName = "dvc_id", insertable = false, updatable = false)
-    private Device device;
-
-    // Relationship with Device
+    // Relationship with WorkInfo
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "work_id", referencedColumnName = "work_id", insertable = false, updatable = false)
     private WorkInfo workInfo;
 
     @PrePersist
     public void onSave() {
-        if (!CommonUtils.hasValue(hdlId) || AppConstants.TEMPORARY_ID.equals(hdlId))
-            hdlId = "hdl_" + String.format("%04d", seq);
+        if (!CommonUtils.hasValue(sessId) || AppConstants.TEMPORARY_ID.equals(sessId))
+            sessId = "sess_" + String.format("%04d", seq);
         updatedAt = LocalDateTime.now();
     }
+
+
 }

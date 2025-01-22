@@ -7,6 +7,8 @@ import com.ictk.issuance.service.config.ConfigService;
 import com.ictk.issuance.service.device.DeviceService;
 import com.ictk.issuance.service.machine.MachineService;
 import com.ictk.issuance.service.snrule.SNRuleService;
+import com.ictk.issuance.service.workhandler.WorkHandlerService;
+import com.ictk.issuance.service.workinfo.WorkInfoService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -35,6 +37,12 @@ public class IssuanceAppInitializer implements CommandLineRunner {
 
     @Autowired
     CodeEnumService codeEnumService;
+
+    @Autowired
+    WorkInfoService workInfoService;
+
+    @Autowired
+    WorkHandlerService workHandlerService;
 
 
     @Override
@@ -91,6 +99,21 @@ public class IssuanceAppInitializer implements CommandLineRunner {
             log.error("***** 프로그램을 종료합니다. !! ");
             return;
         }
+
+        // WorkInfo 테이블 생성
+        String workInfoRtn = workInfoService.createWorkInfoTable();
+        if(AppConstants.FAIL.equals(workInfoRtn)) {
+            log.error("***** 프로그램을 종료합니다. !! ");
+            return;
+        }
+
+        // WorkHandler 테이블 생성
+        String workHandlerRtn = workHandlerService.createWorkHandlerTable();
+        if(AppConstants.FAIL.equals(workHandlerRtn)) {
+            log.error("***** 프로그램을 종료합니다. !! ");
+            return;
+        }
+
 
     }
 }

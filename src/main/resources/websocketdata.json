@@ -1,0 +1,48 @@
+  {
+    "startedAt": "2025-01-22T10:00:00Z",
+    "completedExpAt": "2025-01-22T12:00:00Z",
+    "remainedTime": "120 min",
+    "resourceInfo": {
+      "cpuUsage": "80%",
+      "memUsage": "60%",
+      "memIncrease": "60%"
+    },
+    "targetQnty": 1000,
+    "completedQnty": 500,
+    "remainedQnty": 500,
+    "failedQnty": 50,
+    "sampleQnty": 10,
+    "workStatus": "In Progress",
+    "deviceHandlers": [
+      {
+        "mcnName" : "mcnName1",
+        "dvcId" : "device_1",
+        "dvcName" : "dvc_name",
+        "dvcIp" : "1.2.3.4",
+        "hdlId" : "hdl_01",
+        "hdlName" : "handlerName",
+        "hdlStatus" : "INIT",
+        "detailMsg" : "detailMsg" ,
+        "sessId" : "sess_01",
+        "sessionNo" : "sess_01",
+        "sessionDate" : "2028-05-28 10:20:30",
+        "sessionStatus" : "READY",
+        "tkMsecTime" : "12232312"
+      },
+      {
+        "mcnName" : "mcnName2",
+        "dvcId" : "device_1",
+        "dvcName" : "dvc_name",
+        "dvcIp" : "1.2.3.4",
+        "hdlId" : "hdl_01",
+        "hdlName" : "handlerName",
+        "hdlStatus" : "INIT",
+        "detailMsg" : "detailMsg" ,
+        "sessId" : "sess_01",
+        "sessionNo" : "sess_01",
+        "sessionDate" : "2028-05-28 10:20:30",
+        "sessionStatus" : "READY",
+        "tkMsecTime" : "12232312"
+      }
+    ]
+  }

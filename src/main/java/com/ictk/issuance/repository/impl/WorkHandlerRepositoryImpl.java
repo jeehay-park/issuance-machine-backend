@@ -6,6 +6,7 @@ import com.ictk.issuance.data.model.WorkHandler;
 import com.ictk.issuance.repository.dao.WorkHandlerDao;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.persistence.EntityManager;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,9 +38,12 @@ public class WorkHandlerRepositoryImpl extends IssuanceDaoImpl implements WorkHa
         sbSQL.append("  `hdl_name` varchar(128) DEFAULT NULL COMMENT '작업 핸들러 이름', \n");
         sbSQL.append("  `status` varchar(32) DEFAULT NULL COMMENT '작업 핸들러 상태', \n");
         sbSQL.append("  `detail_msg` text DEFAULT NULL COMMENT '상세 메시지', \n");
-        sbSQL.append("  `updated_at` datetime NOT NULL COMMENT '작업 업데이트 시간 ', \n");
-        sbSQL.append("  `created_at` datetime NOT NULL COMMENT '작업 업데이트 시간 ', \n");
+        sbSQL.append("  `updated_at` datetime NOT NULL COMMENT '작업 업데이트 시간', \n");
+        sbSQL.append("  `created_at` datetime NOT NULL COMMENT '작업 업데이트 시간', \n");
         sbSQL.append("  `comment` text DEFAULT NULL COMMENT '주석 기타정보', \n");
+        sbSQL.append("  PRIMARY KEY (`hdl_id`), \n");
+        sbSQL.append("  UNIQUE KEY `IDX_SN_RULE_01_UK` (`seq`) \n");
+        sbSQL.append("  ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci; \n");
 
         log.info(sbSQL.toString());
         entityManager.createNativeQuery(sbSQL.toString()).executeUpdate();
@@ -48,10 +52,12 @@ public class WorkHandlerRepositoryImpl extends IssuanceDaoImpl implements WorkHa
     }
 
     @Override
+    @Transactional
     public long deleteWorkHandlerId(String hdlId) {
         return jpaQueryFactory
                 .delete(workHandler)
-                .where(workHandler.hdlId.eq(hdlId)).execute();
+                .where(workHandler.hdlId.eq(hdlId))
+                .execute();
     }
 
     @Override

@@ -60,4 +60,5 @@ public enum AppCode implements Code {
     public String enmessage() {
         return enmessage;
     }
+
 }

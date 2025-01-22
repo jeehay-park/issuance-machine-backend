@@ -20,4 +20,4 @@ logging:
     file: UTF-8
   file:
     path: ./logs
-    name: issuance-machine-server
+    name: issuance-machine-server-backend

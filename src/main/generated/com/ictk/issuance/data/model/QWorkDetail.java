@@ -11,62 +11,51 @@ import com.querydsl.core.types.dsl.PathInits;
 
 
 /**
- * QWorkHandler is a Querydsl query type for WorkHandler
+ * QWorkDetail is a Querydsl query type for WorkDetail
  */
 @Generated("com.querydsl.codegen.DefaultEntitySerializer")
-public class QWorkHandler extends EntityPathBase<WorkHandler> {
+public class QWorkDetail extends EntityPathBase<WorkDetail> {
 
-    private static final long serialVersionUID = 1409884339L;
+    private static final long serialVersionUID = -1450639928L;
 
     private static final PathInits INITS = PathInits.DIRECT2;
 
-    public static final QWorkHandler workHandler = new QWorkHandler("workHandler");
+    public static final QWorkDetail workDetail = new QWorkDetail("workDetail");
 
     public final StringPath comment = createString("comment");
 
     public final DateTimePath<java.time.LocalDateTime> createdAt = createDateTime("createdAt", java.time.LocalDateTime.class);
 
-    public final StringPath detailMsg = createString("detailMsg");
-
-    public final QDevice device;
-
-    public final StringPath dvcId = createString("dvcId");
-
-    public final StringPath hdlId = createString("hdlId");
-
-    public final StringPath hdlName = createString("hdlName");
-
-    public final StringPath mcnId = createString("mcnId");
+    public final StringPath detailData = createString("detailData");
 
     public final NumberPath<Long> seq = createNumber("seq", Long.class);
 
-    public final StringPath status = createString("status");
-
     public final DateTimePath<java.time.LocalDateTime> updatedAt = createDateTime("updatedAt", java.time.LocalDateTime.class);
+
+    public final StringPath workdetId = createString("workdetId");
 
     public final StringPath workId = createString("workId");
 
     public final QWorkInfo workInfo;
 
-    public QWorkHandler(String variable) {
-        this(WorkHandler.class, forVariable(variable), INITS);
+    public QWorkDetail(String variable) {
+        this(WorkDetail.class, forVariable(variable), INITS);
     }
 
-    public QWorkHandler(Path<? extends WorkHandler> path) {
+    public QWorkDetail(Path<? extends WorkDetail> path) {
         this(path.getType(), path.getMetadata(), PathInits.getFor(path.getMetadata(), INITS));
     }
 
-    public QWorkHandler(PathMetadata metadata) {
+    public QWorkDetail(PathMetadata metadata) {
         this(metadata, PathInits.getFor(metadata, INITS));
     }
 
-    public QWorkHandler(PathMetadata metadata, PathInits inits) {
-        this(WorkHandler.class, metadata, inits);
+    public QWorkDetail(PathMetadata metadata, PathInits inits) {
+        this(WorkDetail.class, metadata, inits);
     }
 
-    public QWorkHandler(Class<? extends WorkHandler> type, PathMetadata metadata, PathInits inits) {
+    public QWorkDetail(Class<? extends WorkDetail> type, PathMetadata metadata, PathInits inits) {
         super(type, metadata, inits);
-        this.device = inits.isInitialized("device") ? new QDevice(forProperty("device"), inits.get("device")) : null;
         this.workInfo = inits.isInitialized("workInfo") ? new QWorkInfo(forProperty("workInfo"), inits.get("workInfo")) : null;
     }
 

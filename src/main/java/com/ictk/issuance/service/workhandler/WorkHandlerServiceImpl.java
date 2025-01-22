@@ -9,6 +9,7 @@ import com.ictk.issuance.data.dto.shared.AppDTO;
 import com.ictk.issuance.data.dto.workhandler.WorkHandlerDeleteDTO;
 import com.ictk.issuance.data.dto.workhandler.WorkHandlerListDTO;
 import com.ictk.issuance.data.dto.workhandler.WorkHandlerSaveDTO;
+import com.ictk.issuance.data.model.Device;
 import com.ictk.issuance.data.model.WorkHandler;
 import com.ictk.issuance.manager.IssuanceManager;
 import com.ictk.issuance.properties.DBProperties;
@@ -21,10 +22,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
 @Slf4j
@@ -93,15 +91,51 @@ public class WorkHandlerServiceImpl implements WorkHandlerService {
                 Map<String, Object> dataMap = new LinkedHashMap<>();
                 dataMap.put("idx", idx.get());
                 hdrInfoMap.forEach((key, value) -> {
+//                    switch (value.getKeyName()) {
+//                        case "mcnName" -> dataMap.put(value.getKeyName(), workHandler.getDevice().getMachine().getMcnName());
+//                        case "dvcId" -> dataMap.put(value.getKeyName(), workHandler.getDvcId());
+//                        case "dvcName" -> dataMap.put(value.getKeyName(), workHandler.getDevice().getDvcName());
+//                        case "dvcIp" -> dataMap.put(value.getKeyName(), workHandler.getDevice().getIp());
+//                        case "hdlId" -> dataMap.put(value.getKeyName(), workHandler.getHdlId());
+//                        case "hdlName" -> dataMap.put(value.getKeyName(), workHandler.getHdlName());
+//                        case "detailMsg" -> dataMap.put(value.getKeyName(), workHandler.getDetailMsg());
+//                    }
                     switch (value.getKeyName()) {
-                        case "mcnName" -> dataMap.put(value.getKeyName(), workHandler.getDevice().getMachine().getMcnName());
-                        case "dvcId" -> dataMap.put(value.getKeyName(), workHandler.getDvcId());
-                        case "dvcName" -> dataMap.put(value.getKeyName(), workHandler.getDevice().getDvcName());
-                        case "dvcIp" -> dataMap.put(value.getKeyName(), workHandler.getDevice().getIp());
-                        case "hdlId" -> dataMap.put(value.getKeyName(), workHandler.getHdlId());
-                        case "hdlName" -> dataMap.put(value.getKeyName(), workHandler.getHdlName());
-                        case "detailMsg" -> dataMap.put(value.getKeyName(), workHandler.getDetailMsg());
+                        case "mcnName":
+                            if (workHandler.getDevice() != null && workHandler.getDevice().getMachine() != null) {
+                                dataMap.put(value.getKeyName(), workHandler.getDevice().getMachine().getMcnName());
+                            } else {
+                                dataMap.put(value.getKeyName(), null); // Or use a default value
+                            }
+                            break;
+                        case "dvcId":
+                            dataMap.put(value.getKeyName(), workHandler.getDvcId());
+                            break;
+                        case "dvcName":
+                            if (workHandler.getDevice() != null) {
+                                dataMap.put(value.getKeyName(), workHandler.getDevice().getDvcName());
+                            } else {
+                                dataMap.put(value.getKeyName(), null); // Or use a default value
+                            }
+                            break;
+                        case "dvcIp":
+                            if (workHandler.getDevice() != null) {
+                                dataMap.put(value.getKeyName(), workHandler.getDevice().getIp());
+                            } else {
+                                dataMap.put(value.getKeyName(), null); // Or use a default value
+                            }
+                            break;
+                        case "hdlId":
+                            dataMap.put(value.getKeyName(), workHandler.getHdlId());
+                            break;
+                        case "hdlName":
+                            dataMap.put(value.getKeyName(), workHandler.getHdlName());
+                            break;
+                        case "detailMsg":
+                            dataMap.put(value.getKeyName(), workHandler.getDetailMsg());
+                            break;
                     }
+
                 });
 
                 bodyList.add(dataMap);
@@ -165,6 +199,14 @@ public class WorkHandlerServiceImpl implements WorkHandlerService {
 
     @Override
     public WorkHandlerDeleteDTO.WorkHandlerDeleteRSB deleteWorkHandler(String trId, WorkHandlerDeleteDTO.WorkHandlerDeleteRQB workHandlerDeleteRQB) throws IctkException {
+
+        Optional<WorkHandler> workHandler = workHandlerRepository.findById(workHandlerDeleteRQB.getHdlId());
+        if (workHandler.isPresent()) {
+            log.info("WorkHandler found: {}", workHandler.get());
+        } else {
+            log.warn("No WorkHandler found with hdlId: {}", workHandlerDeleteRQB.getHdlId());
+            throw new IctkException(trId, AppCode.WORK_PROC_ERROR, " 발급 작업 " + workHandlerDeleteRQB.getHdlId() + " 없음.");
+        }
 
         workHandlerRepository.findById(workHandlerDeleteRQB.getHdlId())
                 .orElseThrow(() -> new IctkException(trId, AppCode.WORK_PROC_ERROR, " 발급 작업 " + workHandlerDeleteRQB.getHdlId() + " 없음."));

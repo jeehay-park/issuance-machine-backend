@@ -5,7 +5,7 @@ spring:
   datasource:
     url: jdbc:mariadb://localhost:3306/manufacture_v3_0_test  # Replace with your actual public IP if necessary
     username: root  # Replace with your database username
-    password: 'oct102024'  # Replace with your database password
+    password: oct102024  # Replace with your database password
     driver-class-name: org.mariadb.jdbc.Driver
     p6spy:
       enabled: true
@@ -77,3 +77,9 @@ issuance:
     table-name : program_info
   work-info:
     table-name : work_info
+  work-handler:
+    table-name: work_handler
+  work-detail:
+    table-name: work_detail
+  session-info:
+    table-name: session_info

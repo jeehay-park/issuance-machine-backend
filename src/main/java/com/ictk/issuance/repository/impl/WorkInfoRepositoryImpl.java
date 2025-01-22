@@ -63,6 +63,9 @@ public class WorkInfoRepositoryImpl extends IssuanceDaoImpl implements WorkInfoD
         sbSQL.append("  `updated_at` datetime NOT NULL COMMENT '작업 업데이트 시간 ', \n");
         sbSQL.append("  `created_at` datetime NOT NULL COMMENT '작업 업데이트 시간 ', \n");
         sbSQL.append("  `comment` text DEFAULT NULL COMMENT '주석 기타정보', \n");
+        sbSQL.append("  PRIMARY KEY (`work_id`), \n");
+        sbSQL.append("  UNIQUE KEY `IDX_SN_RULE_01_UK` (`seq`) \n");
+        sbSQL.append("  ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci; \n");
 
         log.info(sbSQL.toString());
         entityManager.createNativeQuery(sbSQL.toString()).executeUpdate();
