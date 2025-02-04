@@ -24,5 +24,8 @@ public interface WorkInfoDao {
             Pageable pageable,
             List<OrderSpecifier> orderSpecifiers);
 
+    // 작업 Id 목록
+    List<String> findAllWorkIds();
+
 }
 

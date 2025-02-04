@@ -19,6 +19,7 @@ import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
+import static com.ictk.issuance.data.model.QDevice.device;
 import static com.ictk.issuance.data.model.QProgramInfo.programInfo;
 import static com.ictk.issuance.data.model.QWorkInfo.workInfo;
 
@@ -88,7 +89,6 @@ public class WorkInfoRepositoryImpl extends IssuanceDaoImpl implements WorkInfoD
             List<OrderSpecifier> orderSpecifiers) {
 
         // total count 구하기
-
         JPAQuery<Long> countQuery
                 = jpaQueryFactory
                 .select(workInfo.count())
@@ -108,5 +108,13 @@ public class WorkInfoRepositoryImpl extends IssuanceDaoImpl implements WorkInfoD
                                 .fetch(),
                         pageable,
                         total ));
+    }
+
+    @Override
+    public List<String> findAllWorkIds() {
+        return jpaQueryFactory
+                .select(workInfo.workId)
+                .from(workInfo)
+                .fetch();
     }
 }

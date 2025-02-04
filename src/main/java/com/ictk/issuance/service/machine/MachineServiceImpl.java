@@ -258,7 +258,6 @@ public class MachineServiceImpl implements MachineService {
                 .machineIdList(machineIds)
                 .build();
     }
-
 }
 
 

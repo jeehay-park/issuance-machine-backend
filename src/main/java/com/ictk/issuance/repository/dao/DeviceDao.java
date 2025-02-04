@@ -36,4 +36,9 @@ public interface DeviceDao {
     // 디바이스 삭제
     // long deleteDeviceByDvcId(String dvcId);
 
+
+    // 디바이스 Id 목록
+    List<String> findAllDvcIds();
+
+
 }

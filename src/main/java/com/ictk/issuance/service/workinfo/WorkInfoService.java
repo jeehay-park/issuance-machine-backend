@@ -1,10 +1,8 @@
 package com.ictk.issuance.service.workinfo;
 
 import com.ictk.issuance.common.exception.IctkException;
-import com.ictk.issuance.data.dto.workinfo.WorkInfoDeleteDTO;
-import com.ictk.issuance.data.dto.workinfo.WorkInfoListDTO;
-import com.ictk.issuance.data.dto.workinfo.WorkInfoSaveDTO;
-import com.ictk.issuance.data.dto.workinfo.WorkInfoSearchDTO;
+import com.ictk.issuance.data.dto.machine.MachineIdListDTO;
+import com.ictk.issuance.data.dto.workinfo.*;
 
 public interface WorkInfoService {
 
@@ -22,5 +20,8 @@ public interface WorkInfoService {
 
     // Work Info 삭제 서비스
     WorkInfoDeleteDTO.WorkInfoDeleteRSB deleteWorkInfo(String trId, WorkInfoDeleteDTO.WorkInfoDeleteRQB workInfoDeleteRQB) throws IctkException;
+
+    // Work Info Id 목록 조회
+    WorkIdListDTO.WorkIdListRSB workIdsList(String trId) throws IctkException;
 
 }

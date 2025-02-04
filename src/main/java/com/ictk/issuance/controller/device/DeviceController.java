@@ -9,9 +9,11 @@ import com.ictk.issuance.common.security.SessionInfo;
 import com.ictk.issuance.common.utils.CommonUtils;
 import com.ictk.issuance.data.dto.device.DeviceDeleteDTO.DeviceDeleteRQB;
 import com.ictk.issuance.data.dto.device.DeviceDeleteDTO.DeviceDeleteRSB;
+import com.ictk.issuance.data.dto.device.DeviceIdListDTO;
 import com.ictk.issuance.data.dto.device.DeviceSaveDTO.DeviceSaveRQB;
 import com.ictk.issuance.data.dto.device.DeviceSaveDTO.DeviceSaveRSB;
 import com.ictk.issuance.data.dto.machine.MachineDeleteDTO;
+import com.ictk.issuance.data.dto.machine.MachineIdListDTO;
 import com.ictk.issuance.service.device.DeviceService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -81,7 +83,31 @@ public class DeviceController {
         log.debug("{}", CommonUtils.toJson(objectMapper, dvcsDelResponse));
 
         return dvcsDelResponse;
-
     }
 
+
+    @Operation(summary = "디바이스 Id 목록", description = "디바이스 Id 목록 조회를 위한 API")
+    @PostMapping("/id-list")
+    public CommonResponse<DeviceIdListDTO.DeviceIdListRSB> fetchDvcIds(
+            @AuthenticationPrincipal SessionInfo sessionInfo,
+            @Valid @RequestBody CommonRequest<DeviceIdListDTO> deviceIdRequest
+    ) {
+        final var idListTrId = "500507";
+
+        log.debug("{} {}", sessionInfo, CommonUtils.toJson(objectMapper, deviceIdRequest));
+
+        if(!idListTrId.equals(deviceIdRequest.getHeader().getTrId()))
+            throw new IctkException(idListTrId, AppCode.TRID_INVALID, deviceIdRequest.getHeader().getTrId());
+
+        CommonResponse<DeviceIdListDTO.DeviceIdListRSB> deviceIdResponse = CommonResponse.ok(
+                idListTrId,
+                deviceService.deviceIdsList(
+                        idListTrId
+                )
+        );
+
+        log.debug("{}", CommonUtils.toJson(objectMapper, deviceIdResponse));
+
+        return deviceIdResponse;
+    }
 }

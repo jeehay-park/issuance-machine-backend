@@ -10,20 +10,28 @@ import com.ictk.issuance.data.dto.workhandler.WorkHandlerDeleteDTO;
 import com.ictk.issuance.data.dto.workhandler.WorkHandlerListDTO;
 import com.ictk.issuance.data.dto.workhandler.WorkHandlerSaveDTO;
 import com.ictk.issuance.data.model.Device;
+import com.ictk.issuance.data.model.ProgramInfo;
 import com.ictk.issuance.data.model.WorkHandler;
 import com.ictk.issuance.manager.IssuanceManager;
 import com.ictk.issuance.properties.DBProperties;
 import com.ictk.issuance.properties.WorkHandlerProperties;
 import com.ictk.issuance.repository.WorkHandlerRepository;
 import com.ictk.issuance.utils.AppHelper;
+import com.querydsl.core.BooleanBuilder;
+import com.querydsl.core.types.OrderSpecifier;
+import io.vavr.Tuple2;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StopWatch;
 
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
+
+import static com.ictk.issuance.data.model.QWorkHandler.workHandler;
 
 @Slf4j
 @Service
@@ -64,6 +72,7 @@ public class WorkHandlerServiceImpl implements WorkHandlerService {
     }
 
     @Override
+    @Transactional // Keeps Hibernate session open for lazy loading
     public WorkHandlerListDTO.WorkHandlerListRSB fetchWorkHandlerList(String trId, WorkHandlerListDTO.WorkHandlerListRQB workHandlerListRQB) throws IctkException {
 
         // 데이터 헤더 정보 구성 <---- AppHelper 작성 필요
@@ -74,12 +83,32 @@ public class WorkHandlerServiceImpl implements WorkHandlerService {
             headerInfos.add(value);
         });
 
+        // 동적 소팅 생성
+        List<OrderSpecifier> orderSpecifiers = AppHelper.getRequestRQBOrderSpecifiers(
+                WorkHandler.class, "workHandler", hdrInfoMap, "hdlId", "ASC"
+        );
+
+        // 동적 쿼리 생성
+        BooleanBuilder queryConds = new BooleanBuilder();
+        if (CommonUtils.hasValue(workHandlerListRQB.getWorkId()))
+            queryConds.and(workHandler.workId.contains(workHandlerListRQB.getWorkId()));
+
+        StopWatch timer = new StopWatch();
+        timer.start();
+
         // 테이블 쿼리
-        List<WorkHandler> workHandler = workHandlerRepository.findAll();
+        Tuple2<Long, Page<WorkHandler>> workHandlerPaged = workHandlerRepository.getWorkHandlerPageByCondition(
+                queryConds,
+                workHandlerListRQB.getPageable(),
+                orderSpecifiers
+        );
 
         return WorkHandlerListDTO.WorkHandlerListRSB.
                 builder()
-                .workHandlers(composeWorkHandlers(hdrInfoMap, workHandler))
+                .totalCnt(workHandlerPaged._1())
+                .curPage(workHandlerListRQB.getPageable().getPageNumber())
+                .headerInfos(workHandlerListRQB.isHeaderInfo() ? headerInfos : null)
+                .workHandlers(composeWorkHandlers(hdrInfoMap, workHandlerPaged._2().toList()))
                 .build();
     }
 
@@ -91,18 +120,9 @@ public class WorkHandlerServiceImpl implements WorkHandlerService {
                 Map<String, Object> dataMap = new LinkedHashMap<>();
                 dataMap.put("idx", idx.get());
                 hdrInfoMap.forEach((key, value) -> {
-//                    switch (value.getKeyName()) {
-//                        case "mcnName" -> dataMap.put(value.getKeyName(), workHandler.getDevice().getMachine().getMcnName());
-//                        case "dvcId" -> dataMap.put(value.getKeyName(), workHandler.getDvcId());
-//                        case "dvcName" -> dataMap.put(value.getKeyName(), workHandler.getDevice().getDvcName());
-//                        case "dvcIp" -> dataMap.put(value.getKeyName(), workHandler.getDevice().getIp());
-//                        case "hdlId" -> dataMap.put(value.getKeyName(), workHandler.getHdlId());
-//                        case "hdlName" -> dataMap.put(value.getKeyName(), workHandler.getHdlName());
-//                        case "detailMsg" -> dataMap.put(value.getKeyName(), workHandler.getDetailMsg());
-//                    }
                     switch (value.getKeyName()) {
                         case "mcnName":
-                            if (workHandler.getDevice() != null && workHandler.getDevice().getMachine() != null) {
+                            if (workHandler.getDevice() != null && workHandler.getDevice().getMachine().getMcnName() != null) {
                                 dataMap.put(value.getKeyName(), workHandler.getDevice().getMachine().getMcnName());
                             } else {
                                 dataMap.put(value.getKeyName(), null); // Or use a default value
@@ -112,7 +132,7 @@ public class WorkHandlerServiceImpl implements WorkHandlerService {
                             dataMap.put(value.getKeyName(), workHandler.getDvcId());
                             break;
                         case "dvcName":
-                            if (workHandler.getDevice() != null) {
+                            if (workHandler.getDevice() != null && workHandler.getDevice().getDvcName() != null) {
                                 dataMap.put(value.getKeyName(), workHandler.getDevice().getDvcName());
                             } else {
                                 dataMap.put(value.getKeyName(), null); // Or use a default value

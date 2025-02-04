@@ -4,11 +4,9 @@ import com.ictk.issuance.common.constants.AppCode;
 import com.ictk.issuance.common.exception.IctkException;
 import com.ictk.issuance.common.utils.CommonUtils;
 import com.ictk.issuance.constants.AppConstants;
+import com.ictk.issuance.data.dto.machine.MachineIdListDTO;
 import com.ictk.issuance.data.dto.shared.AppDTO;
-import com.ictk.issuance.data.dto.workinfo.WorkInfoDeleteDTO;
-import com.ictk.issuance.data.dto.workinfo.WorkInfoListDTO;
-import com.ictk.issuance.data.dto.workinfo.WorkInfoSaveDTO;
-import com.ictk.issuance.data.dto.workinfo.WorkInfoSearchDTO;
+import com.ictk.issuance.data.dto.workinfo.*;
 import com.ictk.issuance.data.model.WorkInfo;
 import com.ictk.issuance.manager.IssuanceManager;
 import com.ictk.issuance.properties.DBProperties;
@@ -294,6 +292,15 @@ public class WorkInfoServiceImpl implements WorkInfoService {
         return WorkInfoDeleteDTO.WorkInfoDeleteRSB.builder()
                 .result((dcnt > 0) ? AppConstants.SUCC : AppConstants.FAIL)
                 .deleteCnt((int) dcnt)
+                .build();
+    }
+
+    @Override
+    public WorkIdListDTO.WorkIdListRSB workIdsList(String trId) throws IctkException {
+        List<String> workIds = workInfoRepository.findAllWorkIds();
+
+        return WorkIdListDTO.WorkIdListRSB.builder()
+                .workIdList(workIds)
                 .build();
     }
 }

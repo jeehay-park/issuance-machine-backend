@@ -1,16 +1,26 @@
 package com.ictk.issuance.repository.impl;
 
+import static com.ictk.issuance.data.model.QProgramInfo.programInfo;
 import static com.ictk.issuance.data.model.QWorkHandler.workHandler;
 
 import com.ictk.issuance.data.model.WorkHandler;
 import com.ictk.issuance.repository.dao.WorkHandlerDao;
+import com.querydsl.core.types.OrderSpecifier;
+import com.querydsl.core.types.Predicate;
+import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import io.vavr.Tuple;
+import io.vavr.Tuple2;
 import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 
+import java.util.List;
 import java.util.Optional;
 
 
@@ -68,5 +78,30 @@ public class WorkHandlerRepositoryImpl extends IssuanceDaoImpl implements WorkHa
                         .where(workHandler.workId.eq(workId))
                         .fetchOne()
         );
+    }
+
+    @Override
+    public Tuple2<Long, Page<WorkHandler>> getWorkHandlerPageByCondition(Predicate queryConds, Pageable pageable, List<OrderSpecifier> orderSpecifiers) {
+        // total count 구하기
+
+        JPAQuery<Long> countQuery
+                = jpaQueryFactory
+                .select(workHandler.count())
+                .from(workHandler)
+                .where(queryConds);
+
+        Long total = countQuery.fetchCount();
+
+        return Tuple.of(
+                total,
+                new PageImpl<>(
+                        jpaQueryFactory.selectFrom(workHandler)
+                                .where(queryConds)
+                                .orderBy(orderSpecifiers.toArray(new OrderSpecifier[orderSpecifiers.size()]))
+                                .offset(pageable.getOffset())
+                                .limit(pageable.getPageSize())
+                                .fetch(),
+                        pageable,
+                        total ));
     }
 }

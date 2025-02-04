@@ -21,6 +21,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import static com.ictk.issuance.data.model.QDevice.device;
+import static com.ictk.issuance.data.model.QMachine.machine;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -130,4 +131,11 @@ public class DeviceRepositoryImpl extends IssuanceDaoImpl implements DeviceDao {
                 .execute();
     }
 
+    @Override
+    public List<String> findAllDvcIds() {
+        return jpaQueryFactory
+                .select(device.dvcId)
+                .from(device)
+                .fetch();
+    }
 }

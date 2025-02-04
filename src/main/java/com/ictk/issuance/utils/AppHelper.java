@@ -157,7 +157,7 @@ public class AppHelper {
         Map<String, HeaderInfoObj> headerInfoMap = new LinkedHashMap<>();
 
         int idx = 1;
-        headerInfoMap.put("seq", HeaderInfoObj.builder().idx(idx++).keyName("seq").name("순번").isSort(false).isFilter(false).isDisplay(false).build());
+        headerInfoMap.put("idx", HeaderInfoObj.builder().idx(idx++).keyName("idx").name("순번").isSort(false).isFilter(false).isDisplay(false).build());
         headerInfoMap.put("work_id", HeaderInfoObj.builder().idx(idx++).keyName("work_id").name("발급작업 ID").isSort(false).isFilter(false).isDisplay(false).build());
         headerInfoMap.put("work_no", HeaderInfoObj.builder().idx(idx++).keyName("work_no").name("발급작업 표시 넘버").isSort(true).isFilter(false).isDisplay(true).build());
         headerInfoMap.put("tag_name", HeaderInfoObj.builder().idx(idx++).keyName("tag_name").name("태그 명").isSort(true).isFilter(false).isDisplay(true).build());
@@ -191,15 +191,14 @@ public class AppHelper {
         Map<String, HeaderInfoObj> headerInfoMap = new LinkedHashMap<>();
 
         int idx = 1;
-        headerInfoMap.put("seq", HeaderInfoObj.builder().idx(idx++).keyName("seq").name("순번").isSort(true).isFilter(false).isDisplay(false).build());
+        headerInfoMap.put("idx", HeaderInfoObj.builder().idx(idx++).keyName("idx").name("순번").isSort(true).isFilter(false).isDisplay(false).build());
         headerInfoMap.put("mcnName", HeaderInfoObj.builder().idx(idx++).keyName("mcnName").name("발급기 이름").isSort(false).isFilter(false).isDisplay(true).build());
-        headerInfoMap.put("dvcId", HeaderInfoObj.builder().idx(idx++).keyName("dvcId").name("발급기 디바이스 고유 ID").isSort(false).isFilter(false).isDisplay(true).build());
-        headerInfoMap.put("dvcName", HeaderInfoObj.builder().idx(idx++).keyName("tag_name").name("디바이스 이름").isSort(false).isFilter(false).isDisplay(true).build());
-        headerInfoMap.put("dvcIp", HeaderInfoObj.builder().idx(idx++).keyName("dvcIp").name("디바이스 IP").isSort(false).isFilter(false).isDisplay(true).build());
-        headerInfoMap.put("hdlId", HeaderInfoObj.builder().idx(idx++).keyName("hdlId").name("발급작업 핸들러 ID").isSort(false).isFilter(false).isDisplay(true).build());
+        headerInfoMap.put("dvcId", HeaderInfoObj.builder().idx(idx++).keyName("dvcId").name("발급기 디바이스 고유 ID").isSort(false).isFilter(false).isDisplay(false).build());
+        headerInfoMap.put("dvcName", HeaderInfoObj.builder().idx(idx++).keyName("dvcName").name("디바이스 이름").isSort(false).isFilter(false).isDisplay(true).build());
+        headerInfoMap.put("dvcIp", HeaderInfoObj.builder().idx(idx++).keyName("dvcIp").name("디바이스 IP").isSort(false).isFilter(false).isDisplay(false).build());
+        headerInfoMap.put("hdlId", HeaderInfoObj.builder().idx(idx++).keyName("hdlId").name("발급작업 핸들러 ID").isSort(false).isFilter(false).isDisplay(false).build());
         headerInfoMap.put("hdlName", HeaderInfoObj.builder().idx(idx++).keyName("hdlName").name("작업 핸들러 이름").isSort(false).isFilter(false).isDisplay(true).build());
-        headerInfoMap.put("detailMsg", HeaderInfoObj.builder().idx(idx++).keyName("detailMsg").name("작업 상세 메시지").isSort(false).isFilter(false).isDisplay(true).build());
-
+        headerInfoMap.put("detailMsg", HeaderInfoObj.builder().idx(idx++).keyName("detailMsg").name("작업 상세 메시지").isSort(false).isFilter(false).isDisplay(false).build());
 
         return headerInfoMap;
     };
@@ -227,7 +226,6 @@ public class AppHelper {
             orderSpecifiers.add(new OrderSpecifier(AppConstants.ORDER_DESC.equals(order) ? Order.DESC : Order.ASC, entity.get(entityField)));
         } else
             orderSpecifiers.add(new OrderSpecifier(Order.DESC, entity.get("createdAt")));
-
         return orderSpecifiers;
     }
 

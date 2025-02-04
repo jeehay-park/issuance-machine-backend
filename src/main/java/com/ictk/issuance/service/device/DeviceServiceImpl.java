@@ -6,8 +6,10 @@ import com.ictk.issuance.common.utils.CommonUtils;
 import com.ictk.issuance.constants.AppConstants;
 import com.ictk.issuance.data.dto.device.DeviceDeleteDTO.DeviceDeleteRQB;
 import com.ictk.issuance.data.dto.device.DeviceDeleteDTO.DeviceDeleteRSB;
+import com.ictk.issuance.data.dto.device.DeviceIdListDTO;
 import com.ictk.issuance.data.dto.device.DeviceSaveDTO.DeviceSaveRQB;
 import com.ictk.issuance.data.dto.device.DeviceSaveDTO.DeviceSaveRSB;
+import com.ictk.issuance.data.dto.machine.MachineIdListDTO;
 import com.ictk.issuance.data.model.Device;
 import com.ictk.issuance.data.model.Machine;
 import com.ictk.issuance.manager.IssuanceManager;
@@ -177,4 +179,12 @@ public class DeviceServiceImpl implements DeviceService {
                 .build();
     }
 
+    @Override
+    public DeviceIdListDTO.DeviceIdListRSB deviceIdsList(String trId) throws IctkException {
+        List<String> deviceIds =deviceRepository.findAllDvcIds();
+
+        return DeviceIdListDTO.DeviceIdListRSB.builder()
+                .deviceIdList(deviceIds)
+                .build();
+    }
 }

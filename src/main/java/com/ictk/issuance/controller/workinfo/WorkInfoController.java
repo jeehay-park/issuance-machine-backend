@@ -7,10 +7,8 @@ import com.ictk.issuance.common.dto.CommonResponse;
 import com.ictk.issuance.common.exception.IctkException;
 import com.ictk.issuance.common.security.SessionInfo;
 import com.ictk.issuance.common.utils.CommonUtils;
-import com.ictk.issuance.data.dto.workinfo.WorkInfoDeleteDTO;
-import com.ictk.issuance.data.dto.workinfo.WorkInfoListDTO;
-import com.ictk.issuance.data.dto.workinfo.WorkInfoSaveDTO;
-import com.ictk.issuance.data.dto.workinfo.WorkInfoSearchDTO;
+import com.ictk.issuance.data.dto.device.DeviceIdListDTO;
+import com.ictk.issuance.data.dto.workinfo.*;
 import com.ictk.issuance.service.workinfo.WorkInfoService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -151,4 +149,26 @@ public class WorkInfoController {
         return workInfoSaveResponse;
     }
 
+    @Operation(summary = "작업 Id 목록", description = "작업 Id 목록 조회를 위한 API")
+    @PostMapping("/id-list")
+    public CommonResponse<WorkIdListDTO.WorkIdListRSB> fetchDvcIds(
+            @AuthenticationPrincipal SessionInfo sessionInfo,
+            @Valid @RequestBody CommonRequest<DeviceIdListDTO> workIdRequest
+    ) {
+        final var idListTrId = "500111";
+
+        log.debug("{} {}", sessionInfo, CommonUtils.toJson(objectMapper, workIdRequest));
+
+        if(!idListTrId.equals(workIdRequest.getHeader().getTrId()))
+            throw new IctkException(idListTrId, AppCode.TRID_INVALID, workIdRequest.getHeader().getTrId());
+
+        CommonResponse<WorkIdListDTO.WorkIdListRSB> workIdResponse = CommonResponse.ok(
+                idListTrId,
+                workInfoService.workIdsList(idListTrId)
+        );
+
+        log.debug("{}", CommonUtils.toJson(objectMapper, workIdResponse));
+
+        return workIdResponse;
+    }
 }
