@@ -49,7 +49,7 @@ public class ProfileConfigRepositoryImpl extends IssuanceDaoImpl implements Prof
         sbSQL.append(" `created_at` datetime NOT NULL COMMENT '등록 시간', \n");
         sbSQL.append(" `comment` text DEFAULT NULL COMMENT '주석 기타정보', \n");
         sbSQL.append("  PRIMARY KEY (`prof_id`), \n");
-        sbSQL.append("  UNIQUE KEY `IDX_PROFILE_CONFIG_01_UK` (`seq`) \n");
+        sbSQL.append("  UNIQUE KEY `IDX_PROFILE_CONFIG_UK` (`seq`) \n");
         sbSQL.append(" ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci; \n");
 
 

@@ -24,4 +24,7 @@ public interface WorkInfoService {
     // Work Info Id 목록 조회
     WorkIdListDTO.WorkIdListRSB workIdsList(String trId) throws IctkException;
 
+    // 작업제어 명령
+    WorkControlDTO.WorkControlRSB controlWork(String trId, WorkControlDTO.WorkControlRQB workControlRQB) throws IctkException;
+
 }

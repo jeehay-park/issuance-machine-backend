@@ -171,4 +171,29 @@ public class WorkInfoController {
 
         return workIdResponse;
     }
+
+    @Operation(summary = "작업 명령", description = "작업 명령을 위한 API")
+    @PostMapping("/control")
+    public CommonResponse<WorkControlDTO.WorkControlRSB> controlWork(
+            @AuthenticationPrincipal SessionInfo sessionInfo,
+            @Valid @RequestBody CommonRequest<WorkControlDTO.WorkControlRQB> workControlRequest
+    ) {
+        final var workControlTrId = "500120";
+
+        log.debug("{} {}", sessionInfo, CommonUtils.toJson(objectMapper, workControlRequest));
+        if(!workControlTrId.equals((workControlRequest.getHeader().getTrId()))) {
+            throw new IctkException(workControlTrId, AppCode.TRID_INVALID, workControlRequest.getHeader().getTrId());
+        }
+
+        WorkControlDTO.WorkControlRQB workControlRQB = workControlRequest.getBody();
+
+        CommonResponse<WorkControlDTO.WorkControlRSB> workControlResponse = CommonResponse.ok(
+                workControlTrId,
+                workInfoService.controlWork(workControlTrId, workControlRQB)
+        );
+
+        log.debug("{}", CommonUtils.toJson(objectMapper, workControlResponse));
+
+        return workControlResponse;
+    }
 }

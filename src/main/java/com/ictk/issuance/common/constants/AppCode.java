@@ -40,6 +40,9 @@ public enum AppCode implements Code {
     CODEENUM_PROC_ERROR("E130004", "코드 ENUM 처리중 {0} 에러가 발생하였습니다", "An error {0} occurred while Issuance-machine Code-ENUM processing"),
     PROGRAM_PROC_ERROR("E130005", "프로그램 처리중 {0} 에러가 발생하였습니다", "An error {0} occurred while Issuance-machine Program processing"),
     WORK_PROC_ERROR("E130006", "작업 처리중 {0} 에러가 발생하였습니다", "An error {0} occurred while Issuance-machine Work processing"),
+    USER_SIGNUP_ERROR("E130007", "사용자 등록 처리 중 오류가 발생했습니다.", "An error occurred while processing user signup."),
+    USER_LOGIN_CHALLENGE_ERROR("E130008", "사용자 정보가 없거나, 인증정보가 일치하지 않습니다.", "An error occurred while processing user login."),
+    USER_LOGIN_REQUEST_ERROR("E130009", "사용자 정보가 없거나, 인증정보가 일치하지 않습니다.", "An error occurred while processing user login.")
     ;
 
     private final String code;

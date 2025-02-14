@@ -32,7 +32,6 @@ public class ProgramInfoRepositoryImpl extends IssuanceDaoImpl implements Progra
     @Autowired
     private JPAQueryFactory jpaQueryFactory;
 
-
     @Override
     public boolean makeTable(String database, String tableName) {
         StringBuffer sbSQL = new StringBuffer();

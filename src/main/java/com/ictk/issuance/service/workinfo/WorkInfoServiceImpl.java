@@ -303,4 +303,22 @@ public class WorkInfoServiceImpl implements WorkInfoService {
                 .workIdList(workIds)
                 .build();
     }
+
+    @Override
+    public WorkControlDTO.WorkControlRSB controlWork(String trId, WorkControlDTO.WorkControlRQB workControlRQB) throws IctkException {
+
+        int updatedRows = workInfoRepository.updateWorkStatusByWorkId(workControlRQB.getWorkId(), workControlRQB.getCommand());
+
+        if(updatedRows > 0 ) {
+            return WorkControlDTO.WorkControlRSB.builder()
+                    .commandResult("SUCC")
+                    .resultMessage("Work status updated successfully")
+                    .build();
+        } else {
+            return WorkControlDTO.WorkControlRSB.builder()
+                    .commandResult("FAIL")
+                    .resultMessage("WorkId not found or updated failed")
+                    .build();
+        }
+    }
 }

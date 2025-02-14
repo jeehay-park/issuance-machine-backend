@@ -30,7 +30,7 @@ public class WorkDetailRepositoryImpl extends IssuanceDaoImpl implements WorkDet
         sbSQL.append("  `created_at` datetime NOT NULL COMMENT '작업 업데이트 시간', \n");
         sbSQL.append("  `comment` text DEFAULT NULL COMMENT '주석 기타정보', \n");
         sbSQL.append("   PRIMARY KEY (`workdet_id`), \n");
-        sbSQL.append("   UNIQUE KEY `IDX_SN_RULE_01_UK` (`seq`) \n");
+        sbSQL.append("   UNIQUE KEY `IDX_WORK_DETAIL_UK` (`seq`) \n");
         sbSQL.append("  ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci; \n");
 
         log.info(sbSQL.toString());

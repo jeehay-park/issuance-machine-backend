@@ -9,7 +9,13 @@ import org.apache.commons.exec.*;
 
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
+import java.util.Base64;
 import java.util.List;
+import java.util.UUID;
 import java.util.concurrent.TimeoutException;
 
 @Slf4j
@@ -86,5 +92,40 @@ public class CommonUtils {
         return outAndErr.getOutput();
     }
 
+    //The sha512 method works by applying the SHA-512 cryptographic hash function
+    // to an input string and returning the result in a readable hexadecimal format.
+    public static String sha512(String input) {
+        try {
+            // MessageDigest is a built-in Java class for performing cryptographic hashes.
+            MessageDigest md = MessageDigest.getInstance("SHA-512");
+
+            // converts the input string into a sequence of bytes using UTF-8 encoding
+            byte[] bytes = md.digest(input.getBytes(StandardCharsets.UTF_8));
+
+            StringBuilder hexString = new StringBuilder();
+            for (byte b : bytes) {
+                String hex = Integer.toHexString(0xff & b);
+                if (hex.length() == 1) {
+                    hexString.append('0');
+                }
+                hexString.append(hex);
+            }
+            // converts the accumulated hexadecimal values into a string and returns it.
+            return hexString.toString();
+        } catch (NoSuchAlgorithmException e) {
+            throw new RuntimeException("SHA-512 algorithm not found", e);
+        }
+    }
+
+    public static String generateSalt(int length) {
+
+//        SecureRandom random = new SecureRandom();  // Produces random bytes (not formatted like a UUID).
+//        byte[] salt = new byte[length];
+//        random.nextBytes(salt);
+//        return Base64.getEncoder().encodeToString(salt);
+
+        //  UUID.randomUUID() always returns a fixed-length (36 characters) string
+        return UUID.randomUUID().toString();
+    }
 
 }

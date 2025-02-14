@@ -32,7 +32,6 @@ public class MachineRepositoryImpl extends IssuanceDaoImpl implements MachineDao
     @Autowired
     private JPAQueryFactory jpaQueryFactory;
 
-
     @Override
     public boolean makeTable(String database, String tableName) {
         StringBuffer sbSQL = new StringBuffer();
@@ -46,7 +45,7 @@ public class MachineRepositoryImpl extends IssuanceDaoImpl implements MachineDao
         sbSQL.append(" `created_at` datetime NOT NULL COMMENT '등록 시간', \n");
         sbSQL.append(" `comment` text DEFAULT NULL COMMENT '주석 기타정보', \n");
         sbSQL.append("PRIMARY KEY (`mcn_id`), \n");
-        sbSQL.append("UNIQUE KEY `IDX_MACHINE_01_UK` (`seq`) \n");
+        sbSQL.append("UNIQUE KEY `IDX_MACHINE_UK` (`seq`) \n");
         sbSQL.append(") ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci; \n");
 
         log.info(sbSQL.toString());

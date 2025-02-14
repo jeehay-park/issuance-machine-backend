@@ -38,19 +38,19 @@ public class CodeEnumRepositoryImpl extends IssuanceDaoImpl implements CodeEnumD
         StringBuffer sbSQL = new StringBuffer();
 
         sbSQL.append("CREATE TABLE IF NOT EXISTS `" + tableName + "` ( \n");
-
-        sbSQL.append(" `seq` int(11) NOT NULL COMMENT '순번 1부터 시작',  \n");
-        sbSQL.append(" `enum_seq` int(8) NOT NULL COMMENT '코드에 따른 ENUM의 순번', \n");
-        sbSQL.append(" `enum_id` varchar(32) NOT NULL COMMENT '코드별 ENUM ID.code_id_ + enum_seq의 형식', \n");
-        sbSQL.append(" `code_id` varchar(32) NOT NULL COMMENT '코드 ID. cd_ + seq의 형식', \n");
-        sbSQL.append(" `enum_value` varchar(64) NOT NULL COMMENT '코드별 ENUM 값', \n");
-        sbSQL.append(" `is_mandatory` char(1) NOT NULL COMMENT '필수여부 Y, N', \n");
-        sbSQL.append(" `order` int(8) NOT NULL COMMENT '코드별 ENUM 표시 순서', \n");
-        sbSQL.append(" `description`varchar(255) DEFAULT NULL COMMENT '코드 ENUM에 대한 상세설명', \n");
-        sbSQL.append(" `ip`varchar(255) DEFAULT NULL COMMENT 'ip에 대한 상세설명', \n");
-        sbSQL.append("PRIMARY KEY (`enum_id`), \n");
-        sbSQL.append("UNIQUE KEY `IDX_CODE_ENUM_01_UK` (`seq`) \n");
-        sbSQL.append(") ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci; \n");
+        sbSQL.append(" `seq` int(16) NOT NULL COMMENT '순번 1부터 시작',  \n");
+        sbSQL.append(" `user_id` varchar(256) NOT NULL COMMENT '관리 사용자 ID. 'user_' + seq의 형식', \n");
+        sbSQL.append(" `pass_salt` varchar(512) NOT NULL COMMENT '관리 사용자 비밀번호 salt', \n");
+        sbSQL.append(" `password_hash` varchar(512) NOT NULL COMMENT '관리 사용자 비밀번호 hash', \n");
+        sbSQL.append(" `name` varchar(256) NOT NULL COMMENT '관리 사용자 이름', \n");
+        sbSQL.append(" `email` varchar(256) NOT NULL COMMENT '관리 사용자 이메일', \n");
+        sbSQL.append(" `status` varchar(128) NOT NULL COMMENT '관리 사용자 상태', \n");
+        sbSQL.append(" `updated_at` datetime NOT NULL COMMENT '업데이트 시간', \n");
+        sbSQL.append(" `created_at` datetime NOT NULL COMMENT '등록 시간', \n");
+        sbSQL.append(" `comment` text DEFAULT NULL COMMENT '주석 기타정보', \n");
+        sbSQL.append("  PRIMARY KEY (`user_id`), \n");
+        sbSQL.append("  UNIQUE KEY `IDX_USER_UK` (`seq`) \n");
+        sbSQL.append(" ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci; \n");
 
         log.info(sbSQL.toString());
         entityManager.createNativeQuery(sbSQL.toString()).executeUpdate();

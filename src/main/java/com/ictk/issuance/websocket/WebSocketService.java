@@ -25,7 +25,7 @@ public class WebSocketService {
         System.out.println("Request Body: " + body);
 
         // Use ClassPathResource to load the file from the resources folder
-        Resource resource = new ClassPathResource("websocketdata.json");
+        Resource resource = new ClassPathResource("websocketdata.json"); // device 실제 상태 정보를 받아와야 함
         System.out.println("resource: " + resource);
 
         System.out.println("body.getWorkId(): " + body.getWorkId());

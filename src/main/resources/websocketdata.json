@@ -12,7 +12,7 @@
     "remainedQnty": 500,
     "failedQnty": 50,
     "sampleQnty": 10,
-    "workStatus": "In Progress",
+    "workStatus": "RUNNING",
     "deviceHandlers": [
       {
         "mcnName" : "mcnName1",
