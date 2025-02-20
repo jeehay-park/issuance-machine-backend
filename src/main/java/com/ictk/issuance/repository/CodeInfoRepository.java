@@ -25,6 +25,4 @@ public interface CodeInfoRepository extends JpaRepository<CodeInfo, String>, Cod
 
     // ID로 코드 정보 조회
     Optional<CodeInfo> findCodeInfoByCodeId(String codeId);
-
-
 }

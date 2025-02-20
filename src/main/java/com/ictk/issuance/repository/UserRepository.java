@@ -8,10 +8,12 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.util.Optional;
+
 public interface UserRepository extends JpaRepository<User, String>, UserDao, IssuanceDao {
 
     // JpaRepository<User, Long> provides CRUD operations automatically.
-    User findByUserId(String userId);
+    Optional<User> findByUserId(String userId);
 
     // Custom method to check if a user exists by userId
     boolean existsByUserId(String userId);

@@ -104,5 +104,4 @@ public class KeyissueConfigRepositoryImpl extends IssuanceDaoImpl implements Key
                 .from(keyissueConfig)
                 .fetch();
     }
-
 }

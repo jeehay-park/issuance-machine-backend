@@ -1,4 +1,4 @@
-package com.ictk.issuance.data.dto.workhandler;
+package com.ictk.issuance.data.dto.user;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -15,28 +15,17 @@ import lombok.NoArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.lang.Nullable;
-
 import java.util.List;
 import java.util.Map;
 
-public class WorkHandlerListDTO {
+public class UserListDTO {
 
     @Builder
     @AllArgsConstructor
     @NoArgsConstructor
     @Data
-    @JsonIgnoreProperties(ignoreUnknown = true)
-    public static class WorkHandlerListRQB {
-
-        @NotNull(message = "workId는 필수 값입니다.")
-        @Schema(description = "발급작업 ID. 'wrk_' + seq의 형식")
-        private String workId;
-
-        @Schema(description = "핸들러 이름 (like 쿼리)")
-        private String hdlName;
-
-        @Schema(description = "디바이스 이름 ( like 쿼리)")
-        private String dvcName;
+    @JsonIgnoreProperties(ignoreUnknown =true)
+    public static class UserListRQB {
 
         @JsonProperty("isHeaderInfo")
         @Builder.Default
@@ -49,23 +38,34 @@ public class WorkHandlerListDTO {
         @NotNull(message = "startNum은 필수 값입니다.")
         private int startNum;
 
+        // @Builder.Default
         private String sortKeyName;
 
         @ValidateString(acceptedValues={"ASC","DESC"}, message="order가 유효하지 않습니다.")
         private String order;
 
-        public Pageable getPageable() {
+        private String filter;
+
+        @ValidateString(acceptedValues={"AND", "OR"}, message="filterArrAndOr이 유효하지 않습니다.")
+        private String filterArrAndOr;
+
+        private List<AppDTO.FilterObj> filterArr;
+
+        public Pageable getPageble() {
             if(rowCnt <=0) rowCnt = AppConstants.DEFAULT_LOW_CNT;
             int page = (int)(startNum / rowCnt);
             return PageRequest.of(page, rowCnt);
         }
+//        public List<AppDTO.FilterObj> getFilterArr() {
+//            return List.of();
+//        }
     }
 
-    @Builder
     @Data
+    @Builder
     @AllArgsConstructor
     @NoArgsConstructor
-    public static class WorkHandlerListRSB {
+    public static class UserListRSB {
 
         @NotEmpty(message = "totalCnt는 필수 값입니다.")
         private long totalCnt;
@@ -75,8 +75,6 @@ public class WorkHandlerListDTO {
         @Nullable
         private List<AppDTO.HeaderInfoObj> headerInfos;
 
-        private List<Map<String, Object>> workHandlers;
+        private List<Map<String,Object>> userList;
     }
-
-
 }

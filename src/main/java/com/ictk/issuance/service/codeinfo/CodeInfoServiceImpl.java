@@ -113,7 +113,6 @@ public class CodeInfoServiceImpl implements CodeInfoService {
         if(filterConds!=null)
             queryConds.and(filterConds);
 
-
         StopWatch timer = new StopWatch();
         timer.start();
         // DB code_info 테이블 쿼리
@@ -155,8 +154,6 @@ public class CodeInfoServiceImpl implements CodeInfoService {
             } );
         }
         return bodyList;
-
-
     }
 
     @Override

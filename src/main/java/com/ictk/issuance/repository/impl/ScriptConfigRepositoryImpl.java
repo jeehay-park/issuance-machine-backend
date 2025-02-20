@@ -104,5 +104,4 @@ public class ScriptConfigRepositoryImpl extends IssuanceDaoImpl implements Scrip
                 .from(scriptConfig)
                 .fetch();
     }
-
 }

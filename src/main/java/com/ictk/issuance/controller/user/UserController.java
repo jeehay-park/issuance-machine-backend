@@ -7,10 +7,8 @@ import com.ictk.issuance.common.dto.CommonResponse;
 import com.ictk.issuance.common.exception.IctkException;
 import com.ictk.issuance.common.security.SessionInfo;
 import com.ictk.issuance.common.utils.CommonUtils;
-import com.ictk.issuance.data.dto.programinfo.ProgramInfoListDTO;
-import com.ictk.issuance.data.dto.user.UserLoginChallengeDTO;
-import com.ictk.issuance.data.dto.user.UserLoginRequest;
-import com.ictk.issuance.data.dto.user.UserSignUpDTO;
+import com.ictk.issuance.data.dto.user.*;
+import com.ictk.issuance.data.dto.workhandler.WorkHandlerListDTO;
 import com.ictk.issuance.service.user.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -36,7 +34,7 @@ public class UserController {
 
     private final ObjectMapper objectMapper;
 
-    @Operation(summary = "발급서버 사용자 등록", description = "사용자 - 사용자 등록을 위한 API")
+    @Operation(summary = "발급서버 사용자 등록", description = "사용자 등록을 위한 API")
     @PostMapping("/signup")
     public CommonResponse<UserSignUpDTO.UserSignUpRSB> signup(
             @AuthenticationPrincipal SessionInfo sessionInfo,
@@ -62,7 +60,7 @@ public class UserController {
     }
 
 
-    @Operation(summary = "발급서버 사용자 로그인", description = "사용자 - 사용자 로그인 challenge API")
+    @Operation(summary = "발급서버 사용자 로그인", description = "사용자 로그인 challenge API")
     @PostMapping("/login/challenge")
     public CommonResponse<UserLoginChallengeDTO.UserLoginChallengeRSB> loginChallenge(
             @AuthenticationPrincipal SessionInfo sessionInfo,
@@ -87,11 +85,11 @@ public class UserController {
         return userLoginChallengeRSBResponse;
     }
 
-    @Operation(summary = "발급서버 사용자 로그인", description = "사용자 - 사용자 로그인 request API")
+    @Operation(summary = "발급서버 사용자 로그인", description = "사용자 로그인 request API")
     @PostMapping("/login/request")
-    public CommonResponse<UserLoginRequest.UserLoginRequestRSB> loginRequest(
+    public CommonResponse<UserLoginRequestDTO.UserLoginRequestRSB> loginRequest(
             @AuthenticationPrincipal SessionInfo sessionInfo,
-            @Valid @RequestBody CommonRequest<UserLoginRequest.UserLoginRequestRQB> userLoginRequestRQBRequest
+            @Valid @RequestBody CommonRequest<UserLoginRequestDTO.UserLoginRequestRQB> userLoginRequestRQBRequest
     ) {
         final var listTrId = "500702";
 
@@ -101,7 +99,7 @@ public class UserController {
             throw new IctkException(listTrId, AppCode.TRID_INVALID, userLoginRequestRQBRequest.getHeader().getTrId());
         }
 
-        CommonResponse<UserLoginRequest.UserLoginRequestRSB> userLoginRequestRSBCommonResponse = CommonResponse.ok(
+        CommonResponse<UserLoginRequestDTO.UserLoginRequestRSB> userLoginRequestRSBCommonResponse = CommonResponse.ok(
                 listTrId,
                 userService.loginRequest(listTrId, userLoginRequestRQBRequest.getBody())
         );
@@ -109,5 +107,93 @@ public class UserController {
         log.debug("{}", CommonUtils.toJson(objectMapper, userLoginRequestRSBCommonResponse));
 
         return userLoginRequestRSBCommonResponse;
+    }
+
+    @Operation(summary = "사용자 목록 조회", description = "사용자 목록 조회를 위한 API")
+    @PostMapping("/list")
+    public CommonResponse<UserListDTO.UserListRSB> userList(
+            @AuthenticationPrincipal SessionInfo sessionInfo,
+            @Valid @RequestBody CommonRequest<UserListDTO.UserListRQB> userListRequest
+
+    ) {
+        final var listTrId = "500703";
+
+        log.debug("{} {}", sessionInfo, CommonUtils.toJson(objectMapper, userListRequest));
+
+        if (!listTrId.equals(userListRequest.getHeader().getTrId())) {
+            throw new IctkException(listTrId, AppCode.TRID_INVALID, userListRequest.getHeader().getTrId());
+        }
+
+        CommonResponse<UserListDTO.UserListRSB> userListResponse
+                = CommonResponse.ok(
+                listTrId,
+
+                userService.userList(
+                        listTrId,
+                        userListRequest.getBody()
+                )
+        );
+
+        log.debug("{}", CommonUtils.toJson(objectMapper, userListResponse));
+
+        return userListResponse;
+    }
+
+    @Operation(summary = "사용자 정보 변경", description = "사용자 정보 변경을 위한 API")
+    @PostMapping("/edit")
+    public CommonResponse<UserEditDTO.UserEditRSB> editUser(
+            @AuthenticationPrincipal SessionInfo sessionInfo,
+            @Valid @RequestBody CommonRequest<UserEditDTO.UserEditRQB> userEditRequest
+    ) {
+        final var listTrId = "500705";
+
+        log.debug("{} {}", sessionInfo, CommonUtils.toJson(objectMapper, userEditRequest));
+
+        if (!listTrId.equals(userEditRequest.getHeader().getTrId())) {
+            throw new IctkException(listTrId, AppCode.TRID_INVALID, userEditRequest.getHeader().getTrId());
+        }
+
+        CommonResponse<UserEditDTO.UserEditRSB> userEditResponse
+                = CommonResponse.ok(
+                listTrId,
+
+                userService.editUser(
+                        listTrId,
+                        userEditRequest.getBody()
+                )
+        );
+
+        log.debug("{}", CommonUtils.toJson(objectMapper, userEditResponse));
+
+        return userEditResponse;
+    }
+
+    @Operation(summary = "사용자 정보 삭제", description = "사용자 정보 삭제를 위한 API")
+    @PostMapping("/delete")
+    public CommonResponse<UserDeleteDTO.UserDeleteRSB> deleteUser(
+            @AuthenticationPrincipal SessionInfo sessionInfo,
+            @Valid @RequestBody CommonRequest<UserDeleteDTO.UserDeleteRQB> userDeleteRequest
+    ) {
+        final var listTrId = "500704";
+
+        log.debug("{} {}", sessionInfo, CommonUtils.toJson(objectMapper, userDeleteRequest));
+
+        if (!listTrId.equals(userDeleteRequest.getHeader().getTrId())) {
+            throw new IctkException(listTrId, AppCode.TRID_INVALID, userDeleteRequest.getHeader().getTrId());
+        }
+
+        CommonResponse<UserDeleteDTO.UserDeleteRSB> userDeleteResponse
+                = CommonResponse.ok(
+                listTrId,
+
+                userService.deleteUser(
+                        listTrId,
+                        userDeleteRequest.getBody()
+                )
+        );
+
+        log.debug("{}", CommonUtils.toJson(objectMapper, userDeleteResponse));
+
+        return userDeleteResponse;
     }
 }

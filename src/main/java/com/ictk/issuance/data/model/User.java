@@ -20,10 +20,10 @@ public class User {
 
     @InjectSequenceValue(sequencename = "seq", tablename = "user")
     @Column(name = "seq", unique = true, nullable = false, updatable = false)
-    @Id // Make seq the primary key
     @Setter
     public long seq;
 
+    @Id // Make seq the primary key
     @Column(name = "user_id", unique = true, nullable = false)
     @Setter
     private String userId = AppConstants.TEMPORARY_ID;;

@@ -16,7 +16,6 @@ import com.querydsl.core.types.dsl.StringPath;
 import io.vavr.Tuple;
 import io.vavr.Tuple2;
 import lombok.extern.slf4j.Slf4j;
-
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -37,8 +36,8 @@ public class AppHelper {
         hdrInfoMap.put("mcn_name", HeaderInfoObj.builder().idx(idx++).keyName("mcn_name").name("발급기 이름").isSort(false).isFilter(true).isDisplay(true).build());
         hdrInfoMap.put("etc", HeaderInfoObj.builder().idx(idx++).keyName("etc").name("기타 정보").isSort(false).isFilter(true).isDisplay(true).build());
         hdrInfoMap.put("created_at", HeaderInfoObj.builder().idx(idx++).keyName("created_at").name("등록 시간").isSort(true).isFilter(false).isDisplay(true).build());
-        return hdrInfoMap;
 
+        return hdrInfoMap;
     }
 
     public static Map<String, HeaderInfoObj> configHeaderInfoMap(String configType) {
@@ -82,8 +81,8 @@ public class AppHelper {
                 hdrInfoMap.put("created_at", HeaderInfoObj.builder().idx(idx++).keyName("created_at").name("등록 시간").isSort(true).isFilter(false).isDisplay(true).build());
             }
         }
-        return hdrInfoMap;
 
+        return hdrInfoMap;
     }
 
     public static Map<String, HeaderInfoObj> snRuleHeaderInfoMap() {
@@ -100,8 +99,8 @@ public class AppHelper {
         hdrInfoMap.put("today_count", HeaderInfoObj.builder().idx(idx++).keyName("today_count").name("당일 건수").isSort(false).isFilter(false).isDisplay(true).build());
         hdrInfoMap.put("count_sum", HeaderInfoObj.builder().idx(idx++).keyName("count_sum").name("건수 합계").isSort(true).isFilter(false).isDisplay(true).build());
         hdrInfoMap.put("created_at", HeaderInfoObj.builder().idx(idx++).keyName("created_at").name("등록 시간").isSort(true).isFilter(false).isDisplay(true).build());
-        return hdrInfoMap;
 
+        return hdrInfoMap;
     }
 
     public static Map<String, HeaderInfoObj> codeInfoHeaderInfoMap() {
@@ -116,10 +115,24 @@ public class AppHelper {
         hdrInfoMap.put("status", HeaderInfoObj.builder().idx(idx++).keyName("status").name("상태").isSort(false).isFilter(false).isDisplay(true).build());
         hdrInfoMap.put("description", HeaderInfoObj.builder().idx(idx++).keyName("description").name("상세 설명").isSort(false).isFilter(false).isDisplay(true).build());
         hdrInfoMap.put("created_at", HeaderInfoObj.builder().idx(idx++).keyName("created_at").name("등록 시간").isSort(true).isFilter(false).isDisplay(true).build());
-        return hdrInfoMap;
 
+        return hdrInfoMap;
     }
 
+    public static Map<String, HeaderInfoObj> userHeaderInfoMap() {
+
+        Map<String, HeaderInfoObj> hdrInfoMap = new LinkedHashMap<>(); // 순서보장
+
+        int idx = 1;
+        hdrInfoMap.put("idx", HeaderInfoObj.builder().idx(idx++).keyName("idx").name("순번").isSort(false).isFilter(false).isDisplay(false).build());
+        hdrInfoMap.put("user_id", HeaderInfoObj.builder().idx(idx++).keyName("user_id").name("사용자 ID").isSort(true).isFilter(false).isDisplay(true).build());
+        hdrInfoMap.put("email", HeaderInfoObj.builder().idx(idx++).keyName("email").name("사용자 이메일").isSort(false).isFilter(true).isDisplay(true).build());
+        hdrInfoMap.put("name", HeaderInfoObj.builder().idx(idx++).keyName("name").name("사용자 이름").isSort(false).isFilter(true).isDisplay(true).build());
+        hdrInfoMap.put("created_at", HeaderInfoObj.builder().idx(idx++).keyName("created_at").name("등록 시간").isSort(true).isFilter(false).isDisplay(true).build());
+        hdrInfoMap.put("updated_at", HeaderInfoObj.builder().idx(idx++).keyName("updated_at").name("업데이트 시간").isSort(true).isFilter(false).isDisplay(true).build());
+
+        return hdrInfoMap;
+    }
 
     public static Map<String, HeaderInfoObj> programInfoHeaderInfoMap() {
 
@@ -148,8 +161,8 @@ public class AppHelper {
         hdrInfoMap.put("updated_at", HeaderInfoObj.builder().idx(idx++).keyName("updated_at").name("업데이트 시간").isSort(true).isFilter(false).isDisplay(true).build());
         hdrInfoMap.put("created_at", HeaderInfoObj.builder().idx(idx++).keyName("created_at").name("등록 시간").isSort(true).isFilter(false).isDisplay(true).build());
         hdrInfoMap.put("comment", HeaderInfoObj.builder().idx(idx++).keyName("comment").name("주석 기타정보 ").isSort(true).isFilter(false).isDisplay(false).build());
-        return hdrInfoMap;
 
+        return hdrInfoMap;
     }
 
     public static Map<String, HeaderInfoObj> workInfoHeaderInfoMap() {
@@ -302,7 +315,5 @@ public class AppHelper {
         });
 
         return queryConds;
-
     }
-
 }
