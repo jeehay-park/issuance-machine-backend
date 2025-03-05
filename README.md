@@ -73,18 +73,6 @@
 
 <br><br>
 
-- **Git** (소스 코드 클론 및 버전 관리):
-  - 프로젝트 소스를 GitHub에서 클론하려면 Git이 설치되어 있어야 합니다.
-  - [Git 다운로드 링크](https://git-scm.com/downloads)
-
-<br><br>
-
-### **프로젝트 클론**
-- 먼저 Git을 사용하여 프로젝트 소스를 클론합니다:
-  ```bash
-  git clone https://github.com/jeehay-park/issuance-machine-backend.git
-  ```  
-<br><br>
 
 ### **프로젝트 빌드 및 실행**
 
@@ -93,6 +81,9 @@
     ```bash
     ./gradlew clean build
     ```
+
+<br>
+
 
 - **백엔드 실행**:
   - 백엔드를 실행하려면 다음 명령어를 실행하세요:
